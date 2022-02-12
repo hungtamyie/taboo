@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js" integrity="sha512-nYuHvSAhY5lFZ4ixSViOwsEKFvlxHMU2NHts1ILuJgOS6ptUmAGt/0i5czIgMOahKZ6JN84YFDA+mCdky7dD8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src='./client.js'></script>
+        <script src='./ui.js'></script>
+        <link rel="stylesheet" href="styles.css">
+        <link rel="shortcut icon" type="image/jpg" href="logo.png"/>
+        <title>Summerdale Math Games</title>
+    </head>
+    <body>
+        <div id="disconnectedScreen">You have been disconnected from the server. <br> Please reload the page if this problem persists.</div>
+        <div id="titleScreen" class="title_screen">
+            <div class="credits">By Tim Yie</div>
+            <div class="inner_container box_shadow">
+                <h2>Summerdale Math Games</h2>
+                <input id="nameInput" placeholder="Jane Smith" autocomplete="off"></input>
+                <button onclick="logIn()" id="nameEnterButton">Go!</button>
+                <div id="logInAsTeacherButton" onclick="toggleUser()">Log in as teacher</div>
+                <div id='logInErrorDisplay'>You need to type in your full name!</div>
+                <input id="teacherPassword" type="password" autocomplete="off"></input>
+                <div id="teacherCheckmark">&#x2713;</div>
+                <br>
+            </div>
+        </div>
+        <div id="teacherUIScreen">
+            <div id="teacherNameContainer">
+                <div id="teacherName" class="box_shadow">Teacher's Class</div>
+                <div id="roomName"></div>
+                <div id="studentCount">0 students in room</div>
+            </div>
+            <br><br>
+            <div id="studentTableContainer">
+                <div id="studentTableTitle">Students</div>
+                <table id="studentTable" class="student_table box_shadow">
+                    <colgroup>
+                        <col style="width:40%">
+                        <col style="width:40%">
+                        <col style="width:20%">
+                    </colgroup>  
+                    <thead><tr><th>Name</th><th>Working on</th><th>Quizzes Passed</th></tr></thead>
+                    <tbody>
+                        <tr><td>...</td><td>...</td><td>...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div></div>
+            <div id="activityLogContainer">
+                <div id="activityLogTitle">Activity Log</div>
+                <div id="activityLogControls">
+                    Show passed attempts <input type="checkbox" id="showPassedAttemptsCH" onclick="toggleActivityLogSetting('passed')" autocomplete="off" checked> | 
+                    Show failed attempts <input type="checkbox" id="showFailedAttemptsCH" onclick="toggleActivityLogSetting('failed')" autocomplete="off" checked> | 
+                    Search by name: <input autocomplete="off" id="searchByNameInput"><br>
+                    Show Tests <input type="checkbox" id="showTestsCH" onclick="toggleActivityLogSetting('tests')" autocomplete="off" checked> | 
+                    Show Practice <input type="checkbox" id="showPracticeCH" onclick="toggleActivityLogSetting('practice')" autocomplete="off" checked>
+                </div>
+                <div id="activityLog">
+                    Empty for now . . .
+                </div>
+            </div>
+        </div>
+        <button onclick="joinRoom()" id="roomEnterButton">Join Room</button>
+        <script></script>
+        <input id="roomInput"></input>
+        <button onclick="createRoom()">Create Room</button>
+        <div id="serverUpdates">Server updates</div>
+        <script>console.log("yes the client is authoratative. don't hack a game made for 1st graders bro that's pretty pathetic")</script>
+    </body>
+</html>
