@@ -133,6 +133,7 @@ function showRooms(){
     for(let i = 0; i < activityLog.length; i++){
         let activity = activityLog[i];
         var date = new Date(activity.timestamp);
+        //var passString = 
         var starString = ('<span style="color: yellow">&#9733;</span>').repeat(activity.stars)
         elem('activityLog').innerHTML = starString + date.toTimeString() + elem('activityLog').innerHTML;
     }
