@@ -1,70 +1,92 @@
-#LOGIN_WINDOW {
-    background: none;
-}
-
-#loginBox {
-    width: 50%;
-    height: 35%;
-    background: #75EEFF;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    align-items: top;
-}
-
-.login_button {
-    width: 90rem;
-    height: 13rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 5rem;
-    padding: 5rem;
-    color: white;
-    font-size: 11rem;
-    border-radius: 5rem;
-    cursor: pointer;
-}
-
-#studentLoginButton {
-    background: #EB9310;
-    border: 1rem solid #84550E;
-}
-
-#teacherLoginButton {
-    background: #FF441B;
-    border: 1rem solid #692516;
-}
-
-#loginBoxTitle {
+#logInWindow {
     width: 100%;
-    height: 47rem;
-    background: #2C29A0;
-    position: relative;
+    height: 100%;
+    text-align: center;
 }
 
-#titleSub {
-    color: white;
-    font-size: 12rem;
-    margin-left: 20rem;
-    margin-top: 4rem;
-    font-family: 'Luckiest Guy', cursive;
+.language_bar {
+    height: 20rem;
+    width: 100%;
+    color: #AAABFF;
+    display: flex;
+    flex-direction: row-reverse;
 }
 
-#titleMain {
-    color: #FF441B;
-    font-size: 20rem;
-    margin-left: 20rem;
-    font-family: 'Luckiest Guy', cursive;
+.language_button {
+    margin-right: 5rem;
+    padding: 2px;
+    text-align: center;
 }
 
-#versionNumber {
-    position:relative;
-    bottom: -4rem;
-    right: -20rem;
-    color: white;
-    font-size: 6rem;
-    font-family: 'monospace', cursive;
-    width: 50rem;
-    text-align: right;
+.log_in_center_container {
+    margin-top: 20rem;
+    background-color: #6A6BE5;
+    border-radius: 8rem;
+    width: 250rem;
+    height: 140rem;
+}
+
+.main_title {
+    color: #FFC42E;
+    font-size: 40rem;
+    height: 30rem;
+    text-shadow: -2.5rem 1.3rem .3rem rgba(0, 0, 0, 0.25);
+}
+
+#usernameInput {
+    margin-top: 15rem;
+    background: white;
+    width: 190rem;
+    height: 15rem;
+    display: inline-block;
+    font-family: 'Lalezar', cursive;
+    border-radius: 3rem;
+    border: 0.9rem solid #3F3F3F;
+    font-size: 10rem;
+    vertical-align: bottom;
+    padding-top: 1rem;
+    padding-left: 3rem;
+}
+
+.lobby_buttons_container {
+    width: 100%;
+    height: 17rem;
+    font-size: 9rem;
+    margin-top: 10rem;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.lobby_button {
+    width: 87rem;
+    vertical-align: bottom;
+    height: 100%;
+    margin-left: 10rem;
+    margin-right: 10rem;
+    background: red;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    padding-top: 2rem;
+    border-radius: 4rem;
+}
+
+#createNewLobbyButton {
+    color: #614C17;
+    background: #FFC42E;
+}
+
+#joinLobbyButton {
+    color: #A13939;
+    background: #FF826E;
+}
+
+.shush_girl {
+    display: block;
+    position: absolute;
+    left: -372rem;
+    top: 25rem;
+    width: 100rem;
 }

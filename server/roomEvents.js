@@ -1,5 +1,5 @@
 module.exports = (io, socket) => {
-    const helloWorld = (data) => {
+    function helloWorld(data){
         console.log(data)
     }
 

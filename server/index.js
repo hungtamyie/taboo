@@ -5,7 +5,6 @@ const path = require('path')
 
 const port = 2000;
 
-
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '..', '/client/index.html'));
 });
@@ -19,13 +18,15 @@ serv.listen(port, (error)=>{
         console.log('Server is listening on port ' + port)
     }
 });
-
+var games = [];
 const io = require('socket.io')(serv, {'pingInterval': 2000, 'pingTimeout': 5000});
 const registerRoomEvents = require("./roomEvents")
+const registerLobbyChangeEvents = require("./lobbyChangeEvents")
 
-const onConnection = (socket) => {
+function onConnection(socket){
     console.log(socket.id + " connected");
     registerRoomEvents(io, socket);
+    registerLobbyChangeEvents(io, socket);
 }
 
 io.on("connection", onConnection);
