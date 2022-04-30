@@ -1,4 +1,4 @@
-module.exports = (io, socket) => {
+module.exports = (io, socket, gameLobbies) => {
     function helloWorld(data){
         console.log(data)
     }

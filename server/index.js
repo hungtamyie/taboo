@@ -18,15 +18,17 @@ serv.listen(port, (error)=>{
         console.log('Server is listening on port ' + port)
     }
 });
-var games = [];
 const io = require('socket.io')(serv, {'pingInterval': 2000, 'pingTimeout': 5000});
 const registerRoomEvents = require("./roomEvents")
 const registerLobbyChangeEvents = require("./lobbyChangeEvents")
+var gameLobbies = {};
+const GameLobby = require("./lobbyChangeEvents")
 
 function onConnection(socket){
     console.log(socket.id + " connected");
-    registerRoomEvents(io, socket);
-    registerLobbyChangeEvents(io, socket);
+    socket.data.currentLobby = "nolobby"
+    registerRoomEvents(io, socket, gameLobbies);
+    registerLobbyChangeEvents(io, socket, gameLobbies);
 }
 
 io.on("connection", onConnection);

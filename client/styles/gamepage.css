@@ -1,8 +1,9 @@
 #thirdPage {
     width: 100%;
     height: 100%;
-    text-align: center;
-    background: blue;
+    text-align: left;
+    background: grey;
     position: relative;
     top: -100%;
+    visibility: visible;
 }

@@ -5,6 +5,7 @@ body{
     height: 100%;
     font-family: 'Lalezar', cursive;
     font-size: 10rem;
+    overflow: hidden;
 } 
 
 div {
@@ -67,11 +68,24 @@ input:focus, input.form-control:focus {
 }
 
 .standard_shadow {
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 1.5rem 1.5rem rgba(0, 0, 0, 0.25);
 }
 
 .relative_anchor {
     width: 0px;
     height: 0px;
     position: relative;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: rgb(192, 192, 192);
+    opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: rgb(192, 192, 192);
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+    color: rgb(192, 192, 192);
 }
