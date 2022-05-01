@@ -1,0 +1,58 @@
+#lobbyWindow {
+    text-align: center;
+    background: #7879F1;
+    display: block;
+}
+
+.rules_container {
+    width: 270rem;
+    height: 120rem;
+    background: #6A6BE5;
+    margin-top: 40rem;
+    text-align: left;
+    justify-content: left;
+    border-radius: 20rem;
+}
+
+.rules_text_container {
+    color: white;
+    font-size: 6rem;
+    width: 52%;
+    text-align: left;
+    margin-top: 10rem;
+    margin-left: 40rem;
+}
+
+.rules_text_title {
+    font-size: 12rem;
+}
+
+.rules_text {
+    overflow-y: scroll;
+    height:77%;
+    padding-right: 3rem;
+}
+
+.taylor_swift_container {
+    width: 30%;
+    height: 100%;
+    position: relative;
+    border-bottom-left-radius: 20rem;
+}
+
+.taylor_swift {
+    width: 85rem;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    border-bottom-left-radius: 20rem;
+    z-index: 2;
+}
+
+.letters_img {
+    width: 150rem;
+    z-index: 1;
+    position: absolute;
+    left: -35rem;
+    top: -15rem;
+}
