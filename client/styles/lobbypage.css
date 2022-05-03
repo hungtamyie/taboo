@@ -1,7 +1,7 @@
 #lobbyWindow {
     text-align: center;
     background: #7879F1;
-    display: block;
+    display: none;
 }
 
 .rules_container {

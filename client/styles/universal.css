@@ -73,6 +73,7 @@ input:focus, input.form-control:focus {
 
 .relative_anchor {
     width: 0px;
+    display: inline-block;
     height: 0px;
     position: relative;
 }
@@ -92,6 +93,7 @@ input:focus, input.form-control:focus {
 
 .top_container {
     width: 0px;
+    z-index: 100;
     height: 0px;
     position: absolute;
 }
