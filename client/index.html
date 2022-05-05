@@ -51,12 +51,16 @@
                             <div class="shadow-two"></div>
                           </div>
                         <br>
-                        <input id="usernameInput" placeholder="Username..."></input>
+                        <input id="usernameInput" maxlength="18" placeholder="Username..."></input>
                         <br>
                         <div class="lobby_buttons_container">
                             <div id="createNewLobbyButton" class="lobby_button standard_shadow">Create Lobby</div>
-                            <div id="joinLobbyButton" class="lobby_button standard_shadow">Join Lobby</div>
+                            <div class="flex join_lobby_container">
+                                <input id="joinCodeInput" maxlength="5" placeholder="JKQRL" class="standard_shadow">
+                                <div id="joinLobbyButton" class="lobby_button standard_shadow"><div>Join Lobby <span>➤</span></div></div>
+                            </div>
                         </div>
+                        <div id="loadingMessage">Loading...</div>
                     </div>
                     <div class="relative_anchor"><img class="shush_girl" src="./images/shushgirl.png"></div>
                 </div>
@@ -67,7 +71,10 @@
                     <div class="box"><div class= "imageBox"></div></div>
                 </div>
                 <!--Selection Overlay-->
-                    <div id="selectionOverlay" class="blur"><div class= "imageChoice1"></div><div class= "imageChoice2"></div><div class= "youHave5Sec"><div>You have 5 sec to choose an image.</div></div>
+                    <div id="selectionOverlay" class="overlay">
+                        <div class= "imageChoice1 standard_shadow"></div>
+                        <div class= "imageChoice2 standard_shadow"></div>
+                        <div class= "youHave5Sec standard_shadow"><div>You have 5 sec to choose an image.</div></div>
                     </div>   
                 <!--Lobby Window-->
                 <div id="lobbyWindow">
@@ -96,6 +103,41 @@
                                 <br><br>
                                 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                             </div>
+                        </div>
+                    </div>
+                    <div class="dashboard_container flex">
+                        <div class="team_select_container standard_shadow flex">
+                            <div class="relative_anchor">
+                                <div class="edit_name_button"><img src="./images/penicon1.png"></div>
+                            </div>
+                            <div class="team_select_title team1title">
+                                Team 1
+                            </div>
+                            <div class="name_pool flex" id="namePool1">
+                            </div>
+                            <div class="join_team_button standard_shadow"><div>Join</div></div>
+                        </div>
+                        <div class="start_shuffle_container">
+                            <div id="shuffleButton">
+                                <img src="./images/shuffleicon.png">
+                            </div>
+                            <br>
+                            <div id="goButton">
+                                <img src="./images/playicon.png">
+                                <br>
+                                <div>Start!</div>
+                            </div>
+                        </div>
+                        <div class="team_select_container standard_shadow flex">
+                            <div class="relative_anchor">
+                                <div class="edit_name_button"><img src="./images/penicon2.png"></div>
+                            </div>
+                            <div class="team_select_title team2title">
+                                Team 2
+                            </div>
+                            <div class="name_pool flex" id="namePool2">
+                            </div>
+                            <div class="join_team_button standard_shadow"><div>Join</div></div>
                         </div>
                     </div>
                 </div>

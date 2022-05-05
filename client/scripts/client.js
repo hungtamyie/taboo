@@ -8,6 +8,11 @@ socket.on('commandFailed', function(data){
 socket.on("info", function(data){
     console.log(data);
 });
+socket.on('lobby_update', function(data){
+    if(data.updateType == "successful_lobby_creation"){
+        switchToLobbyPage(data.lobbyId)
+    }
+})
 
 
 //SENDING
@@ -19,14 +24,19 @@ socket.addEventListener("error", function(){
     socket.close()
 })
 
-function joinLobby(name){
-    socket.emit("lobby_join_request", {lobbyId: name});
+function joinLobby(lobbyId, username){
+    socket.emit("lobby_join_request", {lobbyId: lobbyId, username: username});
 }
 
-function createLobby(){
-    socket.emit("lobby_create_request", {});
+function createLobby(username){
+    socket.emit("lobby_create_request", {username: username});
 }
 
 function leaveLobby(){
     socket.emit("lobby_leave_request", {})
+}
+
+function containsSpecialChars(str) {
+    const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    return specialChars.test(str);
 }

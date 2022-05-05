@@ -128,12 +128,12 @@ input:focus, input.form-control:focus {
 }
 
 #playerButton {
-    font-size: 9rem;
+    font-size: 8rem;
     background: #6A6BE5;
     padding-left: 10rem;
-    padding-right: 10rem;
+    padding-right: 5rem;
     min-width: 50rem;
-    height: 14rem;
+    height: 13rem;
     margin-right: 10rem;
     border-radius: 100rem;
     cursor: pointer;
@@ -175,4 +175,9 @@ input:focus, input.form-control:focus {
     background-color: #5051C2;
     border-radius: 100rem;
     border: 0px solid #ffffff;
+}
+
+.greyed {
+    background: grey !important;
+    color: darkgrey !important;
 }

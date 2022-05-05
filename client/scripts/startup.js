@@ -1,6 +1,7 @@
 window.onload = () => {
     resizeWindow();
     loadAllResources();
+    activateEventHandlers();
     window.onresize = function(){
         resizeWindow();
     }

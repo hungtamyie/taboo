@@ -3,7 +3,7 @@
     height: 100%;
     text-align: center;
     background: #7879F1;
-    display: block;
+    display: none;
 }
 .team1 {
     color: #614C17;
@@ -46,11 +46,12 @@
     background: #5050c7;
     border-radius: 5rem;
 }
-.blur {
+.overlay {
     width: 100%;
     height: 100%;
     top: -100%;
     z-index: 200;
+    display: none;
     position: relative;
     text-align: center;
     background: rgba(53, 34, 105, 0.212);

@@ -56,3 +56,163 @@
     left: -35rem;
     top: -15rem;
 }
+
+.dashboard_container {
+    width: 100%;
+    margin-top: 20rem;
+    text-align: center;
+    justify-content: center;
+}
+
+.team_select_container {
+    width: 130rem;
+    margin-left: 10rem;
+    margin-right: 10rem;
+    border-radius: 8rem;
+    height: 70rem;
+    background: #5051C2;
+    flex-direction: column;
+    align-items: center;
+}
+
+.team_select_title {
+    background: grey;
+    text-shadow: 0px 1rem 1rem rgba(0, 0, 0, 0.25);
+    width: 100%;
+    color: white;
+    font-size: 11rem;
+    height: 14rem;
+    border-top-left-radius: 8rem;
+    border-top-right-radius: 8rem;
+}
+
+.team1title {
+    color: #614C17;
+    background: #FFC42E;
+}
+
+.team2title {
+    color: #892B2B;
+    background: #FF826E;
+}
+
+.start_shuffle_container {
+    height: 70rem;
+}
+
+#shuffleButton {
+    width: 20rem;
+    cursor: pointer;
+}
+
+#shuffleButton:hover {
+    filter: brightness(0.95);
+    transform: scale(1.1);
+}
+
+#shuffleButton:active {
+    filter: brightness(0.8);
+    transform: scale(1);
+}
+
+#shuffleButton > img {
+    width: 100%;
+}
+
+#goButton {
+    width: 25rem;
+    height: 25rem;
+    border-radius: 8rem;
+    padding: 5rem;
+    cursor: pointer;
+    background: #09CC6E;
+    box-shadow: 0rem 0rem 5rem 2rem #05ff4c;
+}
+
+#goButton:hover {
+    transform: scale(1.03);
+}
+
+#goButton:active {
+    background: #2ee78e;
+    transform: scale(1);
+    box-shadow: 0rem 0rem 5rem 2rem #31f86c;
+}
+
+
+#goButton > img {
+    margin-left: 2rem;
+    width: 15rem;
+    height: 17rem;
+}
+
+#goButton > div {
+    position: relative;
+    top: -6rem;
+    color: white;
+}
+
+.name_pool {
+    width: 95%;
+    height: 40rem;
+    padding: 2rem;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.name_tag {
+    color: white;
+    margin-left: 3rem;
+    margin-right: 3rem;
+    font-size: 6rem;
+    text-shadow: 0px 1rem 1rem rgba(0, 0, 0, 0.25);
+}
+
+.join_team_button {
+    width: 30rem;
+    font-size: 6rem;
+    height: 10rem;
+    background: #09CC6E;
+    border-radius: 5rem;
+    color: white;
+    cursor: pointer;
+}
+
+.join_team_button > div {
+    vertical-align: middle;
+    line-height: 11 rem;
+}
+
+
+.join_team_button:hover {
+    transform: scale(1.03);
+}
+
+.join_team_button:active {
+    background: #2ee78e;
+    transform: scale(1);
+}
+
+.edit_name_button {
+    display: inline-block;
+    position: relative;
+    left: 49rem;
+    top: 1.5rem;
+    cursor: pointer;
+}
+
+.edit_name_button:hover {
+    transform: scale(1.1);
+}
+
+.edit_name_button:active {
+    transform: scale(1);
+}
+
+
+.edit_name_button > img{
+    width: 9rem;
+    height: 9rem;
+}

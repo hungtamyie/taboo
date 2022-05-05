@@ -1,6 +1,7 @@
 class GameLobby {
     prototype(){
         this.playerSockets = {};
+        this.hostId = "";
         this.teamData = {
             A: {
                 describerPointer: 0,
