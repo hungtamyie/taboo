@@ -11,6 +11,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js" integrity="sha512-nYuHvSAhY5lFZ4ixSViOwsEKFvlxHMU2NHts1ILuJgOS6ptUmAGt/0i5czIgMOahKZ6JN84YFDA+mCdky7dD8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src='./scripts/client.js'></script>
         <script src='./scripts/ui.js'></script>
+        <script src='./scripts/uiRedraw.js'></script>
+        <script src='./scripts/utility.js'></script>
         <script src='./scripts/startup.js'></script>
         <link rel="stylesheet" href="styles/universal.css">
         <link rel="stylesheet" href="styles/loginpage.css">
@@ -28,7 +30,7 @@
                         <div>Taboo!</div>
                     </div>
                     <div class="player_button_container">
-                        <div id="playerButton" class="standard_shadow"><div>Players: 0 </div><img src="./images/dropdownarrow.png"></div>
+                        <div id="playerButton" class="standard_shadow"><div id="playerCount">Players: 0 </div><img src="./images/dropdownarrow.png"></div>
                     </div>
                 </div>
                 <!--Log in window-->
@@ -51,12 +53,12 @@
                             <div class="shadow-two"></div>
                           </div>
                         <br>
-                        <input id="usernameInput" maxlength="18" placeholder="Username..."></input>
+                        <input id="usernameInput" maxlength="18" placeholder="Username..." autocomplete="off" spellcheck="false"></input>
                         <br>
                         <div class="lobby_buttons_container">
                             <div id="createNewLobbyButton" class="lobby_button standard_shadow">Create Lobby</div>
                             <div class="flex join_lobby_container">
-                                <input id="joinCodeInput" maxlength="5" placeholder="JKQRL" class="standard_shadow">
+                                <input id="joinCodeInput" maxlength="5" placeholder="JKQRL" class="standard_shadow" autocomplete="off" spellcheck="false">
                                 <div id="joinLobbyButton" class="lobby_button standard_shadow"><div>Join Lobby <span>➤</span></div></div>
                             </div>
                         </div>
@@ -71,11 +73,13 @@
                     <div class="box"><div class= "imageBox"></div></div>
                 </div>
                 <!--Selection Overlay-->
+                <div class="relative_anchor">
                     <div id="selectionOverlay" class="overlay">
                         <div class= "imageChoice1 standard_shadow"></div>
                         <div class= "imageChoice2 standard_shadow"></div>
                         <div class= "youHave5Sec standard_shadow"><div>You have 5 sec to choose an image.</div></div>
-                    </div>   
+                    </div> 
+                </div>
                 <!--Lobby Window-->
                 <div id="lobbyWindow">
                     <div class="rules_container flex">
@@ -115,7 +119,7 @@
                             </div>
                             <div class="name_pool flex" id="namePool1">
                             </div>
-                            <div class="join_team_button standard_shadow"><div>Join</div></div>
+                            <div class="join_team_button standard_shadow" id="joinTeam1"><div>Join</div></div>
                         </div>
                         <div class="start_shuffle_container">
                             <div id="shuffleButton">
@@ -137,7 +141,7 @@
                             </div>
                             <div class="name_pool flex" id="namePool2">
                             </div>
-                            <div class="join_team_button standard_shadow"><div>Join</div></div>
+                            <div class="join_team_button standard_shadow" id="joinTeam2"><div>Join</div></div>
                         </div>
                     </div>
                 </div>

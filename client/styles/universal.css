@@ -95,6 +95,7 @@ input:focus, input.form-control:focus {
     width: 0px;
     z-index: 100;
     height: 0px;
+    display: block;
     position: absolute;
 }
 .taboo_logo {

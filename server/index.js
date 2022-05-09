@@ -24,11 +24,35 @@ const registerLobbyChangeEvents = require("./lobbyChangeEvents")
 var gameLobbies = {};
 const GameLobby = require("./lobbyChangeEvents")
 
-function onConnection(socket){
+io.on("connection", (socket) => {
     console.log(socket.id + " connected");
-    socket.data.currentLobby = "nolobby"
+    socket.data.currentLobby = "nolobby";
+    socket.data.packetsSentInLast5Seconds = 0;
     registerRoomEvents(io, socket, gameLobbies);
     registerLobbyChangeEvents(io, socket, gameLobbies);
+    socket.on("disconnect", (reason) => {
+        if(socket.data.currentLobby != "nolobby"){
+            gameLobbies[socket.data.currentLobby].removePlayerSocketId(socket.id);
+            io.to(socket.data.currentLobby).emit("game_update", {currentState: gameLobbies[socket.data.currentLobby].toJSON()});
+        }
+    });
+})
+
+//Logging
+const Utility = require("./utility");
+const utility = new Utility;
+function logEvery5Seconds(i) {
+    setTimeout(() => {
+        //console.log(gameLobbies)
+        for (const key in gameLobbies) {
+            if (gameLobbies.hasOwnProperty(key)) {
+                if(utility.objLength(gameLobbies[key].playerSockets) == 0){
+                    delete gameLobbies[key];
+                }
+            }
+        }
+        logEvery5Seconds(); 
+    }, 5000)
 }
 
-io.on("connection", onConnection);
+logEvery5Seconds(0);

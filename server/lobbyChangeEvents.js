@@ -1,12 +1,12 @@
 const GameLobby = require("./GameLobby");
 module.exports = (io, socket, gameLobbies) => {
-    function createNewLobby(){
+    function createNewLobby(data){
+        socket.data.username = data.username;
         if(socket.data.currentLobby != "nolobby"){
             socket.emit("commandFailed", {message: "You can't create a lobby because you are already in one!"});
             console.log(socket.id + " tried and failed to create a lobby");
             return false;
         }
-        console.log("contains special: " + containsSpecialChars(socket.data.username))
         if(containsSpecialChars(socket.data.username)){
             socket.emit("commandFailed", {message: "You can't use special characters in your name!"});
             console.log(socket.id + " tried to use special characters!");
@@ -17,19 +17,28 @@ module.exports = (io, socket, gameLobbies) => {
         //NOT RANDOMIZING FOR TESTING PURPOSES DELETE LATER DELETE DELETE DELETE
 
         //Connect socket on server
-        lobbyId = "XWRC";
+        lobbyId = "TESTA";
         socket.join(lobbyId);
         socket.data.currentLobby = (lobbyId);
         gameLobbies[lobbyId] = new GameLobby();
+        gameLobbies[lobbyId].addPlayerSocket(socket);
+        gameLobbies[lobbyId].setHostId(socket.id);
         console.log(socket.id + " created the lobby " + lobbyId);
-        console.log(getActiveRooms())
 
-        //tell client to connect
+        //tell client to he is connected
         socket.emit('lobby_update', {updateType: 'successful_lobby_creation', lobbyId: lobbyId})
+        io.to(socket.data.currentLobby).emit("game_update", {currentState: gameLobbies[lobbyId].toJSON()});
     }
 
     function joinLobby(data){
+        socket.data.username = data.username;
+        if(containsSpecialChars(socket.data.username)){
+            socket.emit("commandFailed", {message: "You can't use special characters in your name!"});
+            console.log(socket.id + " tried to use special characters!");
+            return false;
+        }
         let activeRooms = getActiveRooms();
+        console.log(activeRooms);
         if(socket.data.currentLobby != "nolobby"){
             socket.emit("commandFailed", {message: "You can't join a lobby because you are already in one!"});
             console.log(socket.id + " tried and failed to join a lobby");
@@ -43,7 +52,12 @@ module.exports = (io, socket, gameLobbies) => {
         
         socket.join(data.lobbyId);
         socket.data.currentLobby = (data.lobbyId);
+        gameLobbies[lobbyId].addPlayerSocket(socket);
         console.log(socket.id + " joined the lobby " + lobbyId);
+
+        //tell client he is connected
+        socket.emit('lobby_update', {updateType: 'successful_lobby_join', lobbyId: lobbyId});
+        io.to(socket.data.currentLobby).emit("game_update", {currentState: gameLobbies[lobbyId].toJSON()});
     }
 
     function leaveLobby(){
@@ -52,6 +66,7 @@ module.exports = (io, socket, gameLobbies) => {
             console.log(socket.id + " tried to leave a lobby without being in one.");
         }
         socket.leave(socket.data.currentLobby);
+        io.to(socket.data.currentLobby).emit("game_update", {currentState: gameLobbies[socket.data.currentLobby].toJSON()});
         socket.data.currentLobby = "nolobby";
         console.log(socket.id + " left a lobby.");
     }
