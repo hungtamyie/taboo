@@ -13,6 +13,9 @@ function activateEventHandlers(){
     $("#joinTeam2").on("click", function() {
         attemptJoinTeam("B");
     });
+    $("#playerButton").on("click", function() {
+        togglePlayerBox();
+    });
     //FOR TESTING PURPOSES
     $("#usernameInput").on("click", function() {
         $("#usernameInput").val("InvincibleBlaze")
@@ -65,6 +68,7 @@ function attemptJoinTeam(team){
 
 
 function uiCommandFailed(data){
+    //SHould log this onto the screen with big letters.
     console.log(data);
 }
 
@@ -90,5 +94,33 @@ function switchToPage(page){
     $("#" + page + "Window").css("display", "block");
     if(page == "game" || page == "lobby"){
         $("#topContainer").css("display", "block");
+    }
+}
+
+var playerBoxOn = false;
+var playerBoxToggleable = true;
+function togglePlayerBox(){
+    if(!playerBoxToggleable) return;
+    if(playerBoxOn){
+        playerBoxOn = false;
+        playerBoxToggleable = false;
+            $("#playerBox").animate({'height': '0rem'}, 200,()=>{
+                $("#playerBox").css({"display": "none", 'height': 'auto'});
+                $("#playerButton").animate({"margin-left": "36rem", "width": "50rem"}, 300, ()=>{
+                    playerBoxToggleable = true;
+                });
+            });
+    }
+    else {
+        playerBoxOn = true;
+        playerBoxToggleable = false;
+        $("#playerButton").animate({"margin-left": "0rem", "width": "86rem"}, 300, ()=>{
+            $("#playerBox").css({"display": "inline-block", 'height': 'auto'});
+            let desiredHeight = $("#playerBox").height();
+            $("#playerBox").css({'height': '0rem'});
+            $("#playerBox").animate({'height': desiredHeight}, 200,()=>{
+                playerBoxToggleable = true;
+            });
+        });
     }
 }

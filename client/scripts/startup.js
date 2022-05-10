@@ -3,6 +3,7 @@ window.onload = () => {
     loadAllResources();
     activateEventHandlers();
     switchToPage("logIn");
+    $('#playerBox').height($('#playerBoxContent').outerHeight());
     window.onresize = function(){
         resizeWindow();
     }

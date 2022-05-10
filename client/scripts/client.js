@@ -1,5 +1,4 @@
 var socket = io();
-socket.id = "u_" + socket.id;
 
 //RECIEVING
 socket.on('commandFailed', function(data){
