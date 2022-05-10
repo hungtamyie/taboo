@@ -2,7 +2,7 @@ window.onload = () => {
     resizeWindow();
     loadAllResources();
     activateEventHandlers();
-    switchToPage("logIn");
+    switchToPage("game");
     window.onresize = function(){
         resizeWindow();
     }
