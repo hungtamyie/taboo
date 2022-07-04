@@ -1,14 +1,16 @@
 const GameLobby = require("./GameLobby");
+const Utility = require("./utility");
+const utility = new Utility;
 module.exports = (io, socket, gameLobbies) => {
     function createNewLobby(data){
         socket.data.username = data.username;
         if(socket.data.currentLobby != "nolobby"){
-            socket.emit("commandFailed", {message: "You can't create a lobby because you are already in one!"});
+            socket.emit("serverMessage", {head: "Error!", message: "You can't create a lobby because you are already in one!"});
             console.log(socket.id + " tried and failed to create a lobby");
             return false;
         }
         if(containsSpecialChars(socket.data.username)){
-            socket.emit("commandFailed", {message: "You can't use special characters in your name!"});
+            socket.emit("serverMessage", {head: "Error!", message: "You can't use special characters in your name!"});
             console.log(socket.id + " tried to use special characters!");
             return false;
         }
@@ -33,20 +35,25 @@ module.exports = (io, socket, gameLobbies) => {
     function joinLobby(data){
         socket.data.username = data.username;
         if(containsSpecialChars(socket.data.username)){
-            socket.emit("commandFailed", {message: "You can't use special characters in your name!"});
+            socket.emit("serverMessage", {head: "Error!", message: "You can't use special characters in your name!"});
             console.log(socket.id + " tried to use special characters!");
             return false;
         }
         let activeRooms = getActiveRooms();
         console.log(activeRooms);
         if(socket.data.currentLobby != "nolobby"){
-            socket.emit("commandFailed", {message: "You can't join a lobby because you are already in one!"});
+            socket.emit("serverMessage", {head: "Error!", message: "You can't join a lobby because you are already in one!"});
             console.log(socket.id + " tried and failed to join a lobby");
             return false;
         }
         if(activeRooms.includes(data.lobbyId) == false){
-            socket.emit("commandFailed", {message: "This room doesn't exist!"});
+            socket.emit("serverMessage", {head: "Error!", message: "This room doesn't exist!"});
             console.log(socket.id + " tried to join a nonexistent room");
+            return false;
+        }
+        if(gameLobbies[lobbyId].playerIsBanned(socket)){
+            socket.emit("serverMessage", {head: "Error!", message: "You are banned from this lobby."});
+            console.log(socket.id + " tried to join a banned room");
             return false;
         }
         
@@ -57,22 +64,44 @@ module.exports = (io, socket, gameLobbies) => {
 
         //tell client he is connected
         socket.emit('lobby_update', {updateType: 'successful_lobby_join', lobbyId: lobbyId});
-        io.to(socket.data.currentLobby).emit("game_update", {currentState: gameLobbies[lobbyId].toJSON()});
+        io.to(socket.data.currentLobby).emit("game_update", {currentState: gameLobbies[socket.data.currentLobby].toJSON()});
+
+        //TESTING TEESTING 
+        let lobby = gameLobbies[lobbyId]
+        console.log(utility.objLength(lobby.playerSockets))
+        console.log('testing')
+        if(utility.objLength(lobby.playerSockets) > 3){
+            lobby.shuffleTeams();
+            lobby.startGame();
+            lobby.loadTurn();
+            io.to(socket.data.currentLobby).emit("preload_request", {images: lobby.getImagesToPreload()});
+            io.to(socket.data.currentLobby).emit("game_update", {currentState: lobby.toJSON()});
+        }
+
+        //TESTING TESTING
     }
 
     function leaveLobby(){
         if(socket.data.currentLobby == "nolobby"){
-            socket.emit("commandFailed", {message: "You are not in a lobby."});
+            socket.emit("serverMessage", {head: "Error!", message: "You are not in a lobby."});
             console.log(socket.id + " tried to leave a lobby without being in one.");
         }
         socket.leave(socket.data.currentLobby);
-        io.to(socket.data.currentLobby).emit("game_update", {currentState: gameLobbies[socket.data.currentLobby].toJSON()});
+        let currentLobby = socket.data.currentLobby;
+        gameLobbies[currentLobby].removePlayerSocketId(socket.id);
         socket.data.currentLobby = "nolobby";
+        io.to(currentLobby).emit("game_update", {currentState: gameLobbies[currentLobby].toJSON()});
         console.log(socket.id + " left a lobby.");
     }
 
     function getLobbyData(){
         socket.emit("info", getActiveRooms())
+    }
+
+    function updateTeamNames(data){
+        let currentLobby = socket.data.currentLobby;
+        gameLobbies[currentLobby].setTeamNames(data.A, data.B);
+        io.to(currentLobby).emit("game_update", {currentState: gameLobbies[currentLobby].toJSON()});
     }
 
     function generateNewLobbyId(){
@@ -108,4 +137,5 @@ module.exports = (io, socket, gameLobbies) => {
     socket.on("lobby_create_request", createNewLobby);
     socket.on("lobby_join_request", joinLobby);
     socket.on("lobby_leave_request", leaveLobby);
+    socket.on("lobby_team_name_update", updateTeamNames);
 }

@@ -209,10 +209,32 @@
 
 .edit_name_button:active {
     transform: scale(1);
+    filter: brightness(1.5);
 }
 
 
 .edit_name_button > img{
     width: 9rem;
     height: 9rem;
+}
+
+.team_name_input_field {
+    background: none;
+    border: none;
+    color: inherit;
+    font-family: inherit;
+    font-size: 9rem;
+    text-align: inherit;
+    text-shadow: inherit;
+    width: 67%;
+    position: relative;
+    top: -1.6rem;
+    height: 11.3rem;
+    border-radius: 2rem;
+    overflow: hidden;
+}
+
+.inputting {
+    background: rgba(0,0,0,0.06);
+    box-shadow: inset 0px 0.5rem 1rem rgba(0, 0, 0, 0.25) !important;
 }

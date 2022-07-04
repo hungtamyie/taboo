@@ -10,50 +10,62 @@
     background-color: #FFC42E;
     border-bottom-left-radius: 5rem;
     text-align: left;
-    padding-left: 5rem;
-    margin-right: -2rem;
+    padding-left: 2rem;
+    margin-right: -1rem;
     text-shadow: -0.5rem -0rem .5rem rgba(0, 0, 0, 0.25);
     width: 100rem;
     height: 13rem;
     font-size: 13rem, center;
     font-family: 'Lalezar', cursive;
+    overflow: hidden !important;
+    display: inline-flex;
+    align-content: space-between;
+    flex-flow: column wrap;
 }
 .team2 {
     color: #A13939;
     background-color: #FF826E;
     border-bottom-right-radius: 5rem;
     text-align: left;
-    padding-left: 5rem;
-    margin-left: -2rem;
+    padding-left: 2rem;
+    margin-left: -1rem;
     text-shadow: -0.5rem -0rem .5rem rgba(0, 0, 0, 0.25);
     width: 100rem;
     height: 13rem;
     font-size: 13rem, center;
     font-family: 'Lalezar', cursive;
+    overflow: hidden !important;
+    display: inline-flex;
+    align-content: space-between;
+    flex-flow: column wrap;
 }
+#team1Points, #team2Points {
+    padding-right: 3rem;
+    color: white;
+    text-shadow: none;
+} 
 .box {
     background-color: #6A6BE5;
-    margin-top: 20rem;
+    margin-top: 18rem;
     border-radius: 5rem;
     text-align: center;
     width: 150rem;
-    height: 230rem;
+    height: 235rem;
 }
 .imageBox {
     width: 120rem;
-    height: 180rem;
-    margin-top: 10rem;
+    height: 165rem;
     background: #5050c7;
     border-radius: 5rem;
     box-shadow: 3rem 1.5rem 1.5rem rgba(0, 0, 0, 0.20);
 }
 .overlay {
-    width: 100%;
-    height: 100%;
-    top: -100%;
+    width: 500rem;
+    height: 281rem;
+    top: -281rem;
     z-index: 200;
     display: none;
-    position: relative;
+    position: absolute;
     text-align: center;
     background: rgba(53, 34, 105, 0.212);
     backdrop-filter: blur(2rem);
@@ -66,6 +78,7 @@
     margin-right: 10rem;
     background: #5050c7;
     border-radius: 5rem;
+    position:relative;
 }
 .imageChoice2 {
     width: 120rem;
@@ -76,9 +89,42 @@
     background: #5050c7;
     border-radius: 5rem;
 }
+
+.imageChoice {
+    background-position-x: center;
+    background-position-y: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.imageChoice:hover {
+    transform: scale(1.03);
+}
+
+.imageChoice:active {
+    transform: scale(1);
+    filter: brightness(110%);
+}
+
+.selectionText {
+    position: absolute;
+    top: 150rem;
+    left: 2rem;
+    color: white;
+    text-shadow: 0rem 1rem 4rem black;
+    font-size: 25rem;
+}
+
+#selectionTime {
+    color: #FFC42E;
+    display: inline-block;
+}
+
 .youHave5Sec {
     width: 262rem;
     height: 20rem; 
+    margin-top: 10rem;
     background: #5050c7;
     border-radius: 5rem;
     font-family: 'Lalezar', cursive;
@@ -130,11 +176,18 @@
 }
 .imageCircleText{
     position: absolute;
+    width: 30rem;
     color: white;
-    top:-53rem;
-    left:-5rem;
+    top:-44rem;
+    left: 5rem;
+    font-size: 13rem;
+    text-align: center;
 }
-#john {
+#bonusImageCircle {
+    display: none;
+}
+
+#describerText {
     padding-top: 10rem;
     color:white;
 }
@@ -147,5 +200,270 @@
     margin-left: 20rem;
     margin-top: 30rem;
     margin-right: 50rem;
+    overflow: none;
     box-shadow: inset 0px 0px 10px rgba(0,0,0,0.1);
+}
+
+#game_round_title {
+    color: white;
+    font-size: 15rem;
+    margin-top: 1rem;
+    height: 7rem;
+}
+
+.time_bar_background {
+    margin-top: 4rem;
+    text-align: left;
+    background: #4041C0;
+    height: 10rem;
+    width: 120rem;
+    border-radius: 3rem;
+    box-shadow: inset 0px 1rem 1rem rgba(0, 0, 0, 0.25);
+    padding: 0.5rem;
+}
+
+#timeBarLabel {
+    display: block;
+    position: absolute;
+    top: -1.5rem;
+    left: 2rem;
+    height: 2rem;
+    font-size: 9rem;
+    color: white;
+    text-shadow: -0.5rem -0rem 3rem rgba(0, 0, 0, 0.5);
+}
+
+#timeBar {
+    background: #71E754;
+    width: 120rem;
+    height: 10rem;
+    border-radius: 3rem;
+    transition: width 0.05s;
+    transition-timing-function: ease-in-out;
+}
+
+.game_input_box {
+    width: 120rem;
+    height: 18rem;
+}
+
+#guessInputBox {
+    width: 100%;
+    height: 10rem;
+    box-shadow: inset 0px 1rem 1rem rgba(0, 0, 0, 0.25);
+    border: none;
+    font-family: 'Lalezar', cursive;
+    padding-top: 1.5rem;
+    border-radius: 7rem;
+    font-size: 9rem;
+    padding-left: 2rem;
+    margin-left: -1rem;
+    display: none;
+}
+
+.player_chat_box_container {
+    width: 100%;
+}
+
+.player_chat_box_name {
+    background: #A13939;
+    color: white;
+    margin-right: 25rem;
+    height: 9rem;
+    font-size: 7rem;
+    padding: 0.5rem;
+    position: relative;
+    top: 6.15rem;
+    border-top-left-radius: 6rem;
+    border-top-right-radius: 6rem;
+    padding-left: 6rem;
+    padding-right: 6rem;
+    overflow-y: hidden;
+}
+
+.player_chat_box_name_container{
+    width: 80%;
+    height: 7.5rem;
+    margin-left: 10rem;
+    text-align: left;
+}
+
+.player_chat_box {
+    width: 80%;
+    padding: 4rem;
+    font-size: 8rem;
+    background: #FF826E;
+    color: white;
+    line-height: 10rem;
+    border-radius: 10rem;
+    border-bottom-right-radius: 2rem;
+    box-shadow: 0px 1rem 1rem rgba(0, 0, 0, 0.25);
+}
+
+.triangle_b {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 4rem 8rem 4rem;
+    border-color: transparent transparent #ff816e transparent;
+    line-height: 0px;
+    _border-color: #000000 #000000 #ff816e #000000;
+    _filter: progid:DXImageTransform.Microsoft.Chroma(color='#000000');
+    left: 117.5rem;
+    top: -4.5rem;
+    transform: rotate(130deg);
+}
+
+.guess_main_display_container {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background: #8D8EF1;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.guess_main_display_box{
+	background: repeating-linear-gradient(
+  45deg,
+  #8D8EF1,
+  #8D8EF1 8rem,
+  #7273E3 8rem,
+  #7273E3 16rem
+);
+    display: inline-flex;
+    width: 95%;
+    height: 96%;
+    overflow: hidden;
+	background-size: 700% 700%;
+	animation: moving_stripes 40s linear infinite;
+    border-radius: inherit;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes moving_stripes {
+	0% {
+		background-position: 0% 50%;
+	}
+	100% {
+		background-position: 0% 100%;
+	}
+}
+
+#guessMainDisplayText {
+    text-shadow: 0.3rem 1.1rem .7rem rgba(0, 0, 0, 0.25);
+    color: white;
+    font-size: 9rem;
+    line-height: 20rem;
+}
+
+#guessMainDisplayText > span:nth-child(1){
+    font-size: 18rem;
+}
+
+#describeInputBox {
+    width: 100%;
+    height:100%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+#describeNextButton, #describeGiveUpButton {
+    font-size: 8rem;
+    width: 50rem;
+    color: white;
+    height: 90%;
+    text-align: center;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 0.2rem 0.5rem 0.9rem rgba(0, 0, 0, 0.50);
+    border-radius: 5rem;
+    cursor: pointer;
+    margin-top: 4rem;
+}
+
+#describeNextButton:hover, #describeGiveUpButton:hover {
+    transform: scale(1.03);
+}
+
+#describeNextButton:active, #describeGiveUpButton:active {
+    transform: scale(1);
+    filter: brightness(1.2);
+}
+
+#describeGiveUpButton {
+    background: #C93C3C;
+}
+
+#describeNextButton {
+    background: #00B55E;
+}
+
+.extra_seconds {
+    width: 40rem;
+    position: absolute;
+    color: #0E7619;
+    top: -3rem;
+    left: -20rem;
+    font-size: 4rem;
+}
+
+#startInputBox {
+    width: 100%;
+    text-align: center;
+}
+
+#startTurnButton {
+    background: #00B55E;
+    color: white;
+    padding: 2rem;
+    border-radius: 6rem;
+    padding-left: 6rem;
+    padding-right: 6rem;
+    cursor: pointer;
+}
+
+#startTurnButton:hover {
+    transform: scale(1.03);
+}
+
+#startTurnButton:active {
+    transform: scale(1);
+    filter: brightness(1.2);
+}
+
+.green_border {
+    box-shadow:0px 0px 0px 3rem rgb(28, 233, 72);
+}
+
+.describe_display_container {
+    display: none;
+    width: 100%;
+    height: 100%;
+    border-radius: 5rem;
+    background-position-x: center !important;
+    background-position-y: center !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background: url('https://wallpaperaccess.com/full/112906.jpg');
+}
+
+.describe_display_text {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    margin-top: 15rem;
+    width: 100%;
+    padding-top: 2rem;
+    text-align: left;
+    text-shadow: -0.5rem 0rem 3rem rgb(0, 0, 0, 55%);
 }

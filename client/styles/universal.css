@@ -73,7 +73,7 @@ input:focus, input.form-control:focus {
 
 .relative_anchor {
     width: 0px;
-    display: inline-block;
+    display: block;
     height: 0px;
     position: relative;
 }
@@ -169,7 +169,7 @@ input:focus, input.form-control:focus {
     background: #898AFF;
     position: absolute;
     left: 5rem;
-    top: -15rem;
+    top: -2rem;
     border-bottom-left-radius: 6rem;
     border-bottom-right-radius: 6rem;
     padding: 4rem;
@@ -202,6 +202,10 @@ input:focus, input.form-control:focus {
 .edit_player_button:active {
     color: #6A6BE5;
 }
+.kick_button:hover {
+    color: #f43c3c;
+}
+
 .player_list_item {
     border-radius: 3rem;
 }
@@ -242,4 +246,32 @@ input:focus, input.form-control:focus {
 .greyed {
     background: grey !important;
     color: darkgrey !important;
+}
+.server_message_container {
+    display: block;
+}
+.server_message {
+    z-index: 1000;
+    width: 70rem;
+    pointer-events: none;
+    background: #454693;
+    border-radius: 4rem;
+    color: white;
+    font-size: 7rem;
+    padding: 4rem;  
+    text-align: left;
+    position: relative;
+    left: 5rem;
+    top: 5rem;
+    opacity: 0;
+}
+
+cache {
+    position: absolute;
+    z-index: -1000;
+    opacity: 0;
+}
+
+cache image {
+    position: absolute;
 }

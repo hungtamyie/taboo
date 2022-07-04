@@ -1,0 +1,47 @@
+module.exports = {
+    easy: [
+        {category: "Animes / Cartoons", name: "Rick and Morty", url: "https://static.posters.cz/image/750/affiches-et-posters/rick-and-morty-watch-i50046.jpg"},
+        {category: "Celebrities", name: "Barack Obama", url: "https://upload.wikimedia.org/wikipedia/commons/e/e9/Official_portrait_of_Barack_Obama.jpg"},
+        {category: "House / Furnitures", name: "Chair", url: "https://media.but.fr/images_produits/produit-zoom/3877000686513_Q.jpg"},
+        {category: "TV shows/Movies", name: "Breaking Bad", url: "https://www.francetvinfo.fr/pictures/t1cZX79z4pyo2tmhAd5TTqgo44c/1200x1200/2013/09/27/sipa_ap21428624_000048_1.jpg"},
+        {category: "Flags / Cities / Landscapes", name: "The United States of America", url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/2560px-Flag_of_the_United_States.svg.png"},
+        {category: "Software/Apps", name: "TikTok", url: "https://p16-sign-sg.tiktokcdn.com/aweme/720x720/tos-alisg-avt-0068/a965ba21b0d509a43cc0ade9dda60911.jpeg?x-expires=1654059600&x-signature=ULrDxqcRx2SB8xRKOkLRqRQjWho%3D"},
+        {category: "Animes / Cartoons", name: "Rick and Morty", url: "https://static.posters.cz/image/750/affiches-et-posters/rick-and-morty-watch-i50046.jpg"},
+        {category: "Celebrities", name: "Barack Obama", url: "https://upload.wikimedia.org/wikipedia/commons/e/e9/Official_portrait_of_Barack_Obama.jpg"},
+        {category: "House / Furnitures", name: "Chair", url: "https://media.but.fr/images_produits/produit-zoom/3877000686513_Q.jpg"},
+        {category: "TV shows / Movies", name: "Breaking Bad", url: "https://www.francetvinfo.fr/pictures/t1cZX79z4pyo2tmhAd5TTqgo44c/1200x1200/2013/09/27/sipa_ap21428624_000048_1.jpg"},
+        {category: "Flags / Cities / Landscapes", name: "The United States of America", url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/2560px-Flag_of_the_United_States.svg.png"},
+        {category: "Software / Apps", name: "TikTok", url: "https://p16-sign-sg.tiktokcdn.com/aweme/720x720/tos-alisg-avt-0068/a965ba21b0d509a43cc0ade9dda60911.jpeg?x-expires=1654059600&x-signature=ULrDxqcRx2SB8xRKOkLRqRQjWho%3D"},
+    ],
+    medium: [
+        {category: "Animes / Cartoons", name: "Spirited Away", url: "https://fr.web.img6.acsta.net/medias/nmedia/00/02/36/71/chihiro.jpg"},
+        {category: "Celebrities", name: "Doja Cat", url: "https://img.nrj.fr/JXExFV1E4DE6ekrk-vDMvCbZB5w=/medias/2020/10/doja-photo_5f92a2b857c27.jpg"},
+        {category: "House / Furnitures", name: "Coffee table", url: "https://www.coxandcox.co.uk/media/catalog/product/cache/eceb26e77de98330381661bbe755c5ac/s/s/ss19-h-frmcof.png"},
+        {category: "TV shows / Movies", name: "Stranger Things", url: "https://fr.web.img6.acsta.net/pictures/17/10/23/14/24/5968627.jpg"},
+        {category: "Flags / Cities/Landscapes", name: "Sweden", url: "https://upload.wikimedia.org/wikipedia/en/thumb/4/4c/Flag_of_Sweden.svg/1200px-Flag_of_Sweden.svg.png"},
+        {category: "Software / Brands", name: "PlayStation", url: "https://parlersport.com/wp-content/uploads/2022/01/La-derniere-mise-a-jour-de-Sony-garantit-que-les-1200x1200.jpg"},
+        {category: "Animes / Cartoons", name: "Spirited Away", url: "https://fr.web.img6.acsta.net/medias/nmedia/00/02/36/71/chihiro.jpg"},
+        {category: "Celebrities", name: "Doja Cat", url: "https://img.nrj.fr/JXExFV1E4DE6ekrk-vDMvCbZB5w=/medias/2020/10/doja-photo_5f92a2b857c27.jpg"},
+        {category: "House / Furnitures", name: "Coffee table", url: "https://www.coxandcox.co.uk/media/catalog/product/cache/eceb26e77de98330381661bbe755c5ac/s/s/ss19-h-frmcof.png"},
+        {category: "TV shows / Movies", name: "Stranger Things", url: "https://fr.web.img6.acsta.net/pictures/17/10/23/14/24/5968627.jpg"},
+        {category: "Flags / Cities / Landscapes", name: "Sweden", url: "https://upload.wikimedia.org/wikipedia/en/thumb/4/4c/Flag_of_Sweden.svg/1200px-Flag_of_Sweden.svg.png"},
+        {category: "Software / Brands", name: "PlayStation", url: "https://parlersport.com/wp-content/uploads/2022/01/La-derniere-mise-a-jour-de-Sony-garantit-que-les-1200x1200.jpg"},
+  	],
+    hard: [
+        {category: "Animes / Cartoons", name: "One punch Man", url: "https://image.animedigitalnetwork.fr/license/onepunchman/tv/web/affiche_370x0.jpg"},
+        {category: "Celebrities", name: "Elton John", url: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Elton_John_Cannes_2019.jpg"},
+        {category: "House / Furnitures", name: "Veranda", url: "https://priximbattable.net/263421-large_default/pergolanda-top-prix-3x3-m.jpg"},
+        {category: "TV shows / Movies", name: "Better Call Saul", url: "https://media.gq.com.mx/photos/5ea0be2ead60ed0009944d70/3:2/w_1599,h_1066,c_limit/better-call-saul-y-como-el-final-se-revela-en-breaking-bad.jpg"},
+        {category: "Flags / Cities / Landscapes", name: "Kazakhstan", url: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Flag_of_Kazakhstan.svg/1000px-Flag_of_Kazakhstan.svg.png"},
+        {category: "Software / Apps", name: "Ubuntu", url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Logo-ubuntu_cof-orange-hex.svg/1200px-Logo-ubuntu_cof-orange-hex.svg.png"},
+        {category: "Animes / Cartoons", name: "One punch Man", url: "https://image.animedigitalnetwork.fr/license/onepunchman/tv/web/affiche_370x0.jpg"},
+        {category: "Celebrities", name: "Elton John", url: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Elton_John_Cannes_2019.jpg"},
+        {category: "House / Furnitures", name: "Veranda", url: "https://priximbattable.net/263421-large_default/pergolanda-top-prix-3x3-m.jpg"},
+        {category: "TV shows/Movies", name: "Better Call Saul", url: "https://media.gq.com.mx/photos/5ea0be2ead60ed0009944d70/3:2/w_1599,h_1066,c_limit/better-call-saul-y-como-el-final-se-revela-en-breaking-bad.jpg"},
+        {category: "Flags / Cities / Landscapes", name: "Kazakhstan", url: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Flag_of_Kazakhstan.svg/1000px-Flag_of_Kazakhstan.svg.png"},
+        {category: "Software / Apps", name: "Ubuntu", url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Logo-ubuntu_cof-orange-hex.svg/1200px-Logo-ubuntu_cof-orange-hex.svg.png"},
+    ],
+}
+
+//tik tok not working
+//doja cat not working 

@@ -1,8 +1,12 @@
 window.onload = () => {
     resizeWindow();
+    createCacheElement();
     loadAllResources();
     activateEventHandlers();
     switchToPage("logIn");
+    //TESTING TEST
+    //$("#selectionOverlay").css('display', 'block');
+    //-------------
     $('#playerBox').height($('#playerBoxContent').outerHeight());
     window.onresize = function(){
         resizeWindow();
@@ -24,6 +28,13 @@ function resizeWindow(){
     $("html").css('font-size', targetDimensions.width/500 + 'px')
 }
 
+var cache;
+function createCacheElement(){
+    cache = document.createElement("CACHE");
+    document.body.appendChild(cache);
+}
+
 function loadAllResources(){
 
 }
+

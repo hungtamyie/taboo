@@ -8,18 +8,21 @@
         src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
         crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/fast-average-color/dist/index.browser.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js" integrity="sha512-nYuHvSAhY5lFZ4ixSViOwsEKFvlxHMU2NHts1ILuJgOS6ptUmAGt/0i5czIgMOahKZ6JN84YFDA+mCdky7dD8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src='./scripts/client.js'></script>
         <script src='./scripts/ui.js'></script>
         <script src='./scripts/uiRedraw.js'></script>
         <script src='./scripts/utility.js'></script>
         <script src='./scripts/startup.js'></script>
+        <script src='./scripts/gameUi.js'></script>
+        <script src='./scripts/timers.js'></script>
         <link rel="stylesheet" href="styles/universal.css">
         <link rel="stylesheet" href="styles/loginpage.css">
         <link rel="stylesheet" href="styles/bouncing.css">
         <link rel="stylesheet" href="styles/gamepage.css">
         <link rel="stylesheet" href="styles/lobbypage.css">
-        <title>Invincible Math</title>
+        <title>Taboo!</title>
     </head>
     <body>
         <div class="window_container">
@@ -39,6 +42,9 @@
                             <div id="playerBox" class="standard_shadow"></div>
                         </div>
                     </div>
+                </div>
+                <div class="relative_anchor server_message_container">
+                    <div class="server_message standard_shadow" id="server_message"></div>
                 </div>
                 <!--Log in window-->
                 <div id="logInWindow">
@@ -70,37 +76,108 @@
                             </div>
                         </div>
                         <div id="loadingMessage">Loading...</div>
+                        <br>
+                        <div class="relative_anchor"><img class="shush_girl" src="./images/shushgirl.png"></div>
                     </div>
-                    <div class="relative_anchor"><img class="shush_girl" src="./images/shushgirl.png"></div>
                 </div>
                 <!--Game Window-->
                 <div id="gameWindow">
-                    <div class="team1">Team 1</div>
-                    <div class="team2">Team 2</div><br>
+                    <div class="team1">
+                        <div id="team1Title">Team 1</div>
+                        <div id="team1Points">100 pts</div>
+                    </div>
+                    <div class="team2">
+                        <div id="team2Title">Team 2</div>
+                        <div id="team2Points">100 pts</div>
+                    </div>
+                    <br>
                     <div class="box">
-                        <div class= "imageBox"></div></div>
-                    <div class="turn">Turn 0</div>
+                        <div id="game_round_title">Round 1</div>
+                        <div class= "imageBox">
+                            <div class="guess_main_display_container" id="guessBackgroundBox">
+                                <div class="guess_main_display_box" id="guessStripeBox">
+                                    <div id="guessMainDisplayText"><span>Text</span><br><span>(+0)</span></div>
+                                </div>
+                            </div>
+                            <div class="describe_display_container" id="describeBackgroundBox">
+                                <div class="describe_display_text" id="describeDisplayText"></div>
+                            </div>
+                        </div>
+                        <div class="time_bar_background" id="timeBarContainer">
+                            <div class="relative_anchor">
+                                <div id="timeBarLabel">
+                                    15s
+                                </div>
+                            </div>
+                            <div id="timeBar"></div>
+                        </div>
+                        <div class="game_input_box">
+                            <input id="guessInputBox" placeholder="Guess here!" maxlength="50" autocomplete="off" spellcheck="false">
+                            <div id="describeInputBox">
+                                <div id="describeGiveUpButton">Give up</div>
+                                <div id="describeNextButton">
+                                    <span>Next</span>
+                                    <div class="relative_anchor">
+                                        <div class="extra_seconds">+5 Extra Seconds</div>
+                                    </div></div>
+                            </div>
+                            <div id="startInputBox">
+                                <div id="startTurnButton" class="standard_shadow">Start Turn</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="turn" id="turnTitle">Turn 0</div>
                     <div class="imageGottenBox standard_shadow">
                         <div class="imageCircle imageCircle1">
-                            <img src=https://static.posters.cz/image/750/affiches-et-posters/rick-and-morty-watch-i50046.jpg/>
-                            <div class="relative_anchor"><div class="imageCircleText" id="imageCircleText1">+5</div></div>
+                            <img src="./images/nothing.png" id="imageCircle1">
+                            <div class="relative_anchor">
+                                <div class="imageCircleText" id="imageCircleText1">?</div>
+                            </div>
                         </div>
-                        <div class="imageCircle imageCircle2"></div>
-                        <div class="imageCircle imageCircle3"></div>
-                        <div class="imageCircle imageCircle4"></div>
-                        <div class="imageCircle imageCircle5"></div>
-                        <div class="imageCircle imageCircle6"></div>
-                        <p id="john"><span style="color:#FF826E;">John</span> is discribing!</p>
+                        <div class="imageCircle imageCircle2">
+                            <img src="./images/nothing.png" id="imageCircle2">
+                            <div class="relative_anchor">
+                                <div class="imageCircleText" id="imageCircleText2">?</div>
+                            </div>
                         </div>
-                    <div class="answerBox">
-
+                        <div class="imageCircle imageCircle3">
+                            <img src="./images/nothing.png" id="imageCircle3">
+                            <div class="relative_anchor">
+                                <div class="imageCircleText" id="imageCircleText3">?</div>
+                            </div>
+                        </div>
+                        <div class="imageCircle imageCircle4">
+                            <img src="./images/nothing.png" id="imageCircle4">
+                            <div class="relative_anchor">
+                                <div class="imageCircleText" id="imageCircleText4">?</div>
+                            </div>
+                        </div>
+                        <div class="imageCircle imageCircle5">
+                            <img src="./images/nothing.png" id="imageCircle5">
+                            <div class="relative_anchor">
+                                <div class="imageCircleText" id="imageCircleText5">?</div>
+                            </div>
+                        </div>
+                        <div class="imageCircle imageCircle6" id="bonusImageCircle">
+                            <img src="./images/nothing.png" id="imageCircle6">
+                            <div class="relative_anchor">
+                                <div class="imageCircleText" id="imageCircleText6">?</div>
+                            </div>
+                        </div>
+                        <p id="describerText"><span style="color:#FF826E;">John</span> is describing!</p>
                     </div>
+                    <div class="answerBox" id="answerBox"></div>
+                </div>
                 <!--Selection Overlay-->
                 <div class="relative_anchor">
                     <div id="selectionOverlay" class="overlay">
-                        <div class= "imageChoice1 standard_shadow"></div>
-                        <div class= "imageChoice2 standard_shadow"></div>
-                        <div class= "youHave5Sec standard_shadow"><div>You have 5 sec to choose an image.</div></div>
+                        <div class= "imageChoice1 standard_shadow imageChoice" id="selection1">
+                            <div class="relative_anchor"><div class="selectionText" id="selectionText1">+20</div></div>
+                        </div>
+                        <div class= "imageChoice2 standard_shadow imageChoice" id="selection2">
+                            <div class="relative_anchor"><div class="selectionText" id="selectionText2">+20</div></div>
+                        </div>
+                        <div class= "youHave5Sec standard_shadow"><div>You have <span id="selectionTime">5</span> seconds to choose an image.</div></div>
                     </div> 
                 </div>
                 <!--Lobby Window-->
@@ -135,10 +212,10 @@
                     <div class="dashboard_container flex">
                         <div class="team_select_container standard_shadow flex">
                             <div class="relative_anchor">
-                                <div class="edit_name_button"><img src="./images/penicon1.png"></div>
+                                <div class="edit_name_button" id="editNameButton1"><img src="./images/penicon1.png"></div>
                             </div>
                             <div class="team_select_title team1title">
-                                Team 1
+                                <input id="teamNameInput1" class="team_name_input_field" value="Team 1" maxlength="13" readonly></input>
                             </div>
                             <div class="name_pool flex" id="namePool1">
                             </div>
@@ -157,10 +234,10 @@
                         </div>
                         <div class="team_select_container standard_shadow flex">
                             <div class="relative_anchor">
-                                <div class="edit_name_button"><img src="./images/penicon2.png"></div>
+                                <div class="edit_name_button" id="editNameButton2"><img src="./images/penicon2.png"></div>
                             </div>
                             <div class="team_select_title team2title">
-                                Team 2
+                                <input id="teamNameInput2" class="team_name_input_field" value="Team 2" maxlength="13" readonly></input>
                             </div>
                             <div class="name_pool flex" id="namePool2">
                             </div>
