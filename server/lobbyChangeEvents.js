@@ -34,7 +34,7 @@ module.exports = (io, socket, gameLobbies) => {
 
     function joinLobby(data){
         socket.data.username = data.username;
-        let lobbyId = data.lobbyId;
+        let lobbyId = data.lobbyId.toUpperCase();
         if(containsSpecialChars(socket.data.username)){
             socket.emit("serverMessage", {head: "Error!", message: "You can't use special characters in your name!"});
             console.log(socket.id + " tried to use special characters!");
