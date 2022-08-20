@@ -48,6 +48,7 @@ module.exports = (io, socket, gameLobbies) => {
             return false;
         }
         if(activeRooms.includes(data.lobbyId) == false){
+            console.log("lobbyId" + data.lobbyId)
             socket.emit("serverMessage", {head: "Error!", message: "This room doesn't exist!"});
             console.log(socket.id + " tried to join a nonexistent room");
             return false;
