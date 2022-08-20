@@ -74,13 +74,12 @@ module.exports = (io, socket, gameLobbies) => {
             socket.emit("serverMessage", {head: "Error!", message: "You are not the host of this session."})
             return;
         }
-        if(lobby.teamData["A"].players.length < 2 && lobby.teamData["B"].players.length < 2){
+        if(lobby.teamData["A"].players.length < 2 || lobby.teamData["B"].players.length < 2){
             socket.emit("serverMessage", {head: "Error!", message: "Both teams must have at least two players!"})
             return;
         }
         lobby.startGame();
         lobby.loadTurn();
-        io.to(socket.data.currentLobby).emit("preload_request", {images: lobby.getImagesToPreload()});
         console.log("game started!")
         io.to(socket.data.currentLobby).emit("game_update", {currentState: lobby.toJSON()});
     }
@@ -112,6 +111,30 @@ module.exports = (io, socket, gameLobbies) => {
             io.to(socket.data.currentLobby).emit("game_update", {currentState: lobby.toJSON()})
         }
     }
+    function giveUp(){
+        if(socket.data.currentLobby == "nolobby"){
+            return
+        }
+        let lobby = gameLobbies[socket.data.currentLobby];
+        if(socket.id != lobby.getCurrentDescriberID()){
+            socket.emit("serverMessage", {head: "Error!", message: "You are not the describer!"})
+            return;
+        }
+        lobby.giveUp();
+        io.to(socket.data.currentLobby).emit("game_update", {currentState: lobby.toJSON()})
+    }
+    function nextQuestion(){
+        if(socket.data.currentLobby == "nolobby"){
+            return
+        }
+        let lobby = gameLobbies[socket.data.currentLobby];
+        if(socket.id != lobby.getCurrentDescriberID()){
+            socket.emit("serverMessage", {head: "Error!", message: "You are not the describer!"})
+            return;
+        }
+        lobby.nextQuestion();
+        io.to(socket.data.currentLobby).emit("game_update", {currentState: lobby.toJSON()})
+    }
     function submitGuess(data){
         if(socket.data.currentLobby == "nolobby"){
             return
@@ -137,5 +160,7 @@ module.exports = (io, socket, gameLobbies) => {
     socket.on("game_start_request", startGame)
     socket.on("turn_start_request", startTurn)
     socket.on("change_selection", changeSelection)
+    socket.on("give_up", giveUp)
+    socket.on("next_question", nextQuestion)
     socket.on("submit_guess", submitGuess)
 }

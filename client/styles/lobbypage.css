@@ -4,6 +4,36 @@
     display: none;
 }
 
+.lobby_id_container {
+    height: 15rem;
+    position: absolute;
+    width: 500rem;
+    text-align: center;
+}
+
+#lobbyIdDisplay {
+    padding-left: 6rem;
+    padding-right: 6rem;
+    background: white;
+    color: #7879F1;
+    height: 15rem;
+    font-size: 12rem;
+    line-height: 17rem;
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
+    border-bottom-left-radius: 9rem;
+    border-bottom-right-radius: 9rem;
+    cursor: pointer;
+}
+
+#lobbyIdDisplay:active {
+    transform: scale(1.05);
+}
+
+#copiedToClipboardMessage {
+    display: none;
+}
+
 .rules_container {
     width: 270rem;
     height: 120rem;

@@ -3,7 +3,7 @@ window.onload = () => {
     createCacheElement();
     loadAllResources();
     activateEventHandlers();
-    switchToPage("logIn");
+    switchToPage("none");
     //TESTING TEST
     //$("#selectionOverlay").css('display', 'block');
     //-------------

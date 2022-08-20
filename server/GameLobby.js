@@ -2,25 +2,28 @@ const questionData = require("./questionData")
 const Utility = require("./utility");
 const utility = new Utility;
 class GameLobby {
-    constructor(){
+    constructor(lobbyId){
         this.playerSockets = {};
         this.hostId = "";
+        this.lobbyId = lobbyId;
         this.teamData = {
             A: {
                 name: "Team A",
                 points: 0,
                 describerPointer: 0,
                 players: [],
+                pointScorers: {},
             },
             B: {
                 name: "Team B",
                 points: 0,
                 describerPointer: 0,
                 players: [],
+                pointScorers: {},
             }
         };
         this.bannedPlayersIPs = [];
-        this.state = "Lobby"; //Turn Start, Choosing Image, In Round, Game Over
+        this.state = "Lobby"; //Turn Start, Choosing Image, In Round, Game Over, Transition
         this.stateStartTimestamp = Date.now();
         this.turnData = {
             currentTurn: 0,
@@ -33,7 +36,16 @@ class GameLobby {
             currentQuestionIndex: 0,
             questions: [],
         };
-        this.questionPool = JSON.parse(JSON.stringify(questionData));
+        this.questionPool = {};
+        this.generateQuestionPool();
+
+        //JSON.parse(JSON.stringify(user1))
+    }
+    generateQuestionPool(){
+        this.questionPool = {easy: [], medium: [], hard: []};
+        for(let i = 0; i < questionData.easy.length; i++){this.questionPool.easy.push(i)}
+        for(let i = 0; i < questionData.medium.length; i++){this.questionPool.medium.push(i)}
+        for(let i = 0; i < questionData.hard.length; i++){this.questionPool.hard.push(i)}
     }
     startGame(){
         this.state = "Turn Start";
@@ -69,16 +81,38 @@ class GameLobby {
         if(this.state == 'In Round'){
             if(Date.now() - this.stateStartTimestamp > this.turnData.timeThisRound * 1000){
                 this.turnData.timeThisRound = 15;
-                this.nextRound();
+                this.nextRound(false);
                 this.updateStateStartTimestamp()
                 this.sendUpdateToAllSockets()
             }
         }
+        if(this.state == 'Transition'){
+            if(Date.now() - this.stateStartTimestamp > 4000){
+                this.nextTurn();
+            }
+        }
+        if(this.state != 'Game Over'){
+            if(this.teamData.A.points >= 200 || this.teamData.B.points >= 200 || this.turnData.currentTurn >= 7){
+                this.state = 'Game Over';
+                this.sendUpdateToAllSockets();
+            }
+        }
     }
     giveUp(){
-        if(this.state == 'In Round'){
+        let currentQuestion = this.turnData.questions[this.turnData.currentRound][this.turnData.currentQuestionIndex]
+        if(this.state == 'In Round' && currentQuestion.answered == 'no'){
+            this.updateStateStartTimestamp()
             this.turnData.timeThisRound = 15;
-            this.nextRound();
+            this.nextRound(false);
+        }
+    }
+    nextQuestion(){
+        let currentQuestion = this.turnData.questions[this.turnData.currentRound][this.turnData.currentQuestionIndex]
+        if(this.state == 'In Round' && (currentQuestion.answered == 'yes' || currentQuestion.answered == 'half')){
+            let extraTime = Math.floor(this.turnData.timeThisRound - ((Date.now() - this.stateStartTimestamp)/1000))
+            this.turnData.timeThisRound = 15 + extraTime;
+            this.updateStateStartTimestamp()
+            this.nextRound(true, (5 + extraTime));
         }
     }
     sendUpdateToAllSockets(){
@@ -86,6 +120,14 @@ class GameLobby {
         for (const key in this.playerSockets) {
             if (this.playerSockets.hasOwnProperty(key)) {
                 this.playerSockets[key].emit("game_update", {currentState: currentState})
+            }
+        }
+    }
+    sendPreloadToAllSockets(){
+        let imagesToPreload = this.getImagesToPreload();
+        for (const key in this.playerSockets) {
+            if (this.playerSockets.hasOwnProperty(key)) {
+                this.playerSockets[key].emit("preload_request", {images: imagesToPreload})
             }
         }
     }
@@ -101,7 +143,7 @@ class GameLobby {
 
                 let randomB = Math.random();
                 if(randomB > 0.8) randomB = "hard";
-                else if(randomB > 0.3) randomB = "medium"
+                else if(randomB > 0.3) randomB = "medium" 
                 else randomB = "easy";
                 
                 //90% chance to get different difficulties for the two choices
@@ -115,20 +157,33 @@ class GameLobby {
             }
         }
         this.turnData.questions = [];
-        let pointTable = {'easy': 10, 'medium': 20, 'hard': 30}
+        let pointTable = {'easy': 12, 'medium': 16, 'hard': 20}
         for(let i = 0; i < 6; i++){
-            let questionTypeA = this.turnData.questionPresentationOrder[i][0]
-            let questionTypeB = this.turnData.questionPresentationOrder[i][1]
+            let questionTypeA = this.turnData.questionPresentationOrder[i][0];
+            let questionTypeB = this.turnData.questionPresentationOrder[i][1];
+            
+            if(this.questionPool.easy.length <= 2 || this.questionPool.medium.length <= 2 || this.questionPool.hard.length <= 2){
+                this.generateQuestionPool();
+            }
 
-            let questionA = this.questionPool[questionTypeA].splice(Math.floor(Math.random()*this.questionPool[questionTypeA].length),1)[0]
+            //console.log("this.questionPool[questionTypeA]" + this.questionPool[questionTypeA])
+            //console.log("")
+            //console.log(this.questionPool[questionTypeA].splice(Math.floor(Math.random()*this.questionPool[questionTypeA].length),1))
+            let questionA = JSON.parse(JSON.stringify(questionData[questionTypeA][Number(this.questionPool[questionTypeA].splice(Math.floor(Math.random()*this.questionPool[questionTypeA].length),1)[0])]))
             questionA.answered = 'no';
             questionA.pointValue = pointTable[questionTypeA]
-            let questionB = this.questionPool[questionTypeB].splice(Math.floor(Math.random()*this.questionPool[questionTypeB].length),1)[0]
+            let questionB = JSON.parse(JSON.stringify(questionData[questionTypeB][Number(this.questionPool[questionTypeB].splice(Math.floor(Math.random()*this.questionPool[questionTypeB].length),1)[0])]))
             questionB.answered = 'no';
             questionB.pointValue = pointTable[questionTypeB]
+
+            if(i==5){
+                questionA.pointValue *= 2;
+                questionB.pointValue *= 2;
+            }
             this.turnData.questions.push([questionA, questionB])
         }
-        console.log('turn loaded')
+        this.sendPreloadToAllSockets()
+        //console.log('turn loaded')
     }
     getImagesToPreload(){
         let images = [];
@@ -139,18 +194,60 @@ class GameLobby {
         return images;
     }
     startRound(){
+        this.updateStateStartTimestamp();
         this.state = 'Choosing Image';
     }
-    nextRound(){
-        this.turnData.currentRound++;
+    nextTurn(){
+        this.state = "Turn Start";
+        this.turnData.currentTeam = (this.turnData.currentTeam == 'A') ? 'B' : 'A';
+        this.turnData.currentRound = 0;
+        this.turnData.currentQuestion = 0;
+        this.turnData.timeThisRound = 15;
         this.turnData.bestGuess = '';
         this.turnData.guesses = {};
         this.turnData.currentQuestionIndex = 0;
-        this.state = 'Choosing Image';
+        this.turnData.currentTurn++;
+        this.nextDescriber();
+        this.updateStateStartTimestamp();
+        this.loadTurn();
+        this.sendUpdateToAllSockets();
+    }
+    nextRound(haveExtraTime, extraTime){
+        this.turnData.currentRound++;
+        if(this.turnData.currentRound > 5){
+            this.state = "Transition";
+            this.turnData.currentRound = 6;
+        }
+        else if(this.turnData.currentRound == 5 && !haveExtraTime){
+            this.state = "Transition";
+            this.turnData.currentRound = 5;
+        }
+        else if(this.turnData.currentRound == 5 && haveExtraTime){
+            this.turnData.timeThisRound = extraTime;
+            this.turnData.bestGuess = '';
+            this.turnData.guesses = {};
+            this.turnData.currentQuestionIndex = 0;
+            this.updateStateStartTimestamp();
+            this.state = 'Choosing Image';
+        }
+        else {
+            this.turnData.bestGuess = '';
+            this.turnData.guesses = {};
+            this.turnData.currentQuestionIndex = 0;
+            this.updateStateStartTimestamp();
+            this.state = 'Choosing Image';
+        }
     }
     getCurrentDescriberID(){
         let team = this.teamData[this.turnData.currentTeam];
         return team.players[team.describerPointer];
+    }
+    nextDescriber(){
+        let team = this.teamData[this.turnData.currentTeam];
+        team.describerPointer++;
+        if(!team.players[team.describerPointer]){
+            team.describerPointer = 0;
+        }
     }
     isGuesser(id){
         let team = this.teamData[this.turnData.currentTeam];
@@ -177,10 +274,11 @@ class GameLobby {
         guessCorrectness = utility.levenshteinDistance(guessString, answerString);
         if(utility.levenshteinDistance(this.turnData.bestGuess.toLowerCase().replace(/(^the )/gi, ""), answerString) != 0){
             //IMPORTANT LINE
-            if(guessCorrectness < answerString.length/2 - 1){
+            if(guessCorrectness < answerString.length/2){
                 this.turnData.bestGuess = guess;
                 if(currentQuestion.answered == 'no'){
                     this.teamData[this.turnData.currentTeam].points += currentQuestion.pointValue/2;
+                    this.recordPoints(this.turnData.currentTeam, id, currentQuestion.pointValue/2)
                 }
                 currentQuestion.answered = 'half';
             }
@@ -188,12 +286,23 @@ class GameLobby {
                 this.turnData.bestGuess = guess;
                 if(currentQuestion.answered == 'half'){
                     this.teamData[this.turnData.currentTeam].points += currentQuestion.pointValue/2;
+                    this.recordPoints(this.turnData.currentTeam, id, currentQuestion.pointValue/2)
                 }
                 else {
                     this.teamData[this.turnData.currentTeam].points += currentQuestion.pointValue;
+                    this.recordPoints(this.turnData.currentTeam, id, currentQuestion.pointValue)
                 }
                 currentQuestion.answered = 'yes';
             }
+        }
+    }
+    recordPoints(team, playerId, points){
+        let name = this.playerSockets[playerId].data.username;
+        if(this.teamData[team].pointScorers[name] != undefined){
+            this.teamData[team].pointScorers[name] += points;
+        }
+        else {
+            this.teamData[team].pointScorers[name] = points;
         }
     }
     shuffleTeams(){
@@ -280,6 +389,7 @@ class GameLobby {
         return {
             playerSockets: playerSocketsJSON,
             teamData: this.teamData,
+            lobbyId: this.lobbyId,
             turnData: this.turnData,
             hostId: this.hostId,
             state: this.state,

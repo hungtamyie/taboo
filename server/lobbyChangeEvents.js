@@ -15,14 +15,14 @@ module.exports = (io, socket, gameLobbies) => {
             return false;
         }
 
-        //lobbyId = generateNewLobbyId();
+        lobbyId = generateNewLobbyId();
+        //lobbyId = "TESTA";
         //NOT RANDOMIZING FOR TESTING PURPOSES DELETE LATER DELETE DELETE DELETE
 
         //Connect socket on server
-        lobbyId = "TESTA";
         socket.join(lobbyId);
         socket.data.currentLobby = (lobbyId);
-        gameLobbies[lobbyId] = new GameLobby();
+        gameLobbies[lobbyId] = new GameLobby(lobbyId);
         gameLobbies[lobbyId].addPlayerSocket(socket);
         gameLobbies[lobbyId].setHostId(socket.id);
         console.log(socket.id + " created the lobby " + lobbyId);
@@ -34,6 +34,7 @@ module.exports = (io, socket, gameLobbies) => {
 
     function joinLobby(data){
         socket.data.username = data.username;
+        let lobbyId = data.lobbyId;
         if(containsSpecialChars(socket.data.username)){
             socket.emit("serverMessage", {head: "Error!", message: "You can't use special characters in your name!"});
             console.log(socket.id + " tried to use special characters!");
@@ -51,9 +52,14 @@ module.exports = (io, socket, gameLobbies) => {
             console.log(socket.id + " tried to join a nonexistent room");
             return false;
         }
-        if(gameLobbies[lobbyId].playerIsBanned(socket)){
+        if(gameLobbies[data.lobbyId].playerIsBanned(socket)){
             socket.emit("serverMessage", {head: "Error!", message: "You are banned from this lobby."});
             console.log(socket.id + " tried to join a banned room");
+            return false;
+        }
+        if(gameLobbies[data.lobbyId].state != 'Lobby'){
+            socket.emit("serverMessage", {head: "Error!", message: "This game has already started."});
+            console.log(socket.id + " tried to join a already started game");
             return false;
         }
         
@@ -67,16 +73,15 @@ module.exports = (io, socket, gameLobbies) => {
         io.to(socket.data.currentLobby).emit("game_update", {currentState: gameLobbies[socket.data.currentLobby].toJSON()});
 
         //TESTING TEESTING 
-        let lobby = gameLobbies[lobbyId]
+        /*let lobby = gameLobbies[lobbyId]
         console.log(utility.objLength(lobby.playerSockets))
         console.log('testing')
         if(utility.objLength(lobby.playerSockets) > 3){
             lobby.shuffleTeams();
             lobby.startGame();
             lobby.loadTurn();
-            io.to(socket.data.currentLobby).emit("preload_request", {images: lobby.getImagesToPreload()});
             io.to(socket.data.currentLobby).emit("game_update", {currentState: lobby.toJSON()});
-        }
+        }*/
 
         //TESTING TESTING
     }
@@ -85,6 +90,7 @@ module.exports = (io, socket, gameLobbies) => {
         if(socket.data.currentLobby == "nolobby"){
             socket.emit("serverMessage", {head: "Error!", message: "You are not in a lobby."});
             console.log(socket.id + " tried to leave a lobby without being in one.");
+            return false;
         }
         socket.leave(socket.data.currentLobby);
         let currentLobby = socket.data.currentLobby;
@@ -92,6 +98,7 @@ module.exports = (io, socket, gameLobbies) => {
         socket.data.currentLobby = "nolobby";
         io.to(currentLobby).emit("game_update", {currentState: gameLobbies[currentLobby].toJSON()});
         console.log(socket.id + " left a lobby.");
+        socket.emit("lobby_update", {updateType: 'lobby_left'});
     }
 
     function getLobbyData(){
@@ -105,7 +112,7 @@ module.exports = (io, socket, gameLobbies) => {
     }
 
     function generateNewLobbyId(){
-        var length = 4;
+        var length = 5;
         var lobbyId           = '';
         var characters       = 'BCDFGHJKLMNPQRSTVWXYZ';
         var activeRooms = getActiveRooms();

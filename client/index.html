@@ -22,6 +22,7 @@
         <link rel="stylesheet" href="styles/bouncing.css">
         <link rel="stylesheet" href="styles/gamepage.css">
         <link rel="stylesheet" href="styles/lobbypage.css">
+        <link rel="stylesheet" href="styles/endscreen.css">
         <title>Taboo!</title>
     </head>
     <body>
@@ -49,9 +50,9 @@
                 <!--Log in window-->
                 <div id="logInWindow">
                     <div class="language_bar">
-                        <div class="language_button">en</div>
+                        <!--<div class="language_button">en</div>
                         <div class="language_button">fr</div>
-                        <div class="language_button">esp</div>
+                        <div class="language_button">esp</div>-->
                     </div>
                     <br>
                     <div class="log_in_center_container">
@@ -118,7 +119,7 @@
                                 <div id="describeNextButton">
                                     <span>Next</span>
                                     <div class="relative_anchor">
-                                        <div class="extra_seconds">+5 Extra Seconds</div>
+                                        <div id="extraSeconds" class="extra_seconds">+5 Extra Seconds</div>
                                     </div></div>
                             </div>
                             <div id="startInputBox">
@@ -128,31 +129,31 @@
                     </div>
                     <div class="turn" id="turnTitle">Turn 0</div>
                     <div class="imageGottenBox standard_shadow">
-                        <div class="imageCircle imageCircle1">
+                        <div id='circle1' class="imageCircle imageCircle1">
                             <img src="./images/nothing.png" id="imageCircle1">
                             <div class="relative_anchor">
                                 <div class="imageCircleText" id="imageCircleText1">?</div>
                             </div>
                         </div>
-                        <div class="imageCircle imageCircle2">
+                        <div id='circle2' class="imageCircle imageCircle2">
                             <img src="./images/nothing.png" id="imageCircle2">
                             <div class="relative_anchor">
                                 <div class="imageCircleText" id="imageCircleText2">?</div>
                             </div>
                         </div>
-                        <div class="imageCircle imageCircle3">
+                        <div id='circle3' class="imageCircle imageCircle3">
                             <img src="./images/nothing.png" id="imageCircle3">
                             <div class="relative_anchor">
                                 <div class="imageCircleText" id="imageCircleText3">?</div>
                             </div>
                         </div>
-                        <div class="imageCircle imageCircle4">
+                        <div id='circle4' class="imageCircle imageCircle4">
                             <img src="./images/nothing.png" id="imageCircle4">
                             <div class="relative_anchor">
                                 <div class="imageCircleText" id="imageCircleText4">?</div>
                             </div>
                         </div>
-                        <div class="imageCircle imageCircle5">
+                        <div id='circle5' class="imageCircle imageCircle5">
                             <img src="./images/nothing.png" id="imageCircle5">
                             <div class="relative_anchor">
                                 <div class="imageCircleText" id="imageCircleText5">?</div>
@@ -182,6 +183,13 @@
                 </div>
                 <!--Lobby Window-->
                 <div id="lobbyWindow">
+                    <div class="relative_anchor">
+                        <div class="lobby_id_container">
+                            <div id="lobbyIdDisplay">ABCDE</div>
+                            <br>
+                            <div id="copiedToClipboardMessage">Copied to clipboard!</div>
+                        </div>
+                    </div>
                     <div class="rules_container flex">
                         <div class="taylor_swift_container">
                             <img src="./images/taylorswift.png" class="taylor_swift">
@@ -192,20 +200,21 @@
                         <div class="rules_text_container">
                             <span class="rules_text_title">Rules</span><br>
                             <div class="rules_text">
-                                At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas 
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                                Welcome to Taboo!
+                                <br>
+                                This is a fast-paced team guessing game!
                                 <br><br>
-                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
-                                voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+                                You need at least 4 players to play. Your goal is to reach 250 points as fast as possible.
                                 <br><br>
-                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas 
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                                Each turn, a team will have one player selected to be describer. He will be presented with images which he must describe to his teammates. The game is called Taboo for a reason! 
+                                <i>The describer must not say the word he is describing.</i> For example, he can't say "cheese" to describe cheese. In the same vein, he can't say "a wall in china" to describe the
+                                 Great Wall of China. 
                                 <br><br>
-                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
-                                voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+                                Guessers will earn full points for their team if the word is spelled correctly and half points if it is spelled incorrectly.
                                 <br><br>
-                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                Describing words quickly will gain extra time in the next round! If you have extra time remaining by the end of 5 rounds, a secret bonus round worth double points is unlocked. 
+                                <br><br>
+                                Good luck, and remember to have fun!
                             </div>
                         </div>
                     </div>
@@ -244,6 +253,55 @@
                             <div class="join_team_button standard_shadow" id="joinTeam2"><div>Join</div></div>
                         </div>
                     </div>
+                </div>
+                <!--End Screen Window-->
+                <div id="endWindow">
+                    <div class="relative_anchor">
+                        <div class="confetti_container">
+                            <div class="sliding_confetti"></div>
+                        </div>
+                    </div>
+                    <div class="end_container">
+                        <div class="relative_anchor green_splash_anchor">
+                            <img class="green_splash" src="./images/greenSplash.png">
+                        </div>
+                        <div id="winTitle">Good game!</div>
+                        <br>
+                        <div class="stat_container flex">
+                            <div class="stat_box stat_a">
+                                <div class="stat_box_title text_a_color" id="statBoxTitleA">Team 1</div>
+                                <br>
+                                <div class="final_score" id="finalScoreA">100</div>
+                                <table class="stat_table table_a" id="statTableA">
+                                    <tr>
+                                        <td>John</td>
+                                        <td>15 pts</td>
+                                    </tr>
+                                    <tr>
+                                        <td>John</td>
+                                        <td>125 pts</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="stat_box stat_b">
+                                <div class="stat_box_title text_b_color" id="statBoxTitleB">Team 2</div>
+                                <br>
+                                <div class="final_score" id="finalScoreB">100</div>
+                                <table class="stat_table table_b" id="statTableB">
+                                    <tr>
+                                        <td>InvincibleMei123</td>
+                                        <td>15 pts</td>
+                                    </tr>
+                                    <tr>
+                                        <td>John</td>
+                                        <td>15 pts</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div id="homeButton">Home</div>
                 </div>
             </div>
         </div>

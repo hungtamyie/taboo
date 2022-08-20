@@ -10,6 +10,11 @@ app.get('/', (req, res) => {
 });
 app.use(express.static(path.join(__dirname, '..', '/client')))
 
+const cors = require('cors');
+app.use(cors({
+    origin: '*'
+}));
+
 serv.listen(port, (error)=>{
     if(error) {
         console.log('Something went wrong', error)

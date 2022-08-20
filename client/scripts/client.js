@@ -22,7 +22,6 @@ socket.on("game_update", function(data){
     redrawScreen(data.currentState);
 });
 socket.on("preload_request", function(data){
-    console.log(data)
     preloadImageSet(data.images);
 });
 
@@ -49,9 +48,7 @@ function leaveLobby(){
 }
 
 function kickPlayer(playerId){
-    console.log("I am " + socket.id + " and I want to kick " + playerId)
     socket.emit("lobby_kick_request", {playerId: playerId});
-    console.log("kicking player " + playerId)
 }
 
 function setPlayerHost(playerId){
@@ -59,7 +56,6 @@ function setPlayerHost(playerId){
 }
 
 function joinTeam(team){
-    console.log("trying to join team")
     socket.emit("team_join_request", {team: team});
 }
 

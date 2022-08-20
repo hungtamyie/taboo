@@ -1,4 +1,5 @@
 var waitingForServer = false;
+var canCopy = true;
 
 function activateEventHandlers(){
     $("#createNewLobbyButton").on("click", function() {
@@ -53,6 +54,12 @@ function activateEventHandlers(){
     $("#selection2").on("click", function(){
         updateSelection("B");
     })
+    $("#describeGiveUpButton").on("click", function(){
+        giveUp();
+    })
+    $("#describeNextButton").on("click", function(){
+        nextQuestion();
+    })
     $("#guessInputBox").on('keypress',function(e) {
         let guess = $("#guessInputBox").val().trim()
         if(e.which == 13 && guess != '') {
@@ -60,6 +67,21 @@ function activateEventHandlers(){
             $("#guessInputBox").val('');
         }
     });
+    $("#homeButton").on('click', function(){
+        goHome();
+    })
+
+    $("#lobbyIdDisplay").on('click', function(){
+        if(canCopy){
+            canCopy = false;
+            navigator.clipboard.writeText($("#lobbyIdDisplay").html())
+            $("#copiedToClipboardMessage").fadeIn({duration: 10, queue: false, complete: function(){
+                $("#copiedToClipboardMessage").fadeOut({duration: 1500, queue: false, complete: function(){
+                    canCopy = true;
+                }});
+            }});
+        }
+    })
 
 
     //FOR TESTING PURPOSES
@@ -67,10 +89,10 @@ function activateEventHandlers(){
     var randomNamesB = ["Panda", "Cat", "Dog", "Lili", "Parrot", "Pig", "Horse", "Bird"]
     randomName = randomNamesA[Math.floor(Math.random()*randomNamesA.length)] + randomNamesB[Math.floor(Math.random()*randomNamesB.length)];
     //$("#usernameInput").on("click", function() {
-        $("#usernameInput").val(randomName)
+        //$("#usernameInput").val(randomName)
     //});
     //$("#joinCodeInput").on("click", function() {
-        window.setTimeout(function(){$("#joinCodeInput").val("TESTA")}, 5)
+        //window.setTimeout(function(){$("#joinCodeInput").val("TESTA")}, 5)
     //});
     //====================
 
@@ -125,11 +147,9 @@ function uiServerMessage(data){
     $("#server_message").html('<span style="color: #FFC42E; font-size: 11rem; line-height: 5rem;">' + data.head + '</span><br>' + data.message);
     $("#server_message").animate({opacity: 1},{duration: 500, complete: ()=>{
         window.setTimeout(()=>{
-            console.log("animating")
             $("#server_message").animate({opacity: 0},{duration: 500});
         },1000)
     }})
-    console.log(data);
 }
 
 //Returns false if username is valid. Returns error message if username is invalid
@@ -150,12 +170,13 @@ function switchToPage(page){
     $("#logInWindow").css("display", "none");
     $("#lobbyWindow").css("display", "none");
     $("#gameWindow").css("display", "none");
+    $("#endWindow").css("display", "none");
     $("#topContainer").css("display", "none");
     $("#joinCodeInput").val("");
     $("#loadingMessage").html("");
 
     $("#" + page + "Window").css("display", "block");
-    if(page == "game" || page == "lobby"){
+    if(page == "game" || page == "lobby" || page=="end"){
         $("#topContainer").css("display", "block");
     }
 }
@@ -230,4 +251,16 @@ function updateSelection(selection){
 
 function sendGuess(guess){
     socket.emit("submit_guess", {guess: guess});
+}
+
+function giveUp(){
+    socket.emit("give_up", {giveUp: "yes"});
+}
+
+function nextQuestion(){
+    socket.emit("next_question", {next_question: "yes"});
+}
+
+function goHome(){
+    socket.emit("lobby_leave_request", {leave: "yes"});
 }
