@@ -47,25 +47,25 @@ module.exports = (io, socket, gameLobbies) => {
             console.log(socket.id + " tried and failed to join a lobby");
             return false;
         }
-        if(activeRooms.includes(data.lobbyId) == false){
-            console.log("lobbyId" + data.lobbyId)
+        if(activeRooms.includes(lobbyId) == false){
+            console.log("lobbyId" + lobbyId)
             socket.emit("serverMessage", {head: "Error!", message: "This room doesn't exist!"});
             console.log(socket.id + " tried to join a nonexistent room");
             return false;
         }
-        if(gameLobbies[data.lobbyId].playerIsBanned(socket)){
+        if(gameLobbies[lobbyId].playerIsBanned(socket)){
             socket.emit("serverMessage", {head: "Error!", message: "You are banned from this lobby."});
             console.log(socket.id + " tried to join a banned room");
             return false;
         }
-        if(gameLobbies[data.lobbyId].state != 'Lobby'){
+        if(gameLobbies[lobbyId].state != 'Lobby'){
             socket.emit("serverMessage", {head: "Error!", message: "This game has already started."});
             console.log(socket.id + " tried to join a already started game");
             return false;
         }
         
-        socket.join(data.lobbyId);
-        socket.data.currentLobby = (data.lobbyId);
+        socket.join(lobbyId);
+        socket.data.currentLobby = (lobbyId);
         gameLobbies[lobbyId].addPlayerSocket(socket);
         console.log(socket.id + " joined the lobby " + lobbyId);
 
