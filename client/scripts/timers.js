@@ -6,10 +6,10 @@ function startImageChoiceTimer(timestamp){
         imageChoiceTimer = "none";
     }
     if(imageChoiceTimer == "none"){
+        lastImageChoiceTimestamp = timestamp;
+        timestamp = Date.now();
         imageChoiceTimer = window.setInterval(()=>{
-            lastImageChoiceTimestamp = timestamp;
-            startTimestamp = Date.now();
-            let currentTime = new Date().getTime();
+            let currentTime = Date.now();
             let timeLeft = 5 - Math.floor((currentTime-timestamp)/1000);
             let percentage = 1.2 - Math.log10(((currentTime-timestamp)/1000 - Math.floor((currentTime-timestamp)/1000))*2);
             if(percentage > 3){percentage = 3}
@@ -52,7 +52,7 @@ function startRoundTimer(startTimestamp, duration){
         startTimestamp = Date.now();
         roundTimer = window.setInterval(()=>{
 
-            let currentTime = new Date().getTime();
+            let currentTime = Date.now();
             let timeLeft = duration - ((currentTime-startTimestamp)/1000);
             $("#extraSeconds").html('+' + Math.round(timeLeft) + ' Extra Seconds');
             
