@@ -162,8 +162,8 @@ function redrawGameScreen(game){
             if(amDescriber){
                 $("#selectionOverlay").css('display', 'block');
                 let potentialChoices = game.turnData.questions[game.turnData.currentRound];
-                //startImageChoiceTimer(game.stateStartTimestamp);
-                startImageChoiceTimer(Date.now());
+                startImageChoiceTimer(game.stateStartTimestamp);
+                //startImageChoiceTimer(Date.now());
                 $("#selection1").css('background-image', 'url(' + potentialChoices[0].url + ')');
                 $("#selectionText1").html('+' + potentialChoices[0].pointValue)
                 $("#selection2").css('background-image', 'url(' + potentialChoices[1].url + ')');
@@ -200,8 +200,8 @@ function redrawGameScreen(game){
         }
     }
     if(game.state == 'In Round'){
-        //startRoundTimer(game.stateStartTimestamp, game.turnData.timeThisRound)
-        startRoundTimer(Date.now(), game.turnData.timeThisRound);
+        startRoundTimer(game.stateStartTimestamp, game.turnData.timeThisRound)
+        //startRoundTimer(Date.now(), game.turnData.timeThisRound);
         $("#selectionOverlay").css('display', 'none');
         $("#startInputBox").css('display', 'none');
         $("#timeBarContainer").css('visibility', 'visible');

@@ -8,6 +8,7 @@ function startImageChoiceTimer(timestamp){
     if(imageChoiceTimer == "none"){
         imageChoiceTimer = window.setInterval(()=>{
             lastImageChoiceTimestamp = timestamp;
+            startTimestamp = Date.now();
             let currentTime = new Date().getTime();
             let timeLeft = 5 - Math.floor((currentTime-timestamp)/1000);
             let percentage = 1.2 - Math.log10(((currentTime-timestamp)/1000 - Math.floor((currentTime-timestamp)/1000))*2);
@@ -48,6 +49,7 @@ function startRoundTimer(startTimestamp, duration){
     }
     if(roundTimer == "none"){
         lastRoundStartTimestamp = startTimestamp;
+        startTimestamp = Date.now();
         roundTimer = window.setInterval(()=>{
 
             let currentTime = new Date().getTime();
