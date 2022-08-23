@@ -32,6 +32,10 @@
 
 #copiedToClipboardMessage {
     display: none;
+    color: white;
+    font-size: 6rem;
+    position: relative;
+    top: -5rem;
 }
 
 .rules_container {

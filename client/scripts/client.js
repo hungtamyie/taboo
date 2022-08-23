@@ -25,6 +25,15 @@ socket.on("preload_request", function(data){
     preloadImageSet(data.images);
 });
 
+socket.on("game_event", function(data){
+    console.log(data);
+    handleGameEvent(data.event);
+});
+
+socket.on("chat_message", function(data){
+    newChatMessage(data);
+});
+
 
 //SENDING
 socket.onclose = function(){

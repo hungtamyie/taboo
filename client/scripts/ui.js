@@ -1,12 +1,20 @@
 var waitingForServer = false;
 var canCopy = true;
-
+var draggingMusic = false;
+var draggingSFX = false;
 function activateEventHandlers(){
     $("#createNewLobbyButton").on("click", function() {
         attemptLobbyCreation();
     });
     $("#joinLobbyButton").on("click", function() {
         attemptJoinLobby();
+    });
+    $("#creditsWindow").css('display', 'none');
+    $("#closeCreditsButton").on("click", function() {
+        $("#creditsWindow").fadeOut();
+    });
+    $("#creditsButton").on("click", function() {
+        $("#creditsWindow").fadeIn();
     });
     $("#joinTeam1").on("click", function() {
         attemptJoinTeam("A");
@@ -83,16 +91,138 @@ function activateEventHandlers(){
         }
     })
 
+    $("#musicButton").on('click', function(){
+        playSound('click')
+        if(musicMuted){
+            musicMuted = false;
+            musicVolume = lastMusicVolume;
+            $("#puzzleDreamAudio").stop();
+            $("#musicButton").css("text-decoration", "none");
+            setMusicBar(musicVolume);
+        }
+        else {
+            musicMuted = true;
+            musicVolume = 0;
+            $("#puzzleDreamAudio").stop();
+            $("#musicButton").css("text-decoration", "line-through");
+            setMusicBar(0);
+        }
+        adjustMusicVolume();
+    });
+
+
+    $("#sfxButton").on('click', function(){
+        if(sfxMuted){
+            sfxMuted = false;
+            sfxVolume = lastSfxVolume;
+            $("#sfxButton").css("text-decoration", "none");
+            setSFXBar(sfxVolume);
+        }
+        else {
+            sfxMuted = true;
+            sfxVolume = 0;
+            $("#sfxButton").css("text-decoration", "line-through");
+            setSFXBar(0);
+        }
+        playSound('click')
+    });
+    document.getElementById('musicBar').onmousedown = function(e){
+        musicBarChanged(e);
+        draggingMusic = true;
+        $("#musicBar").addClass('always_show')
+
+    }
+    document.onmousemove = function (e){
+        if(draggingMusic == true){
+            musicBarChanged(e)
+        }
+        if(draggingSFX == true){
+            sfxBarChanged(e)
+        }
+    }
+    document.onmouseup = function(){
+        $("#musicBar").removeClass('always_show');
+        $("#sfxBar").removeClass('always_show');
+        draggingMusic = false;
+        draggingSFX = false;
+    }
+    function musicBarChanged(e){
+        var rect = document.getElementById('musicBar').getBoundingClientRect();
+        var x = e.clientX - rect.left; //x position within the element.
+        var y = e.clientY - rect.top;  //y position within the element.
+        let percent = 1 - y/rect.height;
+        let soundPercent = percent - 0.02;;
+        soundPercent = (Math.round((soundPercent * 100)/5)*5)/100;   
+        if(soundPercent > 1){
+            soundPercent = 1;
+        }
+        if(soundPercent < 0){
+            soundPercent = 0;
+        }
+        console.log(soundPercent)
+        musicVolume = soundPercent;
+        lastMusicVolume = soundPercent;
+        adjustMusicVolume();
+        $("#musicButton").css("text-decoration", "none");
+        
+        setMusicBar(percent);
+    }
+    function setMusicBar(percent){
+        let margin = 0.08;
+        if(percent < margin){
+            percent = margin;
+        }
+        if(percent > 1){
+            percent = 1;
+        }
+        $("#musicBarInner").height((20 * percent) + 'rem')
+    }
+
+    document.getElementById('sfxBar').onmousedown = function(e){
+        sfxBarChanged(e);
+        draggingSFX = true;
+        $("#sfxBar").addClass('always_show')
+
+    }
+    function sfxBarChanged(e){
+        var rect = document.getElementById('sfxBar').getBoundingClientRect();
+        var x = e.clientX - rect.left; //x position within the element.
+        var y = e.clientY - rect.top;  //y position within the element.
+        let percent = 1 - y/rect.height;
+        let soundPercent = percent - 0.04;
+        soundPercent = (Math.round((soundPercent * 100)/5)*5)/100;   
+        if(soundPercent > 1){
+            soundPercent = 1;
+        }
+        if(soundPercent < 0){
+            soundPercent = 0;
+        }
+        console.log(soundPercent)
+        sfxVolume = soundPercent;
+        lastSfxVolume = soundPercent;
+        setSFXBar(percent);
+        $("#sfxButton").css("text-decoration", "none");
+    }
+    function setSFXBar(percent){
+        let margin = 0.08;
+        if(percent < margin){
+            percent = margin;
+        }
+        if(percent > 1){
+            percent = 1;
+        }
+        $("#sfxBarInner").height((20 * percent) + 'rem')
+    }
 
     //FOR TESTING PURPOSES
     var randomNamesA = ["Small ", "Big ", "Friendly ", "Great ", "Ugly ", "Running ", "Walking "]
     var randomNamesB = ["Panda", "Cat", "Dog", "Lili", "Parrot", "Pig", "Horse", "Bird"]
     randomName = randomNamesA[Math.floor(Math.random()*randomNamesA.length)] + randomNamesB[Math.floor(Math.random()*randomNamesB.length)];
     //$("#usernameInput").on("click", function() {
-        //$("#usernameInput").val(randomName)
+        $("#usernameInput").val(randomName)
     //});
     //$("#joinCodeInput").on("click", function() {
-        //window.setTimeout(function(){$("#joinCodeInput").val("TESTA")}, 5)
+        window.setTimeout(function(){$("#joinCodeInput").val("TESTA")}, 5)
     //});
     //====================
 
@@ -144,6 +274,7 @@ function attemptJoinTeam(team){
 
 function uiServerMessage(data){
     //SHould log this onto the screen with big letters.
+    playSound('server_notif');
     $("#server_message").html('<span style="color: #FFC42E; font-size: 11rem; line-height: 5rem;">' + data.head + '</span><br>' + data.message);
     $("#server_message").animate({opacity: 1},{duration: 500, complete: ()=>{
         window.setTimeout(()=>{
@@ -234,18 +365,10 @@ function setTeamName(team){
 
 function updateSelection(selection){
     if(selection == "A"){
-        $("#selection1").addClass('green_border')
-        $("#selection2").removeClass('green_border')
         socket.emit("change_selection", {selection: 'left'});
     }
     else if(selection == "B"){
-        $("#selection1").removeClass('green_border')
-        $("#selection2").addClass('green_border')
         socket.emit("change_selection", {selection: 'right'});
-    }
-    else {
-        $("#selection1").removeClass('green_border')
-        $("#selection2").removeClass('green_border')
     }
 }
 
@@ -263,4 +386,22 @@ function nextQuestion(){
 
 function goHome(){
     socket.emit("lobby_leave_request", {leave: "yes"});
+}
+
+var lastTabooJump = new Date();
+function tabooJump(){
+    let currentTime = new Date();
+    let timePassed = (currentTime.getTime() - lastTabooJump.getTime());
+    if(timePassed > 1000){
+        lastTabooJump = new Date();
+        let letterBank = ['b', 'o', 'u', 'n', 'c', 'e'];
+        for(let i = 0; i < 6; i++){
+            $('#titleLetter' + i).removeClass(letterBank[i]);
+        }
+        window.setTimeout(function() {
+            for(let i = 0; i < 6; i++){
+                $('#titleLetter' + i).addClass(letterBank[i]);
+            }
+        }, 30)
+    }
 }

@@ -16,7 +16,7 @@ module.exports = (io, socket, gameLobbies) => {
         }
 
         lobbyId = generateNewLobbyId();
-        //lobbyId = "TESTA";
+        lobbyId = "TESTA";
         //NOT RANDOMIZING FOR TESTING PURPOSES DELETE LATER DELETE DELETE DELETE
 
         //Connect socket on server
@@ -100,6 +100,11 @@ module.exports = (io, socket, gameLobbies) => {
         io.to(currentLobby).emit("game_update", {currentState: gameLobbies[currentLobby].toJSON()});
         console.log(socket.id + " left a lobby.");
         socket.emit("lobby_update", {updateType: 'lobby_left'});
+
+        //Kick everyone from lobby
+        if(gameLobbies[currentLobby].state != 'lobby'){
+            console.log("need to kick everybody")
+        }
     }
 
     function getLobbyData(){

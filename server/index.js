@@ -47,11 +47,14 @@ io.on("connection", (socket) => {
 //Server tick
 const Utility = require("./utility");
 const utility = new Utility;
+var tickRate = 200;
 function serverTick(i) {
     setTimeout(() => {
         //Delete empty game lobbies
+        let gameLobbyCount = 0;
         for (const key in gameLobbies) {
             if (gameLobbies.hasOwnProperty(key)) {
+                gameLobbyCount++;
                 if(utility.objLength(gameLobbies[key].playerSockets) == 0){
                     delete gameLobbies[key];
                 }
@@ -60,8 +63,14 @@ function serverTick(i) {
                 }
             }
         }
+        if(gameLobbyCount == 0){
+            tickRate = 5000;
+        }
+        else {
+            tickRate = 200;
+        }
         serverTick(); 
-    }, 200)
+    }, tickRate)
 }
 
 serverTick(0);

@@ -17,17 +17,36 @@
         <script src='./scripts/startup.js'></script>
         <script src='./scripts/gameUi.js'></script>
         <script src='./scripts/timers.js'></script>
+        <script src='./scripts/audio.js'></script>
+        <script src='./scripts/audioBinds.js'></script>
         <link rel="stylesheet" href="styles/universal.css">
         <link rel="stylesheet" href="styles/loginpage.css">
         <link rel="stylesheet" href="styles/bouncing.css">
         <link rel="stylesheet" href="styles/gamepage.css">
         <link rel="stylesheet" href="styles/lobbypage.css">
         <link rel="stylesheet" href="styles/endscreen.css">
+        <link rel="stylesheet" href="styles/splash.css">
+        <link rel="icon" type="image/x-icon" href="./images/favicon.png">
         <title>Taboo!</title>
     </head>
     <body>
+        <audio loop src="./sounds/puzzledream.mp3" id="puzzleDreamAudio"></audio>
         <div class="window_container">
             <div id="WINDOW" class="noselect">
+                <div class="relative_anchor">
+                    <div id="splashScreen">
+                        <div class="relative_anchor">
+                            <div id="bouncingGirl"></div>
+                        </div>
+                        <div class="relative_anchor">
+                            <div id="splashScreenText">Click anywhere to start.</div>
+                        </div>
+                        <div id="curtainContainer">
+                            <div id="curtainLeft"></div>
+                            <div id="curtainRight"></div>
+                        </div>
+                    </div>
+                </div>
                 <!--Thingy with players and taboo logo-->
                 <div class="top_container" id="topContainer">
                     <div class="taboo_logo">
@@ -47,6 +66,64 @@
                 <div class="relative_anchor server_message_container">
                     <div class="server_message standard_shadow" id="server_message"></div>
                 </div>
+                <!--Thingy with sliders and credits button-->
+                <div class="relative_anchor">
+                    <div class="bottom_bar_container">
+                        <div id="bottomBar" class="bottomBar">
+                            <div class="musicBox" id="musicBox">
+                                <div id="musicBar"><div id="musicBarInner"></div></div>
+                                <br>
+                                <div id="musicButton">music</div>
+                            </div>
+                            <div class="soundEffectBox" id="soundEffectBox">
+                                <div id="sfxBar"><div id="sfxBarInner"></div></div>
+                                <br>
+                                <div id="sfxButton">sfx</div>
+                            </div>
+                            <div id="creditsButton">credits</div>
+                        </div>
+                    </div>
+                </div>
+                <!--Credits window-->
+                <div class="relative_anchor">
+                    <div id="creditsWindow">
+                        <div class="credits_container">
+                            <div class="relative_anchor">
+                                <div id="closeCreditsButton">X</div>
+                            </div>
+                            <div class="credits_title">Credits</div>
+                            <div class="credits_text">
+                                <div class="credits_role"><div>Lead Developer</div></div>
+                                <div class="credits_name"><div>Hung-Tam Yie</div></div>
+                                <div class="credits_role"><div>Assistant Developer</div></div>
+                                <div class="credits_name"><div>Liana M.</div></div>
+                                <br><br>
+                                <div class="credits_role"><div>Lead Designer</div></div>
+                                <div class="credits_name"><div>Liana M.</div></div>
+                                <div class="credits_role"><div>Assistant Designer</div></div>
+                                <div class="credits_name"><div>Hung-Tam Yie</div></div>
+                                <br><br>
+                                <div class="credits_role"><div>Sound Designer</div></div>
+                                <div class="credits_name"><div>Hung-Tam Yie</div></div>
+                                <br><br>
+                                <div class="credits_role"><div>Music from</div></div>
+                                <div class="credits_name"><div>Eric Matyas</div></div>
+                                <div class="credits_link">www.soundimage.org</div>
+                                <br>
+                                <br>
+                                <div class="credits_role"><div>Sound Effects from</div></div>
+                                <div class="credits_name">freesoundeffect.net</div>
+                                <div class="credits_name">Zapsplat.com</div>
+                                <div class="credits_role"><div>Additional Sound Effects from</div></div>
+                                <div class="credits_name">freesound.org</div>
+                                <div class="credits_name_smaller">SimoneGianni finix473 Ryanz-Official<br> jorickhoofd SergeQuadrado</div>
+                                <br><br>
+                                <div class="credits_role"><div>Image hosting from</div></div>
+                                <div class="credits_name">postimages.org</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!--Log in window-->
                 <div id="logInWindow">
                     <div class="language_bar">
@@ -56,13 +133,13 @@
                     </div>
                     <br>
                     <div class="log_in_center_container">
-                        <div class="bouncing-text">
-                            <div class="b">T</div>
-                            <div class="o">A</div>
-                            <div class="u">B</div>
-                            <div class="n">O</div>
-                            <div class="c">O</div>
-                            <div class="e">!</div>
+                        <div class="bouncing-text" onclick="tabooJump()">
+                            <div class="b bounce" id="titleLetter0">T</div>
+                            <div class="o bounce" id="titleLetter1">A</div>
+                            <div class="u bounce" id="titleLetter2">B</div>
+                            <div class="n bounce" id="titleLetter3">O</div>
+                            <div class="c bounce" id="titleLetter4">O</div>
+                            <div class="e bounce" id="titleLetter5">!</div>
                             <div class="shadow"></div>
                             <div class="shadow-two"></div>
                           </div>
@@ -95,13 +172,22 @@
                     <div class="box">
                         <div id="game_round_title">Round 1</div>
                         <div class= "imageBox">
+                            <div class="relative_anchor">
+                                <div class="describe_label_wrapper">
+                                    <div id="describeLabel">Person</div>
+                                </div>
+                            </div>
                             <div class="guess_main_display_container" id="guessBackgroundBox">
                                 <div class="guess_main_display_box" id="guessStripeBox">
                                     <div id="guessMainDisplayText"><span>Text</span><br><span>(+0)</span></div>
                                 </div>
                             </div>
                             <div class="describe_display_container" id="describeBackgroundBox">
-                                <div class="describe_display_text" id="describeDisplayText"></div>
+                                <div class="describe_display_text_container">
+                                    <div id="describeDisplayNumber"><span>12</span>/12</div>
+                                    <br>
+                                    <div id="describeDisplayText">Barack Obama</div>
+                                </div>
                             </div>
                         </div>
                         <div class="time_bar_background" id="timeBarContainer">
@@ -214,7 +300,7 @@
                                 <br><br>
                                 Describing words quickly will gain extra time in the next round! If you have extra time remaining by the end of 5 rounds, a secret bonus round worth double points is unlocked. 
                                 <br><br>
-                                Good luck, and remember to have fun!
+                                Good luck!
                             </div>
                         </div>
                     </div>

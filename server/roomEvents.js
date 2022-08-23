@@ -106,10 +106,8 @@ module.exports = (io, socket, gameLobbies) => {
             socket.emit("serverMessage", {head: "Error!", message: "You are not the describer."})
             return;
         }
-        if((data.selection == 'left' && lobby.turnData.currentQuestionIndex != 0) || (data.selection == 'right' && lobby.turnData.currentQuestionIndex != 1)){
-            lobby.updateCurrentQuestion(data.selection);
-            io.to(socket.data.currentLobby).emit("game_update", {currentState: lobby.toJSON()})
-        }
+        console.log('selection is ' + data.selection)
+        lobby.updateCurrentQuestion(data.selection);
     }
     function giveUp(){
         if(socket.data.currentLobby == "nolobby"){
@@ -145,7 +143,7 @@ module.exports = (io, socket, gameLobbies) => {
             return;
         }
         let guess = data.guess;
-        if(guess.length > 30){
+        if(guess.length > 100){
             socket.emit("serverMessage", {head: "Error!", message: "Your guess is too long!"})
             return;
         }

@@ -3,6 +3,7 @@ function redrawScreen(game){
     if(game.state == "Lobby"){
         switchToPage("lobby");
         redrawLobbyScreen(game);
+        changeMusicTo('chill');
     }
     else if((["Turn Start", "Choosing Image", "In Round", "Transition"]).includes(game.state)){
         switchToPage("game");
@@ -11,6 +12,7 @@ function redrawScreen(game){
     else if(game.state == "Game Over"){
         switchToPage("end");
         redrawEndScreen(game);
+        changeMusicTo('chill');
     }
 }
 
@@ -121,6 +123,13 @@ function redrawGameScreen(game){
     let myTeam = 'A'
     if(game.teamData.B.players.includes(socket.id)){myTeam = 'B'}
 
+    if(amDescriber && (game.state == 'Choosing Image' || game.state == 'In Round')){
+        changeMusicTo('intense');
+    }
+    else {
+        changeMusicTo('chill');
+    }
+
     if(game.state == 'Turn Start' || game.state == 'Choosing Image'){
         $("#guessMainDisplayText").html('<span>Waiting<br>for<br>describer</span>');
 
@@ -149,46 +158,12 @@ function redrawGameScreen(game){
         else {
             $("#describerText").html('<span style="color:#FF826E;">' + currentDescriberName + '</span> is describing!')
         }
-        $("#answerBox").html('');
-        for(let i = 0; i < players.length; i++){
-            if(currentDescriberId != players[i]){
-                let playerName = game.playerSockets[players[i]].name;
-                let backgroundClass;
-                let triangleClass;
-                let nameClass;
-                if(game.turnData.currentTeam == 'A'){
-                    backgroundClass = 'background_a';
-                    triangleClass = 'triangle_a';
-                    nameClass = 'name_background_a';
-                }
-                else {
-                    backgroundClass = 'background_b';
-                    triangleClass = 'triangle_b';
-                    nameClass = 'name_background_b';
-                }
-                $("#answerBox").append('\
-                <div class="player_chat_box_container">\
-                    <div class="player_chat_box_name_container">\
-                        <div class="player_chat_box_name ' + nameClass + '">\
-                            ' + playerName + '\
-                        </div>\
-                    </div>\
-                    <br>\
-                    <div class="player_chat_box ' + backgroundClass+ '">...</div>\
-                    <br>\
-                    <div class="relative_anchor">\
-                        <div class="' + triangleClass + '"></div>\
-                    </div>\
-                </div>\
-                    \
-                ')
-            }
-        }
         if(game.state == 'Choosing Image'){
             if(amDescriber){
                 $("#selectionOverlay").css('display', 'block');
                 let potentialChoices = game.turnData.questions[game.turnData.currentRound];
-                startImageChoiceTimer(game.stateStartTimestamp);
+                //startImageChoiceTimer(game.stateStartTimestamp);
+                startImageChoiceTimer(Date.now());
                 $("#selection1").css('background-image', 'url(' + potentialChoices[0].url + ')');
                 $("#selectionText1").html('+' + potentialChoices[0].pointValue)
                 $("#selection2").css('background-image', 'url(' + potentialChoices[1].url + ')');
@@ -202,19 +177,31 @@ function redrawGameScreen(game){
                 if(questions[1].chosen) question = questions[1]
 
                 $('#guessBackgroundBox').css('display', 'none');
-                $('#describeBackgroundBox').css('display', 'block');
+                $('#describeBackgroundBox').css('display', 'inline-flex');
 
-                /*let pointsEarned = 0;
-                if(question.answered == 'half') pointsEarned = question.pointValue/2;
-                if(question.answered == 'yes') pointsEarned = question.pointValue;
-                $("#describeDisplayText").html('<span>' + question.name + '(+' + pointsEarned + ')' + '<span>');*/
+                let pointsEarned = 0;
+                let color = 'white'
+                if(question.answered == 'half') {
+                    pointsEarned = question.pointValue/2;
+                    color = '#FFC42E'
+                }
+                else if(question.answered == 'yes') {
+                    pointsEarned = question.pointValue;
+                    color = '#71E754'
+                }
+                else {
+                    pointsEarned = 0;
+                    color = 'white'
+                }
+                $("#describeDisplayNumber").html('<span style="color: ' + color + '">'+ pointsEarned + '</span>/' + question.pointValue);
                 $("#describeDisplayText").html(question.name);
                 $('#describeBackgroundBox').css('background', 'url("' + question.url + '")');
             }
         }
     }
     if(game.state == 'In Round'){
-        startRoundTimer(game.stateStartTimestamp, game.turnData.timeThisRound)
+        //startRoundTimer(game.stateStartTimestamp, game.turnData.timeThisRound)
+        startRoundTimer(Date.now(), game.turnData.timeThisRound);
         $("#selectionOverlay").css('display', 'none');
         $("#startInputBox").css('display', 'none');
         $("#timeBarContainer").css('visibility', 'visible');
@@ -258,79 +245,14 @@ function redrawGameScreen(game){
                 $("#guessMainDisplayText").html('<span>Guess the word!</span><br>+0/' + currentQuestion.pointValue);
             }
             else {
-                $("#guessMainDisplayText").html('<span>Shhhh!</span><br>+0/' + currentQuestion.pointValue);
+                $("#guessMainDisplayText").html('<span>Shhhh!</span><br>Other team is describing!');
             }
         }
-
-        $("#answerBox").html('');
-        for(let i = 0; i < players.length; i++){
-            if(currentDescriberId != players[i]){
-                let playerName = game.playerSockets[players[i]].name;
-                let playerGuess = '...'
-                if(game.turnData.guesses[players[i]]){
-                    playerGuess = game.turnData.guesses[players[i]].escapedGuess;
-                }
-                let backgroundClass;
-                let triangleClass;
-                if(game.turnData.currentTeam == 'A'){
-                    backgroundClass = 'background_a';
-                    triangleClass = 'triangle_a';
-                    nameClass = 'name_background_a';
-                }
-                else {
-                    backgroundClass = 'background_b';
-                    triangleClass = 'triangle_b';
-                    nameClass = 'name_background_b';
-                }
-                $("#answerBox").append('\
-                <div class="player_chat_box_container">\
-                    <div class="player_chat_box_name_container">\
-                        <div class="player_chat_box_name ' + nameClass + '">\
-                            ' + playerName + '\
-                        </div>\
-                    </div>\
-                    <br>\
-                    <div class="player_chat_box ' + backgroundClass + '">' + playerGuess + '</div>\
-                    <br>\
-                    <div class="relative_anchor">\
-                        <div class="' + triangleClass + '"></div>\
-                    </div>\
-                </div>\
-                    \
-                ')
-            }
-        }
+        
         if(amDescriber){
-            let question = game.turnData.questions[game.turnData.currentRound][game.turnData.currentQuestionIndex];
-            let backgroundURL = question.url;
-            $('#guessBackgroundBox').css('display', 'none');
-            $('#describeBackgroundBox').css('display', 'block');
-            $('#describeBackgroundBox').css('background', 'url("' + backgroundURL + '")');
-            $("#describeDisplayText").html('Describe this ' + question.category + '!');
-
-            if(question.answered == 'yes'){
-                $("#describeDisplayText").html(question.name + '<span style="color:rgb(113, 231, 84)"> +' + question.pointValue + '/' + question.pointValue + '</span>');
-                $("#describeNextButton").css({'background': '#00B55E', 'color': 'white'});
-                $("#describeNextButton").css('pointer-events', 'auto');
-                $("#describeGiveUpButton").css({'background': 'grey', 'color': '#aaaaaa'});
-                $("#describeGiveUpButton").css('pointer-events', 'none');
-                $("#extraSeconds").css('color', '#0E7619');
-            }
-            else if(question.answered == 'half'){
-                $("#describeDisplayText").append('<br><span style="color:#FFC42E">' + game.turnData.bestGuess + ' (+' + question.pointValue/2 + '/' + question.pointValue + ')</span>');
-                $("#describeNextButton").css({'background': '#00B55E', 'color': 'white'});
-                $("#describeNextButton").css('pointer-events', 'auto');
-                $("#describeGiveUpButton").css({'background': 'grey', 'color': '#aaaaaa'});
-                $("#describeGiveUpButton").css('pointer-events', 'none');
-                $("#extraSeconds").css('color', '#0E7619');
-            }
-            else {
-                $("#describeGiveUpButton").css({'background': '#C93C3C', 'color': 'white'});
-                $("#describeGiveUpButton").css('pointer-events', 'auto');
-                $("#describeNextButton").css({'background': 'grey', 'color': '#aaaaaa'});
-                $("#describeNextButton").css('pointer-events', 'none');
-                $("#extraSeconds").css('color', '#aaaaaa');
-            }
+            $("#describeLabel").css('display', 'inline-block');
+            $("#describeLabel").html(currentQuestion.category);
+            redrawDescribeBox(game);
 
             if(game.turnData.currentRound == 5){
                 $("#extraSeconds").css('visibility', 'hidden');
@@ -340,8 +262,14 @@ function redrawGameScreen(game){
             }
         }
         else {
-            $('#guessBackgroundBox').css('display', 'flex');
-            $('#describeBackgroundBox').css('display', 'none');
+            $("#describeLabel").css('display', 'none');
+            if(currentQuestion.answered != 'yes'){
+                $('#guessBackgroundBox').css('display', 'flex');
+                $('#describeBackgroundBox').css('display', 'none');
+            }
+            else {
+                redrawDescribeBox(game);
+            }
         }
     }
     if(game.state == 'In Round' || game.state == 'Choosing Image'){
@@ -375,16 +303,11 @@ function redrawGameScreen(game){
         $("#circle" + (game.turnData.currentRound + 1)).css('border', '1rem solid white')
         if(game.turnData.currentRound == 5)$('#bonusImageCircle').css('border', '1rem solid rgb(113, 231, 84)')
     }
+    if(game.state != 'In Round' || amDescriber == false){
+        $("#describeLabel").css('display', 'none');
+    }
     if(game.state == 'Choosing Image'){
         $("#guessInputBox").css('display', 'none');
-        if(game.turnData.currentQuestionIndex == 0){
-            $("#selection1").addClass('green_border')
-            $("#selection2").removeClass('green_border')
-        }
-        else {
-            $("#selection1").removeClass('green_border')
-            $("#selection2").addClass('green_border')
-        }
     }
     if(game.state == 'Turn Start'){
         $("#startInputBox").css('display', 'inline-block');
@@ -486,5 +409,89 @@ function redrawEndScreen(game){
         if (pointScorersB.hasOwnProperty(key)) {
             $('#statTableB > tbody:last-child').append('<tr><td>' + key + '</td><td>' + pointScorersB[key] + ' pts</td></tr>');
         }
+    }
+}
+
+function redrawDescribeBox(game){
+    let question = game.turnData.questions[game.turnData.currentRound][game.turnData.currentQuestionIndex];
+        let backgroundURL = question.url;
+        $('#guessBackgroundBox').css('display', 'none');
+        $('#describeBackgroundBox').css('display', 'inline-flex');
+        $('#describeBackgroundBox').css('background', 'url("' + backgroundURL + '")');
+
+        let pointsEarned = 0;
+        let color = 'white'
+        if(question.answered == 'yes'){
+            pointsEarned = question.pointValue;
+            color = '#71E754'
+            $("#describeNextButton").css({'background': '#00B55E', 'color': 'white'});
+            $("#describeNextButton").css('pointer-events', 'auto');
+            $("#describeGiveUpButton").css({'background': 'grey', 'color': '#aaaaaa'});
+            $("#describeGiveUpButton").css('pointer-events', 'none');
+            $("#describeDisplayText").html(question.name);
+            $("#extraSeconds").css('color', '#0E7619');
+        }
+        else if(question.answered == 'half'){
+            pointsEarned = question.pointValue/2;
+            color = '#FFC42E'
+            $("#describeNextButton").css({'background': '#00B55E', 'color': 'white'});
+            $("#describeNextButton").css('pointer-events', 'auto');
+            $("#describeGiveUpButton").css({'background': 'grey', 'color': '#aaaaaa'});
+            $("#describeGiveUpButton").css('pointer-events', 'none');
+            $("#describeDisplayText").html(game.turnData.bestGuess);
+            $("#extraSeconds").css('color', '#0E7619');
+        }
+        else {
+            pointsEarned = 0;
+            color = 'white'
+            $("#describeGiveUpButton").css({'background': '#C93C3C', 'color': 'white'});
+            $("#describeGiveUpButton").css('pointer-events', 'auto');
+            $("#describeNextButton").css({'background': 'grey', 'color': '#aaaaaa'});
+            $("#describeNextButton").css('pointer-events', 'none');
+            $("#describeDisplayText").html('');
+            $("#extraSeconds").css('color', '#aaaaaa');
+        }
+        
+        $("#describeDisplayNumber").html('<span style="color: ' + color + '">'+ pointsEarned + '</span>/' + question.pointValue);
+        $('#describeBackgroundBox').css('background', 'url("' + question.url + '")');
+}
+
+
+var boxNumber = 0;
+function newChatMessage(data){
+    boxNumber++;
+    let backgroundClass;
+    let triangleClass;
+    if(data.team == 'A'){
+        backgroundClass = 'background_a';
+        triangleClass = 'triangle_a';
+        nameClass = 'name_background_a';
+    }
+    else {
+        backgroundClass = 'background_b';
+        triangleClass = 'triangle_b';
+        nameClass = 'name_background_b';
+    }
+    
+    $("#answerBox").append('\
+    <div id="answerBoxNumber' + boxNumber + '" class="player_chat_box_container">\
+        <div class="player_chat_box_name_container">\
+            <div class="player_chat_box_name ' + nameClass + '">\
+                ' + data.name + '\
+            </div>\
+        </div>\
+        <br>\
+        <div class="player_chat_box ' + backgroundClass + '">' + data.message + '</div>\
+        <br>\
+        <div class="relative_anchor">\
+            <div class="' + triangleClass + '"></div>\
+        </div>\
+    </div>\
+        \
+    ')
+    $("#answerBoxNumber" + boxNumber).css({position: 'relative', 'max-height': '0rem'});
+    $("#answerBoxNumber" + boxNumber).animate({'max-height': '500rem'}, 1000);
+    if(data.playSound){
+        playSound('chat');
     }
 }

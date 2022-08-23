@@ -1,0 +1,79 @@
+#splashScreen {
+    position: absolute;
+    width: 500rem;
+    height: 282.5rem;
+    z-index: 100000;
+    background: none;
+    overflow: hidden;
+}
+
+#bouncingGirl {
+    position: absolute;
+    width: 100rem;
+    height: 100rem;
+    top: 50rem;
+    left: 50rem;
+    z-index: 100001;
+    background: url('../images/shushgirl.png');
+    background-size: cover;
+}
+
+#splashScreenText {
+    width: 500rem;
+    position: absolute;
+    height: 50rem;
+    text-align: center;
+    color: white;
+    top: 134rem;
+    z-index: 100002;
+    animation: colorChange 2000ms linear infinite;
+}
+#curtainContainer {
+    width: 100%;
+    height: 100%;
+    display: inline-flex;
+    justify-content: space-between;
+}
+#curtainLeft {
+    width: 250rem;
+    height: 282.5rem;
+    background: #454693;
+}
+
+#curtainRight {
+    width: 250rem;
+    background: #454693;
+    height: 282.5rem;
+}
+
+.curtainBlack {
+    background: black !important;
+    transition: background 3s ease-in-out;
+}
+
+@-moz-keyframes spin {
+    from { -moz-transform: rotate(0deg); }
+    to { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+    from {transform:rotate(0deg);}
+    to {transform:rotate(360deg);}
+}
+
+
+
+@keyframes colorChange {
+    0% {
+      color: #FF826E;
+    }
+    50% {
+      color: #FFCC4A;
+    }
+    100% {
+      color: #FF826E;
+    }
+  }

@@ -100,6 +100,7 @@
 
 .imageChoice:hover {
     transform: scale(1.03);
+    box-shadow:0px 0px 0px 3rem rgb(28, 233, 72);
 }
 
 .imageChoice:active {
@@ -193,16 +194,20 @@
     color:white;
 }
 .answerBox{
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: flex-end;
     width: 130rem;
-    height: 180rem; 
+    height: 180rem;
     position: absolute;
     background: #6A6BE5;
     border-radius: 5rem;
     margin-left: 20rem;
     margin-top: 30rem;
+    padding-bottom: 8rem;
     margin-right: 50rem;
-    overflow: none;
-    box-shadow: inset 0px 0px 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+    box-shadow: inset 0px 0px 10px rgb(0 0 0 / 10%);
 }
 
 #game_round_title {
@@ -239,7 +244,7 @@
     width: 120rem;
     height: 10rem;
     border-radius: 3rem;
-    transition: width 0.05s;
+    transition: width 0.05s, transform 0.1s;
     transition-timing-function: ease-in-out;
 }
 
@@ -312,6 +317,7 @@
 
 .background_a {
     background: #FFC42E;
+    color: #614C17;
 }
 
 .triangle_a {
@@ -485,7 +491,11 @@
     background-size: cover !important;
     background-repeat: no-repeat !important;
     background: url('https://wallpaperaccess.com/full/112906.jpg');
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
 }
+
 
 .describe_display_text {
     color: white;
@@ -495,4 +505,62 @@
     padding-top: 2rem;
     text-align: left;
     text-shadow: -0.5rem 0rem 3rem rgb(0, 0, 0, 55%);
+}
+
+.flash {
+    background-color: white !important;
+}
+
+.describe_display_text_container {
+    background-size: contain;
+    background-repeat: no-repeat;
+    text-align: left;
+    padding-left: 5rem;
+    height: 50rem;
+    background: url('../images/gradientRectangle.png');
+}
+
+#describeDisplayNumber {
+    color: white;
+    text-shadow: -0.5rem 0rem 3rem rgb(0, 0, 0, 55%);
+    position: relative;
+    top: 10rem;
+}
+
+#describeDisplayNumber > span {
+    font-size: 25rem;
+}
+
+#describeDisplayText {
+    color: white;
+    position: relative;
+    top: -3rem;
+    text-shadow: -0.5rem 0rem 3rem rgb(0, 0, 0, 55%);
+}
+
+#describeLabel {
+    background: #4041C0;
+    color: white;
+    padding-right: 7rem;
+    padding-left: 7rem;
+    padding-top: 1rem;
+    padding-bottom: 0.2rem;
+    line-height: 10rem;
+    box-shadow: 0px 2rem 4rem rgb(0 0 0 / 80%);
+    border-top-right-radius: 4rem;
+    border-bottom-right-radius: 4rem;
+    font-size: 7.5rem;
+}
+
+#describeLabel::first-letter {
+    text-transform: uppercase;
+}
+
+.describe_label_wrapper {
+    height: 50rem;
+    position: absolute;
+    top: 10rem;
+    left: -2.5rem;
+    width: 80rem;
+    text-align: left;
 }

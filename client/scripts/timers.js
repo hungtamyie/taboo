@@ -1,7 +1,13 @@
 var imageChoiceTimer = "none";
+var lastImageChoiceTimestamp = 0000;
 function startImageChoiceTimer(timestamp){
+    if(imageChoiceTimer != 'none' && lastImageChoiceTimestamp != timestamp){
+        window.clearInterval(imageChoiceTimer);
+        imageChoiceTimer = "none";
+    }
     if(imageChoiceTimer == "none"){
         imageChoiceTimer = window.setInterval(()=>{
+            lastImageChoiceTimestamp = timestamp;
             let currentTime = new Date().getTime();
             let timeLeft = 5 - Math.floor((currentTime-timestamp)/1000);
             let percentage = 1.2 - Math.log10(((currentTime-timestamp)/1000 - Math.floor((currentTime-timestamp)/1000))*2);
@@ -32,6 +38,7 @@ function startImageChoiceTimer(timestamp){
     }
 }
 
+var tickCount = 0;
 var roundTimer = "none";
 var lastRoundStartTimestamp = 0000;
 function startRoundTimer(startTimestamp, duration){
@@ -42,9 +49,34 @@ function startRoundTimer(startTimestamp, duration){
     if(roundTimer == "none"){
         lastRoundStartTimestamp = startTimestamp;
         roundTimer = window.setInterval(()=>{
+
             let currentTime = new Date().getTime();
             let timeLeft = duration - ((currentTime-startTimestamp)/1000);
             $("#extraSeconds").html('+' + Math.round(timeLeft) + ' Extra Seconds');
+            
+            tickCount++;
+            let ticked = false;
+            if(tickCount > 10){
+                playSound('tick', 0.5);
+                tickCount = 0;
+                ticked = true;
+            }
+            else if(tickCount > 5 && timeLeft < 5){
+                playSound('tick', 0.7);
+                tickCount = 0;
+                ticked = true;
+            }
+            else if(tickCount > 2 && timeLeft < 3){
+                playSound('tick', 1);
+                tickCount = 0;
+                ticked = true;
+            }
+            if(ticked){
+                $("#timeBar").addClass('flash');
+            }
+            else {
+                $("#timeBar").removeClass('flash');
+            }
 
             let percentage = timeLeft/duration;
             if(percentage > 1){percentage = 1}
@@ -59,7 +91,6 @@ function startRoundTimer(startTimestamp, duration){
                 window.clearInterval(roundTimer);
                 roundTimer = "none";
             }
-
 
             //work with colors
             /*if(timeLeft > 15){
