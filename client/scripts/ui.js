@@ -159,7 +159,6 @@ function activateEventHandlers(){
         if(soundPercent < 0){
             soundPercent = 0;
         }
-        console.log(soundPercent)
         musicVolume = soundPercent;
         lastMusicVolume = soundPercent;
         adjustMusicVolume();
@@ -197,7 +196,6 @@ function activateEventHandlers(){
         if(soundPercent < 0){
             soundPercent = 0;
         }
-        console.log(soundPercent)
         sfxVolume = soundPercent;
         lastSfxVolume = soundPercent;
         setSFXBar(percent);
@@ -215,14 +213,14 @@ function activateEventHandlers(){
     }
 
     //FOR TESTING PURPOSES
-    var randomNamesA = ["Small ", "Big ", "Friendly ", "Great ", "Ugly ", "Running ", "Walking "]
-    var randomNamesB = ["Panda", "Cat", "Dog", "Lili", "Parrot", "Pig", "Horse", "Bird"]
-    randomName = randomNamesA[Math.floor(Math.random()*randomNamesA.length)] + randomNamesB[Math.floor(Math.random()*randomNamesB.length)];
+    //var randomNamesA = ["Small ", "Big ", "Friendly ", "Great ", "Ugly ", "Running ", "Walking "]
+    //var randomNamesB = ["Panda", "Cat", "Dog", "Lili", "Parrot", "Pig", "Horse", "Bird"]
+    //randomName = randomNamesA[Math.floor(Math.random()*randomNamesA.length)] + randomNamesB[Math.floor(Math.random()*randomNamesB.length)];
     //$("#usernameInput").on("click", function() {
-        $("#usernameInput").val(randomName)
+        //$("#usernameInput").val(randomName)
     //});
     //$("#joinCodeInput").on("click", function() {
-        window.setTimeout(function(){$("#joinCodeInput").val("TESTA")}, 5)
+        //window.setTimeout(function(){$("#joinCodeInput").val("TESTA")}, 5)
     //});
     //====================
 

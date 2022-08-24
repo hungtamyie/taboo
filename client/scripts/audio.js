@@ -36,37 +36,48 @@ function startMusic(){
     music.puzzleDream.start();
     music.puzzleDream.loop = true;
 
-    music.downthedrain = audioContext.createBufferSource();
+    /*music.downthedrain = audioContext.createBufferSource();
     music.downthedrain.buffer = sfxBoard['downthedrain'].buffer;
     music.gainB = audioContext.createGain();
     music.gainB.gain.value = sfxBoard['downthedrain'].volume * 0;
     music.downthedrain.connect(music.gainB).connect(audioContext.destination);
     music.downthedrain.start();
-    music.downthedrain.loop = true;
+    music.downthedrain.loop = true;*/
 }
 function adjustMusicVolume(){
     if(audioContext == 'not started' || !audioContext){return};
-    if(music.currentMusic == 'chill'){
+    //if(music.currentMusic == 'chill'){
         music.gainA.gain.value = musicVolume * sfxBoard['puzzledream'].volume;
-        music.gainB.gain.value = 0;
-    }
-    else if(music.currentMusic == 'intense'){
+        //music.gainB.gain.value = 0;
+    //}
+    /*else if(music.currentMusic == 'intense'){
         music.gainB.gain.value = musicVolume * sfxBoard['downthedrain'].volume
         music.gainA.gain.value = 0;
-    }
+    }*/
 }
 function changeMusicTo(type){
     if(audioContext == 'not started' || !audioContext){return};
     if(type == "chill" && music.currentMusic != 'chill'){
         music.currentMusic = 'chill';
         music.gainA.gain.linearRampToValueAtTime(musicVolume * sfxBoard['puzzledream'].volume, audioContext.currentTime + 4);
-        music.gainB.gain.linearRampToValueAtTime(0, audioContext.currentTime + 2);
+        music.gainB.gain.linearRampToValueAtTime(0, audioContext.currentTime + 4);
     }
     else if(type == "intense" && music.currentMusic != 'intense'){
         music.currentMusic = 'intense';
         music.gainB.gain.linearRampToValueAtTime(musicVolume * sfxBoard['downthedrain'].volume, audioContext.currentTime + 4);
-        music.gainA.gain.linearRampToValueAtTime(0, audioContext.currentTime + 2);
+        music.gainA.gain.linearRampToValueAtTime(0, audioContext.currentTime + 4);
     }
+}
+
+function pauseMusic(){
+    $('#musicBox').css('display', 'none');
+    music.gainA.gain.linearRampToValueAtTime(0, audioContext.currentTime + 2);
+
+}
+
+function unpauseMusic(){
+    $('#musicBox').css('display', 'inline-block');
+    music.gainA.gain.linearRampToValueAtTime(musicVolume * sfxBoard['downthedrain'].volume, audioContext.currentTime + 2);
 }
 
 var sfxVolume = 0.5;

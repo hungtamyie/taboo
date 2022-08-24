@@ -16,8 +16,6 @@ module.exports = (io, socket, gameLobbies) => {
         }
 
         lobbyId = generateNewLobbyId();
-        lobbyId = "TESTA";
-        //NOT RANDOMIZING FOR TESTING PURPOSES DELETE LATER DELETE DELETE DELETE
 
         //Connect socket on server
         socket.join(lobbyId);

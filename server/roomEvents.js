@@ -6,7 +6,6 @@ module.exports = (io, socket, gameLobbies) => {
             let lobby = gameLobbies[socket.data.currentLobby];
             if(data.team == "A" || data.team == "B"){
                 lobby.setPlayerTeam(socket, data.team);
-                console.log("lobby = " + socket.data.currentLobby)
                 io.to(socket.data.currentLobby).emit("game_update", {currentState: lobby.toJSON()});
             }
         }
@@ -106,7 +105,6 @@ module.exports = (io, socket, gameLobbies) => {
             socket.emit("serverMessage", {head: "Error!", message: "You are not the describer."})
             return;
         }
-        console.log('selection is ' + data.selection)
         lobby.updateCurrentQuestion(data.selection);
     }
     function giveUp(){

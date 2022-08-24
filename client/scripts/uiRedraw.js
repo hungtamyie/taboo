@@ -3,16 +3,17 @@ function redrawScreen(game){
     if(game.state == "Lobby"){
         switchToPage("lobby");
         redrawLobbyScreen(game);
-        changeMusicTo('chill');
+        unpauseMusic();
     }
     else if((["Turn Start", "Choosing Image", "In Round", "Transition"]).includes(game.state)){
+        pauseMusic();
         switchToPage("game");
         redrawGameScreen(game);
     }
     else if(game.state == "Game Over"){
         switchToPage("end");
         redrawEndScreen(game);
-        changeMusicTo('chill');
+        unpauseMusic();
     }
 }
 
@@ -122,13 +123,6 @@ function redrawGameScreen(game){
     let players = currentTeam.players;
     let myTeam = 'A'
     if(game.teamData.B.players.includes(socket.id)){myTeam = 'B'}
-
-    if(amDescriber && (game.state == 'Choosing Image' || game.state == 'In Round')){
-        changeMusicTo('intense');
-    }
-    else {
-        changeMusicTo('chill');
-    }
 
     if(game.state == 'Turn Start' || game.state == 'Choosing Image'){
         $("#guessMainDisplayText").html('<span>Waiting<br>for<br>describer</span>');
@@ -390,6 +384,7 @@ function redrawGameScreen(game){
 }
 
 function redrawEndScreen(game){
+    $("#answerBox").html('');
     $("#statBoxTitleA").html(game.teamData.A.name);
     $("#finalScoreA").html(game.teamData.A.points);
     $("#statBoxTitleB").html(game.teamData.B.name);

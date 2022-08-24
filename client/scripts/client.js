@@ -26,7 +26,6 @@ socket.on("preload_request", function(data){
 });
 
 socket.on("game_event", function(data){
-    console.log(data);
     handleGameEvent(data.event);
 });
 

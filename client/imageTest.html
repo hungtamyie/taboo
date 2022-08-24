@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+                background: #5051C2;
+                color: white;
+            }
+            .describerBoxTest {
+                display: block;
+                width: 480px;
+                height: 660px;
+                border-radius: 35px;
+                background-position-x: center !important;
+                background-position-y: center !important;
+                background-size: cover !important;
+                background-repeat: no-repeat !important;
+                background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU4MfMwJLcm0zj0SoMGpy3_vpXhCQ7Yl6Iaw&usqp=CAU');
+            }
+
+            #urlInput {
+                width: 500px;
+                height: 200px;
+            }
+
+            .download {
+                background: red;
+                color: white;
+            }
+        </style>
+        <title>Taboo tester</title>
+    </head>
+    <body>
+        <div class="describerBoxTest" id="box"></div>
+        <textarea id="urlInput" onclick="clearInput()" onpaste='changeInput()' onchange="changeInput()" onkeydown="changeInput()"></textarea>
+        <br>
+        <form id="form">
+            <p>Difficulty</p>
+            <div>
+              <input type="radio" id="contactChoice1"
+               name="contact" value="hard">
+              <label for="contactChoice1">Hard</label>
+          
+              <input type="radio" id="contactChoice2"
+               name="contact" value="medium" checked>
+              <label for="contactChoice2">Medium</label>
+          
+              <input type="radio" id="contactChoice3"
+               name="contact" value="easy">
+              <label for="contactChoice3">Easy</label>
+            </div>
+          </form>
+        <span>Name: </span><input onpaste='testName()' onchange="testName()" onkeydown="testName()" id="name"></input>
+        <span>Category: </span><input id="category"></input>
+        <span>Url: </span><input id="url"></input>
+        <button onclick="addthing()">Add!</button>
+
+        <button onclick="DownloadJSON()" class="download">Download file</button>
+        <br>
+        <div id="out"></div>
+        <br><br>
+        <div id="out2"></div>
+        <script type="text/javascript">
+            function DownloadJSON() {
+                //Build a JSON array containing Customer records.
+         
+                //Convert JSON Array to string.
+                var json = JSON.stringify(questions);
+         
+                //Convert JSON string to BLOB.
+                json = [json];
+                var blob1 = new Blob(json, { type: "text/plain;charset=utf-8" });
+         
+                //Check the Browser.
+                var isIE = false || !!document.documentMode;
+                if (isIE) {
+                    window.navigator.msSaveBlob(blob1, "questions.txt");
+                } else {
+                    var url = window.URL || window.webkitURL;
+                    link = url.createObjectURL(blob1);
+                    var a = document.createElement("a");
+                    a.download = "questions.txt";
+                    a.href = link;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                }
+            }
+        </script>
+        <script>
+            function clearInput(){
+                document.getElementById("urlInput").value = '';
+            }
+            function changeInput(){
+                setTimeout(function(){
+                    document.getElementById("box").style.background = 'url(' + document.getElementById("urlInput").value + ')';
+                }, 4); //or 4
+            }
+
+
+            function addthing(){
+                let difficulty = ''
+                if(document.getElementById("contactChoice1").checked) difficulty = 'easy'
+                if(document.getElementById("contactChoice2").checked) difficulty = 'medium'
+                if(document.getElementById("contactChoice3").checked) difficulty = 'hard'
+
+                let name = document.getElementById("name").value;
+                document.getElementById("name").value = '';
+
+                let category = document.getElementById("category").value;
+                document.getElementById("category").value = '';
+                
+                let url = document.getElementById("url").value;
+                document.getElementById("url").value = '';
+
+                questions[difficulty].push({category: category, name: name, url: url},)
+
+                giveData();
+
+            }
+
+            var indexA = 0;
+                document.addEventListener('keydown', function(e){
+                if(e.key == 'f'){
+                console.log('hi')
+                    document.getElementById("box").style.background = 'url(' + questions.medium[indexA].url + ')';
+                    indexA += 1;
+                }
+            })
+
+            function testName(){
+                var matches = []
+                for(let i = 0; i < questions.easy.length; i++){
+                    if(levenshteinDistance(questions.easy[i].name.toLowerCase(), document.getElementById('name').value.toLowerCase()) < questions.easy[i].name.length/2){
+                        matches.push(questions.easy[i].name)
+                    }
+                }
+                for(let i = 0; i < questions.medium.length; i++){
+                    if(levenshteinDistance(questions.medium[i].name.toLowerCase(), document.getElementById('name').value.toLowerCase()) < questions.medium[i].name.length/2){
+                        matches.push(questions.medium[i].name)
+                    }
+                }
+                for(let i = 0; i < questions.hard.length; i++){
+                    if(levenshteinDistance(questions.hard[i].name.toLowerCase(), document.getElementById('name').value.toLowerCase()) < questions.hard[i].name.length/2){
+                        matches.push(questions.hard[i].name)
+                    }
+                }
+                document.getElementById('out').innerHTML = 'Matching names: '
+                for(let i = 0; i < matches.length; i++){
+                    document.getElementById('out').innerHTML += matches[i] + ', '
+                }
+            }
+
+            function submit(){
+                
+            }
+
+            function giveData(){
+                document.getElementById("out2").innerHTML = '';
+                document.getElementById("out2").innerHTML += 'Easy questions: ' + questions.easy.length + '<br>';
+                document.getElementById("out2").innerHTML += 'Medium questions: ' + questions.medium.length + '<br>';
+                document.getElementById("out2").innerHTML += 'Hard questions: ' + questions.hard.length + '<br>';
+                let categories = {};
+                for(let i = 0; i < questions.easy.length; i++){
+                    if(typeof categories[questions.easy[i].category] == 'undefined'){
+                        categories[questions.easy[i].category] = 0;
+                    }
+                    else {
+                        categories[questions.easy[i].category]++;
+                    }
+                }
+                for(let i = 0; i < questions.medium.length; i++){
+                    if(typeof categories[questions.medium[i].category] == 'undefined'){
+                        categories[questions.medium[i].category] = 0;
+                    }
+                    else {
+                        categories[questions.medium[i].category]++;
+                    }
+                }
+                for(let i = 0; i < questions.hard.length; i++){
+                    if(typeof categories[questions.hard[i].category] == 'undefined'){
+                        categories[questions.hard[i].category] = 0;
+                    }
+                    else {
+                        categories[questions.hard[i].category]++;
+                    }
+                }
+                document.getElementById("out2").innerHTML += '<br><b>Categories: </b><br>'
+                for (var key in categories) {
+                    if (categories.hasOwnProperty(key)) {
+                        document.getElementById("out2").innerHTML += key + ' - ' + categories[key] + '<br>';
+                    }
+                }
+                console.log(categories);
+            }
+            window.onload = giveData;
+
+            function levenshteinDistance(str1, str2){
+                const track = Array(str2.length + 1).fill(null).map(() =>
+                Array(str1.length + 1).fill(null));
+                for (let i = 0; i <= str1.length; i += 1) {
+                track[0][i] = i;
+                }
+                for (let j = 0; j <= str2.length; j += 1) {
+                track[j][0] = j;
+                }
+                for (let j = 1; j <= str2.length; j += 1) {
+                for (let i = 1; i <= str1.length; i += 1) {
+                    const indicator = str1[i - 1] === str2[j - 1] ? 0 : 1;
+                    track[j][i] = Math.min(
+                        track[j][i - 1] + 1, // deletion
+                        track[j - 1][i] + 1, // insertion
+                        track[j - 1][i - 1] + indicator, // substitution
+                    );
+                }
+                }
+                return track[str2.length][str1.length];
+            };
+        </script>
+        <script>var questions = {
+            easy: [
+                {category: "cartoon", name: "Rick and Morty", url: "https://i.postimg.cc/xC7BVwvP/rick-and-morty-watch-i50046.jpg"},
+                {category: "person", name: "Barack Obama", url: "https://i.postimg.cc/ZKnvMrWx/Official-portrait-of-Barack-Obama-cropped.jpg"},
+                {category: "furniture", name: "Chair", url: "https://i.postimg.cc/x8RG3YFj/Chair-1.jpg"},
+                {category: "TV Show", name: "Breaking Bad", url: "https://i.postimg.cc/Y0m86JBh/HD-wallpaper-breaking-bad-brba-breaking-bad-season-3-heisenberg-jesse-pinkman-sky-walter-white.jpg"},
+                {category: "country", name: "The United States of America", url: "https://i.postimg.cc/g08Y70yD/close-up-shot-of-an-american-flag-3e3eee-1600.jpg"},
+                {category: "app", name: "TikTok", url: "https://i.postimg.cc/t4DQfV8p/tiktok-icon2.png"},
+                {category: "game", name: "Fortnite", url: "https://i.postimg.cc/wvt4TtMK/1207.webp"},
+                {category: "person", name: "Donald Trump", url: "https://i.postimg.cc/xT9rgChY/Donald-Trump-by-Gage-Skidmore.jpg"},
+                {category: "animal", name: "Dog", url: "https://i.postimg.cc/6pdLkXHt/image.jpg"},
+                {category: "animal", name: "Cat", url: "https://i.postimg.cc/fWx1DJ80/photo-1529778873920-4da4926a72c2-ixlib-rb-1-2.jpg"},
+                {category: "brand", name: "Ferrari", url: "https://i.postimg.cc/bJx5JCfk/logo-Ferrari.jpg"},
+                {category: "planet", name: "Jupiter", url: "https://i.postimg.cc/cHqCq6LJ/28284959668-650c93fb69-b.jpg"},
+                {category: "monument", name: "The Eiffel Tower", url: "https://i.postimg.cc/0jKrhmpr/Eiffel-tower-paris-france.jpg"},
+                {category: "object", name: "Map", url: "https://i.postimg.cc/wjwyy6Tq/pexels-photo-1252500.jpg"},
+                {category: "app", name: "Twitter", url: "https://i.postimg.cc/Pf1CbbrF/social-media-twitter-logo-blue-isolated-free-vector.jpg"},
+                {category: "app", name: "Instagram", url: "https://i.postimg.cc/MHYZCDn6/instagram-icon-1057-2227.webp"},
+                {category: "game", name: "Stardew Valley", url: "https://i.postimg.cc/gkN0cmDG/maxresdefault.jpg"},
+                {category: "game", name: "Street Fighter", url: "https://i.postimg.cc/13xhGdML/5-1-1-1.jpg"},
+                {category: "animal", name: "Monkey", url: "https://i.postimg.cc/d36Rs3n8/monkey-bananav3.jpg"},
+                {category: "animal", name: "Gorilla", url: "https://i.postimg.cc/05hZNK8C/15452888118-d1f36db7fb-b.jpg"},
+                {category: "country", name: "France", url: "https://i.postimg.cc/QCDzHBDC/285049-2022x1348-french-flag-in-paris.jpg"},
+                {category: "character", name: "Darth Vader", url: "https://i.postimg.cc/X7x4wWpX/32461333995-087c9243f1-b.jpg"},
+                {category: "object", name: "Nail clippers", url: "https://i.postimg.cc/Sx8dBSCx/Nailclippers3.jpg"},
+                {category: "object", name: "Fork", url: "https://i.postimg.cc/85nLF9MY/35244123291-a9a9ba6f0c-b.jpg"},
+                {category: "object", name: "Spoon", url: "https://i.postimg.cc/rpx2hR8y/1733617229-a77bfacb6d-c.jpg"},
+                {category: "person", name: "Martin Luther King Jr.", url: "https://i.postimg.cc/FKnBm9Dd/Martin-luther-king-2-cropped.jpg"},
+                {category: "animal", name: "Rabbit", url: "https://i.postimg.cc/vZBV69WK/87132-2x3.webp"},
+                {category: "animal", name: "Guinea Pig", url: "https://i.postimg.cc/6pgy2P67/Basic-Guinea-Pig-Care.jpg"},
+                {category: "animal", name: "Elephant", url: "https://i.postimg.cc/xTW2KVHS/6987533681-2112daf5ea-b.jpg"},
+                {category: "animal", name: "Zebra", url: "https://i.postimg.cc/qqzP31vR/plains-zebra-thumb-3x4.webp"},
+                {category: "animal", name: "Giraffe", url: "https://i.postimg.cc/76QcwSny/pexels-photo-6404790.jpg"},
+                {category: "animal", name: "Tiger", url: "https://i.postimg.cc/HWrW52KX/Medium-WW226367.jpg"},
+                {category: "animal", name: "Koala", url: "https://i.postimg.cc/0y09xHMR/Some-image-width-800-25af59c.jpg"},
+                {category: "animal", name: "Bald Eagle", url: "https://i.postimg.cc/fTxNjgvt/Bald-eagle-Adult.jpg"},
+                {category: "animal", name: "Snake", url: "https://i.postimg.cc/7ZYWGBty/How-to-Avoid-Snakes-Slithering-Up-Your-Toilet-shutterstock-780480850-1.jpg"},
+                {category: "animal", name: "Dolphin", url: "https://i.postimg.cc/RFrdRGdh/Dolphin-fasting.jpg"},
+                {category: "animal", name: "Kangaroo", url: "https://i.postimg.cc/5NtB8ZJp/1928593646-7d234c9f28-b.jpg"},
+                {category: "animal", name: "Bear", url: "https://i.postimg.cc/Bnr29bKw/2010-brown-bear.jpg"},
+                {category: "movie ", name: "Star Wars", url: "https://i.postimg.cc/zXmjYdYk/hero-the-history-of-star-wars-movies.jpg"},
+                {category: "animal", name: "Owl", url: "https://i.postimg.cc/hvLGH4VT/1200px-Bubo-virginianus-06.jpg"},
+                {category: "animal", name: "Horse", url: "https://i.postimg.cc/9zHWp6S0/photo-1598974357801-cbca100e65d3-ixlib-rb-1-2.jpg"},
+                {category: "animal", name: "Donkey", url: "https://i.postimg.cc/Sxps79Fd/World-Donkey-Day-jpg.webp"},
+                {category: "animal", name: "Duck", url: "https://i.postimg.cc/cHz27fjL/Male-mallard-duck-2.jpg"},
+                {category: "animal", name: "Goat", url: "https://i.postimg.cc/5Nzd3kfd/Hausziege-04.jpg"},
+                {category: "planet", name: "Mars", url: "https://i.postimg.cc/zBpW4j5q/mars.jpg"},
+                {category: "planet", name: "Saturn", url: "https://i.postimg.cc/G3JSmw3p/image.jpg"},
+                {category: "anime", name: "Naruto Shippuden", url: "https://i.postimg.cc/qMfpCsgL/naruto-shippuden-anime.jpg"},//Naruto can work less points ill add this sign (-)//
+                {category: "anime", name: "Death Note", url: "https://i.postimg.cc/7YPhwQrN/image.jpg"},
+                {category: "anime", name: "My Hero Academia", url: "https://i.postimg.cc/pX9NfDfH/5121872-043974e0-8c3c-42fb-95f1-11b11c3a3a30.jpg"},
+                {category: "anime", name: "One Punch Man", url: "https://i.postimg.cc/FFd2VKvC/affiche-370x0.jpg"},
+                {category: "anime", name: "Your Name", url: "https://i.postimg.cc/brgQdDvV/image.jpg"},
+                {category: "anime", name: "Howl's Moving Castle", url: "https://i.postimg.cc/RF6SNjVk/il-570x-N-2710747754-8ayc.webp"},
+                {category: "cartoon", name:"The Simpsons", url: "https://i.postimg.cc/kGGx6Mtn/fox-the-simpsons-1420x798.jpg"},
+                {category: "cartoon", name: "Paw Patrol", url: "https://i.postimg.cc/jSc372Df/1200x675mf.jpg"},
+                {category: "cartoon", name: "Tom and Jerry", url: "https://i.postimg.cc/wv4dcF3h/37c2eee04ebc3b45d27003352e82acf0-wallpaper-for-phone-cartoon-wallpaper.jpg"},
+                {category: "person", name: "Joaquin Phoenix", url: "https://i.postimg.cc/DZ48GWwy/LTIy-NDMuan-Bl-Zw.jpg"},
+                {category: "person", name: "Taylor Swift", url: "https://i.postimg.cc/fynmR4hL/taylor-swift-3664.jpg"},
+                {category: "person", name: "Rihanna", url: "https://i.postimg.cc/52SZb1LP/Rihanna.jpg"},
+                {category: "person", name: "Beyonce", url: "https://i.postimg.cc/rm4PKL7R/beyonce-press-2022-cr-parkwood-entertaiment-billboard-1548.jpg"},
+                {category: "person", name: "Drake", url: "https://i.postimg.cc/sgqP1HSt/rs-1200x1200-201012052848-1200-Drake-Euphoria-Aubrey-Drake-Graham-ch-101220.jpg"},
+                {category: "person", name: "The Weekend", url: "https://i.postimg.cc/tJFPZ93f/rs-1200x1200-210207174748-1200-the-weeknd-super-bowl-2021-ct.webp"},
+                {category: "person", name: "Ariana Grande", url: "https://i.postimg.cc/g2ZNWLBy/24-JPGRANDE1-super-Jumbo.jpg"},
+                {category: "person", name: "Elon Musk", url: "https://i.postimg.cc/s2pzvX17/1200px-Elon-Musk-Royal-Society-crop2.jpg"},
+                {category: "person", name: "Selena Gomez", url: "https://i.postimg.cc/ZRsjF8MN/newFile.jpg"},
+                {category: "person", name: "Justin Bieber", url: "https://i.postimg.cc/NMbJ5qtQ/singer-songwriter-justin-bieber-attends-the-2014-young-news-photo-452816022-1543262087.jpg"},
+                {category: "person", name: "Cristiano Ronaldo", url: "https://i.postimg.cc/v8XPPRcW/cd559663f19a01c3f2588133067a06ef.jpg"},
+                {category: "person", name: "Dwayne Johnson", url: "https://i.postimg.cc/KYrw7Jwj/00-tout-the-rock.jpg"},
+                {category: "person", name: "Tom Hanks", url: "https://i.postimg.cc/RhBc1x6J/Tom-hanks.jpg"},
+                {category: "person", name: "Eminem", url: "https://i.postimg.cc/JnfGZNFT/eminem-photo-by-dave-j-hogan-getty-images-entertainment-getty-187596325.jpg"},
+                {category: "TV Show", name: "The Big Bang Theory", url: "https://i.postimg.cc/yddbc9RS/142694.jpg"},
+                {category: "TV Show", name: "Euphoria", url: "https://i.postimg.cc/jj7ynSg4/zendaya-en-euphoria-6862.jpg"},
+                {category: "TV Show", name: "The Office", url: "https://i.postimg.cc/1z5HjqHR/office-leaving-netflix.png"},
+                {category: "TV Show", name: "Malcolm in the Middle", url: "https://i.postimg.cc/0y9F9rfF/image.jpg"}, //Malcolm (-)//
+                {category: "TV Show", name: "Lucifer", url: "https://i.postimg.cc/mkzVS1sX/MV5-BOWFj-Mm-E5-Mzgt-ZTFh-OS00-M2-Uz-LWEy-MGUt-Zj-Ix-ZDFi-Zj-I5-Nj-Qw-Xk-Ey-Xk-Fqc-Gde-QXVy-MTYz-MDM0-NTU-V1.jpg"},
+                {category: "TV Show", name: "Squid game", url: "https://i.postimg.cc/W4cH5nWB/5ZHq1PK.png"},
+                {category: "animal", name: "Cheetah", url: "https://i.postimg.cc/Kcr6KdYd/23517432926-735329bbcc-b.jpg"},
+                {category: "app", name: "WhatsApp", url: "https://i.postimg.cc/Gh6Z8YD5/original.jpg"},
+                {category: "app", name: "Steam", url: "https://i.postimg.cc/tJcWC9YL/steam-logo-blurred-background.jpg"},
+                {category: "app", name: "Twitch", url: "https://i.postimg.cc/XvZJ49w7/21k-Rx-CJs-UL.png"},
+                {category: "brand", name: "Amazon", url: "https://i.postimg.cc/FHk5Kpnq/amazon-600.png"},
+                {category: "brand", name: "eBay", url: "https://i.postimg.cc/02s1N7q2/VCT3-V3-ACA5-DI7-A2-QNCC2-GSNOW4.jpg"},
+                {category: "brand", name: "BMW", url: "https://i.postimg.cc/mDk28CrG/23bmw1-mobile-Master-At3x.jpg"},
+                {category: "brand", name: "Adidas", url: "https://cdn.britannica.com/94/193794-050-0FB7060D/Adidas-logo.jpg"},
+                {category: "brand", name: "Nike", url: "https://i.postimg.cc/CLcNBVfr/nike-voguebus-Edward-Berthelot-Getty-Images-feb-21-story.jpg"},
+                {category: "brand", name: "Starbucks", url: "https://i.postimg.cc/G2sLYr2F/1481130851-7484.webp"},
+                {category: "country", name: "Japan", url: "https://i.postimg.cc/d3pG6JmJ/colton-jones-p8-URGduy-Eg-unsplash-scaled.jpg"},
+                {category: "country", name: "Egypt", url: "https://i.postimg.cc/FK6Cfk7K/cairo-egypt-03.jpg"},
+                {category: "country", name: "Canada", url: "https://i.postimg.cc/gJQ0BsrP/Canada-Flag-Lake-Louise-1024x683.jpg"},
+                {category: "country", name: "China", url: "https://i.postimg.cc/Y2RngP4V/photo-1589889353869-b0c95b307770-ixlib-rb-1-2.jpg"},
+                {category: "country", name: "India", url: "https://i.postimg.cc/zDpNB0qD/Indian-National-Flag-What-every-Indian-citizen-must-know.webp"},
+                {category: "game", name: "Minecraft", url: "https://i.postimg.cc/gjKtMSkM/c82a607ee93697da806c5263dac3741e-minecraft-account-minecraft-stuff.jpg"},
+                {category: "objet", name: "Laptop", url: "https://i.postimg.cc/05hW8mLW/149624-laptops-review-hands-on-microsoft-surface-laptop-3-13-5-inch-review-image1-ndijeqz6fw.jpg"}, 
+                {category: "objet", name: "Towel", url: "https://i.postimg.cc/KcT7DWHf/sojao-organic-cotton-white-bath-towels-on-green-wall-2400-800x800-crop-center.jpg"},
+                {category: "game", name: "Valorant", url: "https://i.postimg.cc/Jh6GppYc/3911016.png"},
+                {category: "game", name: "Pac-man", url: "https://i.postimg.cc/brXY5Wxb/pacman.jpg"},
+                {category: "game", name: "League of Legends", url: "https://i.postimg.cc/1XnSyHHS/123.png"}, //lol(--)
+                {category: "movie", name: "The Godfather", url: "https://i.postimg.cc/RV5Bf2L5/im-504443-width-1280-size-1.jpg"},
+                {category: "movie", name: "Rocky", url: "https://i.postimg.cc/kMst1rf8/3182354-4232773939-nintc.jpg"},
+                {category: "movie", name: "Fast and Furious", url: "https://i.postimg.cc/CKyxmJ89/1897949.jpg"},
+                {category: "movie", name: "Inception", url: "https://i.postimg.cc/CKyxmJ89/1897949.jpg"},
+                {category: "movie", name: "Terminator", url: "https://i.postimg.cc/c49pxH4m/9a0ea537a08e2fb2c23f84a96af5f04a.jpg"},
+                {category: "movie", name: "The Matrix", url: "https://i.postimg.cc/tgYPKBvk/8dbf298e769b82476c82d2268e081b11.jpg"},
+                {category: "movie", name: "Harry Potter", url: "https://i.postimg.cc/MGS24LG2/Harry-Potter-8k-Wallpaper.jpg"},
+                {category: "movie", name: "Forrest Gump", url: "https://i.postimg.cc/pT7t0Lhk/ebfddd10d2616d6b5226598293f4a65c.jpg"},
+            ],
+            medium: [
+                {category: "anime", name: "Spirited Away", url: "https://i.postimg.cc/ydTnvFDz/25007888619-1bc2f8c199-b.jpg"},
+                {category: "person", name: "Doja Cat", url: "https://i.postimg.cc/Kz0x40mX/Doja-Cat-Elvis.jpg"},
+                {category: "furniture", name: "Coffee table", url: "https://i.postimg.cc/X75QpGW3/ss19-h-frmcof.png"},
+                {category: "TV Show", name: "Stranger Things", url: "https://i.postimg.cc/D0FVJXwN/Phillips-Stranger-Things-Kids-S3.jpg"},
+                {category: "country", name: "Sweden", url: "https://i.postimg.cc/Jzcx5ft2/1200px-Flag-of-Sweden-svg.png"},
+                {category: "brand", name: "PlayStation", url: "https://i.postimg.cc/wBqVfwmT/La-derniere-mise-a-jour-de-Sony-garantit-que-les-1200x1200.jpg"},
+                {category: "game", name: "Rocket League", url: "https://i.postimg.cc/LsxVrjtk/rl-home-f2p-launch-cross-square-10016.jpg"},
+                {category: "cartoon", name: "My Little Pony", url: "https://i.postimg.cc/hGZwRXTm/290941.jpg"},
+                {category: "dog breed", name: "Golden Retriever", url: "https://i.postimg.cc/g0jD1GDx/golden-retriever-dog-breed-info.jpg"},
+                {category: "object", name: "Black Hole", url: "https://i.postimg.cc/g04psJL5/49935923702-e808c60963-b.jpg"},
+                {category: "object", name: "Water slide", url: "https://i.postimg.cc/CLMQCNsF/10521599566-c7921aa65f-b.jpg"},
+                {category: "object", name: "Rubiks Cube", url: "https://i.postimg.cc/6qfNmpyF/Rubiks-Cube-11913436786.jpg"},
+                {category: "game", name: "Factorio", url: "https://i.postimg.cc/1R2Rn8Q5/Screen-Shot-2018-10-03-at-5-25-28-PM.png"},
+                {category: "game", name: "The Witcher 3", url: "https://i.postimg.cc/bv48G57V/Games-The-Witcher-3-Wild-Hunt-They-messed-with-the-wrong-person-RGB.jpg"},
+                {category: "person", name: "Emmanuel Macron", url: "https://i.postimg.cc/gjJGnBmn/104510929-emmanuel-macron.jpg"},
+                {category: "game", name: "Starcraft 2", url: "https://i.postimg.cc/V5yynx5N/IcltHtX.png"},
+                {category: "person", name: "John F. Kennedy", url: "https://i.postimg.cc/85b5001C/John-F-Kennedy.jpg"},
+                {category: "event", name: "Rodeo", url: "https://i.postimg.cc/0N86YSRm/rodeo-action-at-the-cheyenne-frontier-days-celebration-in-wyomings-capital-c6127b-1024.jpg"},
+                {category: "programming language", name: "Javascript", url: "https://i.postimg.cc/k4hrGQsc/javascript.png"},
+                {category: "programming language", name: "Java", url: "https://i.postimg.cc/qq89LP0m/Java-Emblem.jpg"},
+                {category: "operating system", name: "Linux", url: "https://i.postimg.cc/TPMn8BXj/linux-tux-hero-2.jpg"},
+                {category: "animal", name: "sea turtle", url: "https://i0.wp.com/eos.org/wp-content/uploads/2021/04/loggerhead.jpg?fit=820%2C615"},
+                {category: "person", name: "Freddie Mercury", url: "https://i.postimg.cc/CL4G8S9R/Freddie-Mercury-Live-Aid-Queen-Wembley-Stadium-July-13-1985.jpg"},
+                {category: "dog breed", name: "Poodle", url: "https://i.postimg.cc/xjLftCf1/poodle-medium-standard1.jpg"},
+                {category: "dog breed", name: "German Shepherd", url: "https://i.postimg.cc/wMgSW921/German-Shepherd-Health-Panel-600px.jpg"},
+                {category: "animal", name: "Red Panda", url: "https://i.postimg.cc/QtWCJJt6/Red-Panda-Gizmo-004-Birmingham-Zoo-4-3-21-scaled.jpg"},
+                {category: "animal", name: "Chimpanzee", url: "https://i.postimg.cc/T1gyfJvy/new-website-story-banners-7.jpg"},
+                {category: "dog breed", name: "Chihuahua", url: "https://i.postimg.cc/9XbSm51B/chihuahua.jpg"},
+                {category: "planet", name: "Venus", url: "https://i.postimg.cc/G3JSmw3p/image.jpg"},
+                {category: "planet", name: "Uranus", url: "https://i.postimg.cc/dthdSrfK/0x0.jpg"},
+                {category: "planet", name: "Neptune", url: "https://i.postimg.cc/BnW8YyDx/neptune-stars-ian-mckinnell.jpg"},
+                {category: "planet", name: "Mercury", url: "https://i.postimg.cc/hPswpFNY/01-mercury-pia15190-orig.webp"},
+                {category: "person", name: "Edward Snowden", url: "https://i.postimg.cc/N06JZ1ZM/MV5-BZj-Ew-Zm-Iy-Zj-Qt-ZDc2-MS00-Mzdi-LTk5-OTYt-MWE5-Nz-Vj-Nj-E4-MWFm-Xk-Ey-Xk-Fqc-Gde-QXVy-NDkz-NTM2-ODg-V1.jpg"},
+                {category: "person", name: "Mr. Beast", url: "https://i.postimg.cc/7PjB4G72/MrBeast.png"},
+                {category: "character", name: "Ashe", url: "https://i.postimg.cc/LXWvFB5j/15139.jpg"},
+                {category: "anime", name: "Jojo's Bizarre Adventure", url: "https://i.postimg.cc/QtWXZ7rv/HD-wallpaper-crazy-noizy-bizzare-anime-crazydiamond-jojo-jojo-bizarre-adventures-jojos-bizarre-adven.jpg"}, //jojo (-)
+                {category: "anime", name: "Boruto", url: "https://i.postimg.cc/9Q8V4bmv/HD-wallpaper-boruto-uzumaki-sky-blue-sky-moon-sunrise-sunset-boruto-the-next-generations-birds-anime.jpg"},
+                {category: "anime", name: "One Piece", url: "https://i.postimg.cc/PqvGCkFw/222382.jpg"},
+                {category: "anime", name: "Grave of the Fireflies", url: "https://i.postimg.cc/7PMFG9Xm/4388d968d1e74147a277f339cba533dd.jpg"},
+                {category: "anime", name: "My Neighbor Totoro", url: "https://i.postimg.cc/6pHMjVdL/unnamed-32.jpg"},
+                {category: "anime", name: "Kiki's Delivery Service", url: "https://i.postimg.cc/G2jX27rD/XROpDY.jpg"}, //kiki (-)
+                {category: "cartoon", name: "American Dad", url: "https://i.postimg.cc/kMpxc3j4/1685617615-The-Smith-Family-american-dad-21921979-1280-800.jpg"},
+                {category: "cartoon", name: "Oggy and the Cockroaches", url: "https://i.postimg.cc/nMfrPkjd/19-196082-oggy-and-the-cockroaches.jpg"}, //oggy (--)//
+                {category: "cartoon", name: "Ben 10", url: "https://i.postimg.cc/7Yr3CvmT/ben-10-aliens-ben-10-alien-force-aliens-25053345-1729-2362.jpg"},
+                {category: "cartoon", name: "Totally Spies", url: "https://i.postimg.cc/KY7S2hqr/d8fbecad8c03b43cd6b2564addcb5e6d.jpg"},
+                {category: "person", name: "Priyanka Chopra", url: "https://i.postimg.cc/7LkdXQHC/image.jpg"},
+                {category: "person", name: "Demi Lovato", url: "https://i.postimg.cc/6pvTCTqW/21-DEMI-LOVATO-promo-new-medium-Square-At3-X-v2.jpg"},
+                {category: "person", name: "Chris Brown", url: "https://i.postimg.cc/cChfyCwy/ea1c243d529bcd5df9d5b87868c9cb3861-01-chris-brown-rvertical-w330.jpg"},
+                {category: "person", name: "J. Cole", url: "https://i.postimg.cc/qqqvqvWd/J-Cole2.jpg"},
+                {category: "person", name: "Childish Gambino", url: "https://i.postimg.cc/kn4Hc8vX/image.jpg"}, //Donald Glover (=)//
+                {category: "person", name: "Kendall Jenner", url: "https://i.postimg.cc/7wt0z2hN/kendall-jenner.jpg"},
+                {category: "person", name: "Celine Dion", url: "https://i.postimg.cc/fMgG1BL0/celine-dion-cancer-alzheimer-proche-star-dit-plus-sur-son-etat-sante-1-273x410.jpg"},
+                {category: "person", name: "Tiger Woods", url: "https://i.postimg.cc/9VKqFjnx/106854722-1615913058389-gettyimages-1292253394-a53i3760-2020122094036509.jpg"},
+                {category: "TV Show", name: "The Fresh Prince of Bel-Air", url: "https://i.postimg.cc/HWZzjvFw/2d4ddca6-087a-4ff4-9097-678761823bab-1-ad173dd0a21c1f84f7aecbec0989fba7.jpg"}, //Prince of Bel-Air (-)//
+                {category: "TV Show", name: "Peaky Blinders", url: "https://i.postimg.cc/4N7X0dcr/39b8038fe9d475b1cf9396146f2f3ce6.jpg"},
+                {category: "TV Show", name: "The Witcher", url: "https://i.postimg.cc/vM6hLyCn/henry-cavill-the-witcher-season-2-1639401516.jpg"},
+                {category: "TV Show", name: "The Queen's Gambit", url: "https://thebishopstower.com/wp-content/uploads/2021/02/queens-gambit.jpg"},
+                {category: "TV Show", name: "Dark", url: "https://i.postimg.cc/FhJhh76R/dark-jonas.jpg"},
+                {category: "TV Show", name: "Blacklist", url: "https://i.postimg.cc/np2NCqmh/The-Blacklist-682-682-341-int-c1-c-c-1.jpg"},
+                {category: "TV Show", name: "13 Reasons Why", url: "https://i.postimg.cc/Y7TZwdH1/1268964.jpg"},
+                {category: "animal", name: "Seahorse", url: "https://i.postimg.cc/LRdCWhtD/Seahorse-female.jpg"},
+                {category: "animal", name: "Panther", url: "https://i.postimg.cc/MW55zJrP/10403-2.jpg"},
+                {category: "app", name: "Zoom", url: "https://i.postimg.cc/3Y7xMMm0/ZOOM-Login-Page.jpg"},
+                {category: "app", name: "Telegram", url: "https://i.postimg.cc/MzhVGfKr/image.jpg"},
+                {category: "app", name: "Capcut", url: "https://i.postimg.cc/sjJhKnPt/0b85274abebcf3898ed229539a0edf13.jpg"},
+                {category: "brand", name: "AliExpress", url: "https://i.postimg.cc/mbgkBb76/ajudaencontrar-codigo-aliexpress.png"},
+                {category: "brand", name: "Shein", url: "https://i.postimg.cc/jxGSHPmG/107089064-1657829516623-gettyimages-1400695652-europapress-4496010-two-people-hold-two-shein-bags-en.jpg"},
+                {category: "brand", name: "UPS", url: "https://i.postimg.cc/6wnWs7Dp/About-Card380x280-Atl-Fuel.jpg"},
+                {category: "brand", name: "Levi's", url: "https://i.postimg.cc/8Thnd6Xx/105807164-1553192308689gettyimages-1131844055.jpg"},
+                {category: "country", name: "Ireland", url: "https://i.postimg.cc/y1XVwxNG/Irish-flag-waving-in-the-wind-in-the-early-morning.jpg"},
+                {category: "Country", name: "Algeria", url: "https://i.postimg.cc/WNRG5WDn/16-Algeria.jpg"},
+                {category: "Country", name: "Iraq", url: "https://i.postimg.cc/GrvCgHfJ/289eda58df757c634094b59760fc7055.jpg"},
+                {category: "country", name: "South Korea", url: "https://i.postimg.cc/pWWPDxWM/south-korea-flag-std.jpg"},
+                {category: "Country", name: "Switzerland", url: "https://i.postimg.cc/BsfV7NHt/photo-1618493075021-1bbe5deebedf-ixlib-rb-1-2.jpg"},
+                {category: "game", name: "Tetris", url: "https://i.postimg.cc/QX9jmS50/640px-Typical-Tetris-Game-svg.png"},
+                {category: "game", name: "Red Dead Redemption", url: "https://i.postimg.cc/fZM6TBLp/w6-Me-Y2-GVk-Nphp-Yj-FX9-V3-TX.jpg"},
+                {category: "game", name: "Overwatch", url: "https://i.postimg.cc/DF9ngRPD/maxresdefault.jpg"},
+                {category: "game", name: "Animal Crossing", url: "https://i.postimg.cc/XVM5tjcS/animal-crossing-new-horizons-january-artwork-ultra-resolution-banner-790x420.jpg"},
+                {category: "game", name: "The Sims", url: "https://i.postimg.cc/vbhMp3rQ/the-sims-4-keyart-jpg-adapt-crop1x1-767p.jpg"},
+                {category: "game", name: "Roblox", url: "https://i.postimg.cc/mRr0PBCG/LC-Scene-02-1024x576.png"},
+                {category: "game", name: "PUBG", url: "https://i.postimg.cc/Mzz0GKf7/bee290e0-6885-40cd-9a6e-fbb9751ed66e.jpg"},
+                {category: "game", name: "The Last of Us", url: "https://i.postimg.cc/xfLqHMWc/lastof-8565.jpg"},
+                {category: "movie", name: "The Dark Knight", url: "https://i.postimg.cc/9XV0Bzh1/the-dark-knight-batman-joker.jpg"},
+                {category: "movie", name: "Pulp Fiction", url: "https://i.postimg.cc/5bDdcTHW/yojemv6t1nfucjtdopii.jpg"},
+                {category: "movie", name: "The Truman Show", url: "https://i.postimg.cc/ZZMKRf9V/image.webp"},
+                {category: "movie", name: "Ghostbusters", url: "https://i.postimg.cc/JRQfyn6M/ghostbusters-04.jpg"},
+                {category: "movie", name: "El Camino", url: "https://i.postimg.cc/4GjSxVfp/El-Camino-Jesse-Netflix.jpg"},
+                {category: "movie", name: "Train to Busan", url: "https://i.postimg.cc/VzTjW9HR/tain-to-busan.jpg"},
+                {category: "movie", name: "Jurassic Park", url: "https://i.postimg.cc/LRRjD8vr/jurassic-park-watching-article-Large-v2.jpg"},
+                {category: "movie", name: "Django Unchained", url: "https://i.postimg.cc/ZTHvDrw2/image.jpg"},
+                {category: "object", name: "Coat", url: "https://i.postimg.cc/hK9CyPN6/27062883-08-B.jpg"},
+                {category: "game", name: "Dark Souls", url: "https://i.postimg.cc/mbL07Hh8/maxresdefault.jpg"},
+                {category: "game", name: "Counter Strike", url: "https://i.postimg.cc/Tfc0gHmv/Counter-Strike-Global-Offensive-5.webp"},
+                {category: "game", name: "Garry's Mod", url: "https://i.postimg.cc/7Dn0WJLg/steamaltergifteu-key-name-eu-steam-altergift-large.png"},
+                {category: "game", name: "Terraria", url: "https://i.postimg.cc/gdm68cKr/138083434951.jpg"},
+                {category: "object", name: "Screwdriver", url: "https://i.postimg.cc/wqttQ1sK/STHT60783-1.jpg"},
+                {category: "object", name: "Microphone", url: "https://i.postimg.cc/LmrG87Bz/image.jpg"},
+            ],
+            hard: [
+                {category: "person", name: "Elton John", url: "https://i.postimg.cc/9X7nqNPv/Elton-John-Cannes-2019.jpg"},
+                {category: "architecture", name: "Veranda", url: "https://i.postimg.cc/yYTnmqDr/1200px-Grande-Verandah.jpg"},
+                {category: "TV Show", name: "Better Call Saul", url: "https://i.postimg.cc/SKGyqxRf/better-call-saul-y-como-el-final-se-revela-en-breaking-bad.jpg"},
+                {category: "country", name: "Kazakhstan", url: "https://i.postimg.cc/6prKLprx/1000px-Flag-of-Kazakhstan-svg.png"},
+                {category: "operating system", name: "Ubuntu", url: "https://i.postimg.cc/d11KYRzJ/1200px-Logo-ubuntu-cof-orange-hex-svg.png"},
+                {category: "movie", name: "1984", url: "https://i.postimg.cc/fLZftBwh/Rosen-1984.jpg"},
+                {category: "dog breed", name: "Doberman", url: "https://i.postimg.cc/Y96VXpRJ/44444.jpg"},
+                {category: "app", name: "Facebook Messenger", url: "https://i.postimg.cc/GmTt2vNQ/image.jpg"},
+                {category: "person", name: "Malala Yousafzai", url: "https://i.postimg.cc/3rktj599/Malala-Yousafzai-cropped.jpg"},
+                {category: "programming language", name: "Ruby", url: "https://i.postimg.cc/L6PXd547/flat-750x1000-075-f-u6.jpg"},
+                {category: "programming language", name: "Scala", url: "https://i.postimg.cc/NMWKTHf6/scala-490x490.webp"},
+                {category: "person", name: "Lewis Hamilton", url: "https://i.postimg.cc/1z8RH3dJ/640px-Lewis-Hamilton-2016-Malaysia-2.jpg"},
+                {category: "person", name: "Max Verstappen", url: "https://i.postimg.cc/8ctx9hJW/XPB-1126234-Hi-Res.jpg"},
+                {category: "person", name: "Sandra Bullock", url: "https://i.postimg.cc/m21S0YHs/image.jpg"},
+                {category: "game", name: "Detroit Become Human", url: "https://i.postimg.cc/hGv1g6yf/1280x720.jpg"},
+                {category: "animal", name: "Axolotl", url: "https://i.postimg.cc/0yn1hMF9/baby-axolotl.jpg"},
+                {category: "object", name: "The Hubble Telescope", url: "https://i.postimg.cc/0yrtnzY6/hubble-space-telescope-0420221.jpg"},
+                {category: "anime", name: "Yu-Gi-Oh", url: "https://i.postimg.cc/pxmyD9FW/yugioh.jpg"},
+                {category: "anime", name: "Violet Evergarden", url: "https://i.postimg.cc/qkKjhBxj/MV5-BYTJm-Nzc5-YTEt-NTBm-Ny00-Ym-Ux-LWFl-Nzkt-Yj-Zj-MTg3-OGY3-ZDhk-Xk-Ey-Xk-Fqc-Gde-QXVy-Mz-Uz-Mzgx-NA-V1.jpg"},
+                {category: "anime", name: "Cowboy Bebop", url: "https://i.postimg.cc/tXb26Qvb/image-w1280.jpg"},
+                {category: "anime", name: "Jujutsu Kaisen", url: "https://i.postimg.cc/WTJnfbQj/NEOBK-2655364.jpg"},
+                {category: "anime", name: "Fullmetal Achemist", url: "https://i.postimg.cc/HdxGJ5cz/e4aec5405948deb11aac1373e81dd72e.jpg"}, //fullmetal(-)//
+                {category: "anime", name: "Your Lie in April", url: "https://i.postimg.cc/HYhNXv7t/image.jpg"},
+                {category: "anime", name: "Porco Rosso", url: "https://i.postimg.cc/sVZG3v4D/image.jpg"},
+                {category: "cartoon", name: "The Loud House", url: "https://i.postimg.cc/cZWtN1g0/1200x675mf.jpg"},
+                {category: "cartoon", name: "PJ Masks", url: "https://i.postimg.cc/2mTyRQN7/MV5-BYj-Rk-Mjk4-Mjgt-ODc4-ZS00-YTFj-LWEz-MTMt-M2-I1-ZWI5-Zm-Nm-ZDMx-Xk-Ey-Xk-Fqc-Gde-QXVy-ODg0-NDE2-NTI-V1.jpg"},
+                {category: "cartoon", name: "Inspector Gadget", url: "https://i.postimg.cc/2CLSZgb0/MV5-BMTY0-Nzgy-OTQ2-MV5-BMl5-Ban-Bn-Xk-Ft-ZTgw-OTcz-Nj-E4-MTI-V1.jpg"},
+                {category: "cartoon", name: "Asterix", url: "https://i.postimg.cc/csQ1DYcY/l064-7.png"},
+                {category: "cartoon", name: "Sonic X", url: "https://i.postimg.cc/zz8z4BdQ/image-w1280.jpg"}, 
+                {category: "cartoon", name: "Winx Club", url: "https://i.postimg.cc/mBJbBVXC/p186546-ce-h9-aa.jpg"},
+                {category: "cartoon", name: "Teen Titans", url: "https://i.postimg.cc/V1NrNGRV/p19815096-i-v13-ab.jpg"},
+                {category: "TV Show", name: "Parks and Recreation", url: "https://i.postimg.cc/NgYLvpFb/rs-600x600-200429084749-600-parks-and-rec-ch-042920.webp"},
+                {category: "TV Show", name: "Ted Lasso", url: "https://i.postimg.cc/cxPS0LTZ/url-https-california-times-brightspot-s3-amazonaws-com-c4-31-be85d8e64f8880c50feecc6b694d-ted-las.jpg"},
+                {category: "TV Show", name: "Saved by the Bell", url: "https://i.postimg.cc/Bs2yXpn2/ustv-saved-by-the-bell-season-1.jpg"},
+                {category: "TV Show", name: "All of us are dead", url: "https://i.postimg.cc/2kGZKgx4/All-Of-Us-Are-Dead.jpg"},
+                {category: "TV Show", name: "My Name", url: "https://i.postimg.cc/92bbSk08/04-myname-unit-002-1634743404.jpg"},
+                {category: "TV Show", name: "Ozark", url: "https://i.postimg.cc/8DT3fWJ3/ozark-season-4-review.jpg"},
+                {category: "TV Show", name: "Vicenzo", url: "https://i.postimg.cc/zz2c12zg/MV5-BYWIw-YTg2-Y2-Yt-Yz-Ew-Ny00-Y2-Y0-LWFk-Zjkt-Nj-Bl-MWZh-NDY2-NGE0-Xk-Ey-Xk-Fqc-Gde-QXVy-NDY5-Mj-My-NTg-V1.jpg"},
+                {category: "TV Show", name: "The Irishman", url: "https://i.postimg.cc/KZzWsyF2/MV5-BMGUy-M2-Zi-Zm-Ut-MWY0-OC00-NTQ4-LThk-OGUt-Nj-Y2-Njkz-MDJi-MWMw-Xk-Ey-Xk-Fqc-Gde-QXVy-Mz-Y0-MTE3-Nz-U-V1.jpg"},
+                {category: "animal", name: "Beluga", url: "https://i.postimg.cc/GrTvx38C/beluga-whale-webcam-9.jpg"},
+                {category: "animal", name: "Fennec Fox", url: "https://i.postimg.cc/2mvJ1DxH/62697a8dbb0bd-preview.jpg"},
+                {category: "animal", name: "Salamander", url: "https://i.postimg.cc/X3bqP9QQ/fire-salamander.jpg"},
+                {category: "animal", name: "Pelican", url: "https://i.postimg.cc/cZcsv20N/photo-1579109191035-dfa9544f8be1-ixlib-rb-1-2.jpg"},
+                {category: "animal", name: "Vulture", url: "https://i.postimg.cc/9V7H5kNh/vulture-hooded-Moru-SNP-POliver-2017-02.jpg"},
+                {category: "person", name: "Elizabeth 1", url: "https://i.postimg.cc/6wbVn9rr/queen-elizabeth-i-photo-by-ann-ronan-picturesprint-collectorgetty-images.jpg"}, // Elizabeth (-), same points if Elizabeth Tudor (=)//
+                {category: "person", name: "Napoleon Bonaparte", url: "https://i.postimg.cc/JrYLRy9Y/image.png"}, //Napoleon (-)//
+                {category: "person", name: "Stormzy", url: "https://i.postimg.cc/HHc7ybB2/image.jpg"},
+                {category: "person", name: "Andrew Tate", url: "https://i.postimg.cc/2rdMFcwF/image.png"},
+                {category: "person", name: "Shaquille O'neal", url: "https://i.postimg.cc/vb9gP9gv/6bb16-15398694878129-800.jpg"},
+                {category: "person", name: "Steven Spielberg", url: "https://i.postimg.cc/Sy5mFTHY/t-Zxcg19-YQ3e8f-J0p-Os7hjlnmmr6.jpg"},
+                {category: "person", name: "Floyd Mayweather Jr.", url: "https://i.postimg.cc/0P63h5Pn/21-BOXING1-1424480903046-article-Large.jpg"},
+                {category: "person", name: "Nikola Tesla", url: "https://i.postimg.cc/8TcC26s3/gettyimages-666932578.jpg"},
+                {category: "person", name: "Kevin Durant", url: "https://i.postimg.cc/xf2n1JT9/Kevin-Durant-Wizards-v-Warriors-1-24-2019-cropped.jpg"},
+                {category: "app", name: "Visual Studio Code", url: "https://i.postimg.cc/KZZyXX9Y/f7284e4eebc41b5fa9112954787eb4f7.png"},
+                {category: "app", name: "WeChat", url: "https://i.postimg.cc/TG5F4YR9/image.jpg"},
+                {category: "app", name: "KakaoTalk", url: "https://i.postimg.cc/5xkKsDTT/kakaotalk.jpg"},
+                {category: "brand", name: "Nokia", url: "https://i.postimg.cc/dwKHN2Ns/51-I0-Sh-KUt-L-AC.jpg"},
+                {category: "brand", name: "FedEx", url: "https://i.postimg.cc/hKN7MrMM/Fed-Ex-Dollar-General.jpg"},
+                {category: "brand", name: "Bugatti", url: "https://i.postimg.cc/xnDfsZSX/se-image-c4a9cdcf0a58353aa5323d397bde7f34.jpg"},
+                {category: "brand", name: "HSBC", url: "https://i.postimg.cc/KG3bfPq7/AFP-9-CH9-KK-1624290880390-1624290894160.webp"},
+                {category: "brand", name: "Nickelodeon", url: "https://i.postimg.cc/YrYVjbDP/ll01vtvpkovhzxhaxj3e.jpg"},
+                {category: "country", name: "Democratic Republic of the Congo", url: "https://i.postimg.cc/KF4f995h/drc.jpg"},
+                {category: "country", name: "Madagascar", url: "https://i.postimg.cc/jt0fzvgX/shutterstock-1115155292.jpg"},
+                {category: "country", name: "Kuweit", url: "https://i.postimg.cc/kqgmhPpX/1374113299901971720.jpg"},
+                {category: "country", name: "Iceland", url: "https://i.postimg.cc/4X4Q9By0/8463bc981454101466bdc841bd2c890c.jpg"},
+                {category: "country", name: "Wales", url: "https://i.postimg.cc/44Z9Txh0/Hba47271cc96b4293acc04a02b0b2464d-L.jpg"},
+                {category: "country", name: "Singapore", url: "https://i.postimg.cc/L9kJvF03/singapore-flag-std-1.jpg"},
+                {category: "game", name: "Nintendogs", url: "https://i.postimg.cc/PHKpLTYd/WWSM-Nintendogs.png"},
+                {category: "game", name: "Borderlands 2", url: "https://i.postimg.cc/B4PXwFyv/438220-borderlands-deal.jpg"},
+                {category: "movie", name: "There Will be Blood", url: "https://i.postimg.cc/Sy14hTYb/e5bfea18f0da8ab9e802743841a6c8c6.jpg"},
+                {category: "movie", name: "Goodfellas", url: "https://i.postimg.cc/Mq08TKfD/220526-ray-liotta-al-1218-332f49.jpg"},
+                {category: "movie", name: "12 Angry Men", url: "https://i.postimg.cc/6W4kN9NC/EB20020929-REVIEWS08209290301-AR.jpg"},
+                {category: "movie", name: "Apu", url: "https://i.postimg.cc/p24SCgnr/apu2.png"},
+                {category: "movie", name: "Parasite", url: "https://i.postimg.cc/GbSg3ZKK/image.jpg"},
+                {category: "movie", name: "Reservoir Dogs", url: "https://i.postimg.cc/9Vtxw41r/Shone-Reservoir-Dogs.jpg"},
+            ],
+        }</script>
+    </body>
+</html>
