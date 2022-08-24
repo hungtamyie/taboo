@@ -459,6 +459,12 @@ cache image {
     margin-bottom: 10rem;
 }
 
+.credits_thanks {
+    width: 60%;
+    line-height: 9rem;
+    font-size: 8rem;
+}
+
 .credits_line {
     width: 80%;
     height: 1rem;
