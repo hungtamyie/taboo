@@ -107,10 +107,10 @@ function startRoundTimer(startTimestamp, duration){
             else {
                 $("#timeBar").css('background', '#d01919');
             }*/
-            let gradient = [['#d01919', 0/duration], ['#fff221', 7/duration], ['#71E754', 10/duration]]
-            if(duration > 15){
-                gradient.push(['#71E754', 14/duration])
-                gradient.push(['#e721ff', 15/duration])
+            let gradient = [['#d01919', 0/duration], ['#fff221', 9/duration], ['#71E754', 13/duration]]
+            if(duration > 18){
+                gradient.push(['#71E754', 17/duration])
+                gradient.push(['#e721ff', 18/duration])
                 gradient.push(['#e721ff', 1])
             }
             else {
