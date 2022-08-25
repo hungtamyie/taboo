@@ -30,7 +30,7 @@ class GameLobby {
             currentTeam: 'A',
             currentRound: 0,
             bestGuess: '',
-            timeThisRound: 15,
+            timeThisRound: 18,
             guesses: {},
             questionPresentationOrder: [],
             currentQuestionIndex: 0,
@@ -97,7 +97,7 @@ class GameLobby {
                 if(currentQuestion.answered == 'no'){
                     this.sendEventToAllSockets('turn_given_up');
                 }
-                this.turnData.timeThisRound = 15;
+                this.turnData.timeThisRound = 18;
                 this.nextRound(false);
                 this.updateStateStartTimestamp()
                 this.sendUpdateToAllSockets()
@@ -121,7 +121,7 @@ class GameLobby {
         if(this.state == 'In Round' && currentQuestion.answered == 'no'){
             this.sendEventToAllSockets('turn_given_up');
             this.updateStateStartTimestamp()
-            this.turnData.timeThisRound = 15;
+            this.turnData.timeThisRound = 18;
             this.nextRound(false);
         }
     }
@@ -130,7 +130,7 @@ class GameLobby {
         if(this.state == 'In Round' && (currentQuestion.answered == 'yes' || currentQuestion.answered == 'half')){
             this.sendEventToAllSockets('turn_next');
             let extraTime = Math.floor(this.turnData.timeThisRound - ((Date.now() - this.stateStartTimestamp)/1000))
-            this.turnData.timeThisRound = 15 + extraTime;
+            this.turnData.timeThisRound = 18 + extraTime;
             this.updateStateStartTimestamp()
             this.nextRound(true, (5 + extraTime));
         }
@@ -236,7 +236,7 @@ class GameLobby {
         this.turnData.currentTeam = (this.turnData.currentTeam == 'A') ? 'B' : 'A';
         this.turnData.currentRound = 0;
         this.turnData.currentQuestion = 0;
-        this.turnData.timeThisRound = 15;
+        this.turnData.timeThisRound = 18;
         this.turnData.bestGuess = '';
         this.turnData.guesses = {};
         this.turnData.currentQuestionIndex = 0;
