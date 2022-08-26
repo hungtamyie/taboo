@@ -10,7 +10,7 @@ var sounds_to_load = [
     ['card', '../sounds/card.mp3', 0.5],
     ['gamestart', '../sounds/game_start.wav', 0.5],
     ['puzzledream', '../sounds/puzzledream.mp3', 0.12],
-    ['downthedrain', '../sounds/downthedrain.mp3', 0.15],
+    //['downthedrain', '../sounds/downthedrain.mp3', 0.15],
     ['fail', '../sounds/fail.wav', 0.7],
     ['full_win', '../sounds/full_win.mp3', 0.4],
     ['half_win', '../sounds/half_win.mp3', 0.4],

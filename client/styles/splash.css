@@ -18,6 +18,17 @@
     background-size: cover;
 }
 
+#bouncingGirl2 {
+    position: absolute;
+    width: 80rem;
+    height: 80rem;
+    top: -63rem;
+    left: 20rem;
+    z-index: 0;
+    background: url('../images/shushgirl.png');
+    background-size: cover;
+}
+
 #splashScreenText {
     width: 500rem;
     position: absolute;

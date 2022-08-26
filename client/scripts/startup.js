@@ -160,4 +160,3 @@ function bounceTick(){
         window.requestAnimationFrame(bounceTick);
     }
 }
-

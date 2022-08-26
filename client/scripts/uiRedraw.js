@@ -215,6 +215,10 @@ function redrawGameScreen(game){
         if(!amDescriber){
             if(myTeam == game.turnData.currentTeam && currentQuestion.answered != 'yes'){
                 $("#guessInputBox").css('display', 'block');
+                if (!$("#guessInputBox").is(":focus")) {
+                    $("#guessInputBox").focus()
+                    console.log('focusing')
+                }
                 $("#describeInputBox").css('display', 'none');
             }
             else {
@@ -466,6 +470,9 @@ function newChatMessage(data){
         backgroundClass = 'background_b';
         triangleClass = 'triangle_b';
         nameClass = 'name_background_b';
+    }
+    if(data.id != socket.id) {
+        triangleClass += ' triangle_left';
     }
     
     $("#answerBox").append('\

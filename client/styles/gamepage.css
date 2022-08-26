@@ -350,6 +350,11 @@
     transform: rotate(130deg);
 }
 
+.triangle_left {
+    left: 9.5rem !important;
+    transform: rotate(99deg) !important;
+}
+
 .guess_main_display_container {
     width: 100%;
     height: 100%;
