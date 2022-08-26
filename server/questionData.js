@@ -37,7 +37,7 @@ module.exports = {
         {category: "animal", name: "Dolphin", url: "https://i.postimg.cc/RFrdRGdh/Dolphin-fasting.jpg"},
         {category: "animal", name: "Kangaroo", url: "https://i.postimg.cc/5NtB8ZJp/1928593646-7d234c9f28-b.jpg"},
         {category: "animal", name: "Bear", url: "https://i.postimg.cc/Bnr29bKw/2010-brown-bear.jpg"},
-        {category: "movie ", name: "Star Wars", url: "https://i.postimg.cc/zXmjYdYk/hero-the-history-of-star-wars-movies.jpg"},
+        {category: "movie", name: "Star Wars", url: "https://i.postimg.cc/zXmjYdYk/hero-the-history-of-star-wars-movies.jpg"},
         {category: "animal", name: "Owl", url: "https://i.postimg.cc/hvLGH4VT/1200px-Bubo-virginianus-06.jpg"},
         {category: "animal", name: "Horse", url: "https://i.postimg.cc/9zHWp6S0/photo-1598974357801-cbca100e65d3-ixlib-rb-1-2.jpg"},
         {category: "animal", name: "Donkey", url: "https://i.postimg.cc/Sxps79Fd/World-Donkey-Day-jpg.webp"},

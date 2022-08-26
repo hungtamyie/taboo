@@ -77,7 +77,7 @@ function pauseMusic(){
 
 function unpauseMusic(){
     $('#musicBox').css('display', 'inline-block');
-    music.gainA.gain.linearRampToValueAtTime(musicVolume * sfxBoard['downthedrain'].volume, audioContext.currentTime + 2);
+    music.gainA.gain.linearRampToValueAtTime(musicVolume * sfxBoard['puzzledream'].volume, audioContext.currentTime + 2);
 }
 
 var sfxVolume = 0.5;
