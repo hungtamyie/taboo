@@ -109,7 +109,7 @@ class GameLobby {
             }
         }
         if(this.state != 'Game Over'){
-            if(this.teamData.A.points >= 250 || this.teamData.B.points >= 250 || this.turnData.currentTurn >= 7){
+            if(this.teamData.A.points >= 250 || this.teamData.B.points >= 250 || this.turnData.currentTurn >= 10000){
                 this.state = 'Game Over';
                 this.sendEventToAllSockets('game_over');
                 this.sendUpdateToAllSockets();

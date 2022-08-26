@@ -357,8 +357,6 @@ function setTeamName(team){
     teamName[team] = input.val();
     input.removeClass("inputting")
     input.attr("readonly", true);
-    if($("#teamNameInput1").val() == '') $("#teamNameInput1").val('Team A')
-    if($("#teamNameInput2").val() == '') $("#teamNameInput2").val('Team B')
     updateTeamNames($("#teamNameInput1").val(), $("#teamNameInput2").val())
 }
 

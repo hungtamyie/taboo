@@ -111,6 +111,14 @@ module.exports = (io, socket, gameLobbies) => {
 
     function updateTeamNames(data){
         let currentLobby = socket.data.currentLobby;
+
+        if(data.A == ''){
+            data.A = 'Team A'
+        }
+        if(data.B == ''){
+            data.B = 'Team B'
+        }
+
         gameLobbies[currentLobby].setTeamNames(data.A, data.B);
         io.to(currentLobby).emit("game_update", {currentState: gameLobbies[currentLobby].toJSON()});
     }
