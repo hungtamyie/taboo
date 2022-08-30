@@ -356,6 +356,9 @@ function redrawGameScreen(game){
                 $("#roundEndBox").css('display', 'inline-block');
                 $("#roundEndBox").html('Bonus round! <br> You will have <span>' + (game.extraTime + 5) + ' seconds</span>.');
             }
+            else {
+                $("#roundEndBox").css('display', 'none');
+            }
         }
         /*else if(question.answered == "yes" || question.answered == "half"){
             $("#roundEndBox").css('display', 'inline-block');
