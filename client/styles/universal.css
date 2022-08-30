@@ -123,7 +123,7 @@ input:focus, input.form-control:focus {
     width: 0rem;
     height: 0rem;
     top: 3rem;
-    left: 390rem;
+    left: 375rem;
     color: white;
     position: relative;
 }
@@ -184,6 +184,25 @@ input:focus, input.form-control:focus {
     top: 2.5rem;
     left: 6rem;
     height: 8rem;
+}
+
+#leaveLobbyButton {
+    position: absolute;
+    top: -13rem;
+    left: 106rem;
+    width: 12rem;
+    height: 12rem;
+    cursor: pointer;
+}
+
+#leaveLobbyButton:hover {
+    transform: scale(1.12);
+    filter: saturate(1.2) brightness(105%);
+}
+
+#leaveLobbyButton:active {
+    transform: scale(1);
+    filter: none;
 }
 
 .set_host_button {
@@ -431,7 +450,6 @@ cache image {
 }
 
 #creditsWindow {
-    display: none;
     position: absolute;
     width: 500rem;
     height: 282.5rem;
@@ -531,4 +549,43 @@ cache image {
 
 #closeCreditsButton:active {
     transform: scale(1);
+}
+
+.reconnect_window {
+    position: absolute;
+    width: 500rem;
+    height: 282.5rem;
+    background: rgba(0, 0, 0, 0.63);
+    z-index: 1500000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+#reconnectMessage {
+    color: white;
+    background: black;
+    padding: 10rem;
+    border-radius: 5rem;
+}
+
+#reconnectDot1 {
+    display: inline-block;
+    animation: dot_anim 1.5s ease-in-out 0s infinite;
+}
+
+#reconnectDot2 {
+    display: inline-block;
+    animation: dot_anim 1.5s ease-in-out 0.2s infinite;
+}
+
+#reconnectDot3 {
+    display: inline-block;
+    animation: dot_anim 1.5s ease-in-out 0.3s infinite;
+}
+
+@keyframes dot_anim {
+    0%   {transform: translateY(0rem);}
+    20%  {transform: translateY(-2rem);}
+    40% {transform: translateY(0rem);}
 }

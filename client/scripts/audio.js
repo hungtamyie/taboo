@@ -9,7 +9,7 @@ var sounds_to_load = [
     ['server_notif', '../sounds/server_notif.mp3', 0.5],
     ['card', '../sounds/card.mp3', 0.5],
     ['gamestart', '../sounds/game_start.wav', 0.5],
-    ['puzzledream', '../sounds/puzzledream.mp3', 0.12],
+    ['puzzledream', '../sounds/puzzledream.mp3', 0.10],
     //['downthedrain', '../sounds/downthedrain.mp3', 0.15],
     ['fail', '../sounds/fail.wav', 0.7],
     ['full_win', '../sounds/full_win.mp3', 0.4],
@@ -71,13 +71,17 @@ function changeMusicTo(type){
 
 function pauseMusic(){
     $('#musicBox').css('display', 'none');
-    music.gainA.gain.linearRampToValueAtTime(0, audioContext.currentTime + 2);
+    if(audioContext && music.gainA.gain){
+        music.gainA.gain.linearRampToValueAtTime(0, audioContext.currentTime + 2);
+    }
 
 }
 
 function unpauseMusic(){
     $('#musicBox').css('display', 'inline-block');
-    music.gainA.gain.linearRampToValueAtTime(musicVolume * sfxBoard['puzzledream'].volume, audioContext.currentTime + 2);
+    if(audioContext && music.gainA.gain){
+        music.gainA.gain.linearRampToValueAtTime(musicVolume * sfxBoard['puzzledream'].volume, audioContext.currentTime + 2);
+    }
 }
 
 var sfxVolume = 0.5;

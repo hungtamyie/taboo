@@ -39,7 +39,6 @@ module.exports = (io, socket, gameLobbies) => {
             return false;
         }
         let activeRooms = getActiveRooms();
-        console.log(activeRooms);
         if(socket.data.currentLobby != "nolobby"){
             socket.emit("serverMessage", {head: "Error!", message: "You can't join a lobby because you are already in one!"});
             console.log(socket.id + " tried and failed to join a lobby");
@@ -57,32 +56,62 @@ module.exports = (io, socket, gameLobbies) => {
             return false;
         }
         if(gameLobbies[lobbyId].state != 'Lobby'){
-            socket.emit("serverMessage", {head: "Error!", message: "This game has already started."});
-            console.log(socket.id + " tried to join a already started game");
-            return false;
+            socket.join(lobbyId);
+            socket.data.currentLobby = (lobbyId);
+            gameLobbies[lobbyId].addPlayerSocket(socket);
+            let lobby = gameLobbies[lobbyId];
+            if(lobby.teamData["A"].players.length < 2){
+                lobby.setPlayerTeam(socket, 'A')
+            }
+            else if(lobby.teamData["B"].players.length < 2){
+                lobby.setPlayerTeam(socket, 'B')
+            }
+            else {
+                if(Math.random() < 0.5){
+                    lobby.setPlayerTeam(socket, 'A')
+                }
+                else {
+                    lobby.setPlayerTeam(socket, 'B')
+                }
+            }
         }
-        
-        socket.join(lobbyId);
-        socket.data.currentLobby = (lobbyId);
-        gameLobbies[lobbyId].addPlayerSocket(socket);
-        console.log(socket.id + " joined the lobby " + lobbyId);
+        else {
+            socket.join(lobbyId);
+            socket.data.currentLobby = (lobbyId);
+            gameLobbies[lobbyId].addPlayerSocket(socket);
+        }
 
         //tell client he is connected
         socket.emit('lobby_update', {updateType: 'successful_lobby_join', lobbyId: lobbyId});
         io.to(socket.data.currentLobby).emit("game_update", {currentState: gameLobbies[socket.data.currentLobby].toJSON()});
+    }
 
-        //TESTING TEESTING 
-        /*let lobby = gameLobbies[lobbyId]
-        console.log(utility.objLength(lobby.playerSockets))
-        console.log('testing')
-        if(utility.objLength(lobby.playerSockets) > 3){
-            lobby.shuffleTeams();
-            lobby.startGame();
-            lobby.loadTurn();
-            io.to(socket.data.currentLobby).emit("game_update", {currentState: lobby.toJSON()});
-        }*/
-
-        //TESTING TESTING
+    function rejoinLobby(data){
+        socket.data.username = data.username;
+        let lobbyId = data.lobbyId.toUpperCase();
+        if(containsSpecialChars(socket.data.username)){
+            return false;
+        }
+        let activeRooms = getActiveRooms();
+        if(socket.data.currentLobby != "nolobby"){
+            return false;
+        }
+        if(activeRooms.includes(lobbyId) == false){
+            return false;
+        }
+        if(gameLobbies[lobbyId].playerIsBanned(socket)){
+            return false;
+        }
+        let lobby = gameLobbies[lobbyId]
+        socket.join(lobbyId);
+        socket.data.currentLobby = (lobbyId);
+        lobby.addPlayerSocket(socket);
+        if(data.team == "A" || data.team == "B"){
+            lobby.setPlayerTeam(socket, data.team);
+        }
+        socket.emit('lobby_update', {updateType: 'successful_lobby_join', lobbyId: lobbyId});
+        socket.emit('rejoin_attempt_received', {})
+        io.to(socket.data.currentLobby).emit("game_update", {currentState: gameLobbies[socket.data.currentLobby].toJSON()});
     }
 
     function leaveLobby(){
@@ -98,11 +127,6 @@ module.exports = (io, socket, gameLobbies) => {
         io.to(currentLobby).emit("game_update", {currentState: gameLobbies[currentLobby].toJSON()});
         console.log(socket.id + " left a lobby.");
         socket.emit("lobby_update", {updateType: 'lobby_left'});
-
-        //Kick everyone from lobby
-        if(gameLobbies[currentLobby].state != 'lobby'){
-            console.log("need to kick everybody")
-        }
     }
 
     function getLobbyData(){
@@ -155,6 +179,7 @@ module.exports = (io, socket, gameLobbies) => {
     socket.on("lobby_data_request", getLobbyData);
     socket.on("lobby_create_request", createNewLobby);
     socket.on("lobby_join_request", joinLobby);
+    socket.on("lobby_rejoin_request", rejoinLobby);
     socket.on("lobby_leave_request", leaveLobby);
     socket.on("lobby_team_name_update", updateTeamNames);
 }

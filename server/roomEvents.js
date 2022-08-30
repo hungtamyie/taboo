@@ -73,8 +73,12 @@ module.exports = (io, socket, gameLobbies) => {
             socket.emit("serverMessage", {head: "Error!", message: "You are not the host of this session."})
             return;
         }
-        if(lobby.teamData["A"].players.length < 2 || lobby.teamData["B"].players.length < 2){
-            socket.emit("serverMessage", {head: "Error!", message: "Both teams must have at least two players!"})
+        if(lobby.teamData["A"].players.length < 2 && lobby.teamData["B"].players.length < 2){
+            socket.emit("serverMessage", {head: "Error!", message: "At least one team must have two players!"})
+            return;
+        }
+        if(lobby.teamData["A"].players.length == 1 || lobby.teamData["B"].players.length == 1){
+            socket.emit("serverMessage", {head: "Error!", message: "You can't have a player playing alone!"})
             return;
         }
         lobby.startGame();

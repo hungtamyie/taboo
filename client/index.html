@@ -47,7 +47,7 @@
                         </div>
                     </div>
                 </div>
-                <!--Thingy with players and taboo logo-->
+                <!--Thingy with players and taboo logo and leave button-->
                 <div class="top_container" id="topContainer">
                     <div class="taboo_logo">
                         <div>Taboo!</div>
@@ -60,6 +60,10 @@
                         <br>
                         <div class="relative_anchor">
                             <div id="playerBox" class="standard_shadow"></div>
+                        </div>
+                        <div class="relative_anchor">
+                            <img id="leaveLobbyButton" src="./images/xImage.png">
+                            <div id="leaveLobbyMessage">Leave lobby?</div>
                         </div>
                     </div>
                 </div>
@@ -83,6 +87,9 @@
                             <div id="creditsButton">credits</div>
                         </div>
                     </div>
+                </div>
+                <div class="reconnect_window" id="reconnectWindow">
+                    <div id="reconnectMessage">Reconnecting<span id="reconnectDot1">.</span><span id="reconnectDot2">.</span><span id="reconnectDot3">.</span></div>
                 </div>
                 <!--Credits window-->
                 <div class="relative_anchor">
@@ -144,7 +151,7 @@
                         <div class="lobby_buttons_container">
                             <div id="createNewLobbyButton" class="lobby_button standard_shadow">Create Lobby</div>
                             <div class="flex join_lobby_container">
-                                <input id="joinCodeInput" maxlength="5" placeholder="JKQRL" class="standard_shadow" autocomplete="off" spellcheck="false">
+                                <input id="joinCodeInput" maxlength="5" placeholder="CBMTJ" class="standard_shadow" autocomplete="off" spellcheck="false">
                                 <div id="joinLobbyButton" class="lobby_button standard_shadow"><div>Join Lobby <span>➤</span></div></div>
                             </div>
                         </div>
@@ -155,6 +162,9 @@
                 </div>
                 <!--Game Window-->
                 <div id="gameWindow">
+                    <div class="relative_anchor">
+                        <div id="lobbyCodeInGame"><div>TESTA</div></div>
+                    </div>
                     <div class="team1">
                         <div id="team1Title">Team 1</div>
                         <div id="team1Points">100 pts</div>
@@ -206,6 +216,7 @@
                             <div id="startInputBox">
                                 <div id="startTurnButton" class="standard_shadow">Start Turn</div>
                             </div>
+                            <div id="roundEndBox"></div>
                         </div>
                     </div>
                     <div class="turn" id="turnTitle">Turn 0</div>
@@ -285,7 +296,9 @@
                                 <br>
                                 This is a fast-paced team guessing game!
                                 <br><br>
-                                You need at least 4 players to play. Your goal is to reach 250 points as fast as possible.
+                                You will need a group of 4 or more players and a voice chatting application like discord to play. 
+                                <br><br>
+                                The goal of the game is to reach 250 points as fast as possible.
                                 <br><br>
                                 Each turn, a team will have one player selected to be describer. He will be presented with images which he must describe to his teammates. The game is called Taboo for a reason! 
                                 <i>The describer must not say the word he is describing.</i> For example, he can't say "cheese" to describe cheese. In the same vein, he can't say "a wall in china" to describe the
@@ -296,6 +309,8 @@
                                 Describing words quickly will gain extra time in the next round! If you have extra time remaining by the end of 5 rounds, a secret bonus round worth double points is unlocked. 
                                 <br><br>
                                 Good luck!
+                                <br><br>
+                                <span style="color: #AAABFF">Note: The game can also be played with only 2 or 3 people if they join the same team.</span>
                             </div>
                         </div>
                     </div>

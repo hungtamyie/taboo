@@ -4,6 +4,7 @@
     text-align: center;
     background: #7879F1;
     display: none;
+    overflow: hidden;
 }
 .team1 {
     color: #614C17;
@@ -568,4 +569,43 @@
     left: -2.5rem;
     width: 80rem;
     text-align: left;
+}
+
+#lobbyCodeInGame {
+    position: absolute;
+    top: 268rem;
+    width: 180rem;
+    pointer-events: all;
+    text-align: left;
+}
+
+#lobbyCodeInGame > div {
+    background: #AAABFF;
+    color: #7879F1;
+    top: 268rem;
+    line-height: 12rem;
+    display: inline-block;
+    width: fit-content;
+    padding-top: 2rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    border-top-right-radius: 8rem;
+}
+
+#leaveLobbyMessage {
+    font-size: 5rem;
+    line-height: 6rem;
+    left: 105rem;
+    display: none;
+    position: absolute;
+}
+
+#roundEndBox {
+    color: white;
+    line-height: 10rem;
+}
+
+#roundEndBox > span{
+    color: #e721ff;
+    text-shadow: 0rem 0rem 2rem rgba(0,0,0,0.7);
 }

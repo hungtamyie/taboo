@@ -79,6 +79,16 @@ function activateEventHandlers(){
         goHome();
     })
 
+    $("#leaveLobbyButton").on('mouseover', function(){
+        $("#leaveLobbyMessage").css("display", "block")
+    })
+    $("#leaveLobbyButton").on('mouseout', function(){
+        $("#leaveLobbyMessage").css("display", "none")
+    })
+    $("#leaveLobbyButton").on('click', function(){
+        goHome();
+    })
+
     $("#lobbyIdDisplay").on('click', function(){
         if(canCopy){
             canCopy = false;
@@ -213,9 +223,9 @@ function activateEventHandlers(){
     }
 
     //FOR TESTING PURPOSES
-    //var randomNamesA = ["Small ", "Big ", "Friendly ", "Great ", "Ugly ", "Running ", "Walking "]
-    //var randomNamesB = ["Panda", "Cat", "Dog", "Lili", "Parrot", "Pig", "Horse", "Bird"]
-    //randomName = randomNamesA[Math.floor(Math.random()*randomNamesA.length)] + randomNamesB[Math.floor(Math.random()*randomNamesB.length)];
+    var randomNamesA = ["Small ", "Big ", "Friendly ", "Great ", "Ugly ", "Running ", "Walking "]
+    var randomNamesB = ["Panda", "Cat", "Dog", "Lili", "Parrot", "Pig", "Horse", "Bird"]
+    randomName = randomNamesA[Math.floor(Math.random()*randomNamesA.length)] + randomNamesB[Math.floor(Math.random()*randomNamesB.length)];
     //$("#usernameInput").on("click", function() {
         //$("#usernameInput").val(randomName)
     //});
@@ -303,6 +313,10 @@ function switchToPage(page){
     $("#topContainer").css("display", "none");
     $("#joinCodeInput").val("");
     $("#loadingMessage").html("");
+
+    if(Storage){
+        $("#usernameInput").val(sessionStorage.username);
+    }
 
     $("#" + page + "Window").css("display", "block");
     if(page == "game" || page == "lobby" || page=="end"){

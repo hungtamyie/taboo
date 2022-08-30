@@ -1,19 +1,24 @@
 function redrawScreen(game){
-    redrawPlayerBox(game);
-    if(game.state == "Lobby"){
-        switchToPage("lobby");
-        redrawLobbyScreen(game);
-        unpauseMusic();
+    try {
+        redrawPlayerBox(game);
+        if(game.state == "Lobby"){
+            switchToPage("lobby");
+            redrawLobbyScreen(game);
+            unpauseMusic();
+        }
+        else if((["Turn Start", "Choosing Image", "In Round", "Transition", "Round End"]).includes(game.state)){
+            pauseMusic();
+            switchToPage("game");
+            redrawGameScreen(game);
+        }
+        else if(game.state == "Game Over"){
+            switchToPage("end");
+            redrawEndScreen(game);
+            unpauseMusic();
+        }
     }
-    else if((["Turn Start", "Choosing Image", "In Round", "Transition"]).includes(game.state)){
-        pauseMusic();
-        switchToPage("game");
-        redrawGameScreen(game);
-    }
-    else if(game.state == "Game Over"){
-        switchToPage("end");
-        redrawEndScreen(game);
-        unpauseMusic();
+    catch (error) {
+        console.log(error);
     }
 }
 
@@ -118,7 +123,13 @@ function redrawGameScreen(game){
     let currentTeam = game.teamData[game.turnData.currentTeam];
     let currentDescriberPointer = currentTeam.describerPointer
     let currentDescriberId = currentTeam.players[currentDescriberPointer]
-    let currentDescriberName = game.playerSockets[currentDescriberId].name
+    let currentDescriberName;
+    if(game.playerSockets[currentDescriberId]){
+        currentDescriberName = game.playerSockets[currentDescriberId].name;
+    }
+    else {
+        currentDescriberName = "Nobody";
+    }
     let amDescriber = currentDescriberId == socket.id;
     let players = currentTeam.players;
     let myTeam = 'A'
@@ -217,7 +228,6 @@ function redrawGameScreen(game){
                 $("#guessInputBox").css('display', 'block');
                 if (!$("#guessInputBox").is(":focus")) {
                     $("#guessInputBox").focus()
-                    console.log('focusing')
                 }
                 $("#describeInputBox").css('display', 'none');
             }
@@ -307,6 +317,61 @@ function redrawGameScreen(game){
     if(game.state == 'Choosing Image'){
         $("#guessInputBox").css('display', 'none');
     }
+    if(game.state == 'Round End'){
+        let questions = game.turnData.questions[game.turnData.currentRound];
+        let question;
+        if(questions[0].chosen) question = questions[0]
+        if(questions[1].chosen) question = questions[1]
+
+        $('#guessBackgroundBox').css('display', 'none');
+        $('#describeBackgroundBox').css('display', 'inline-flex');
+
+        let pointsEarned = 0;
+        let color = 'white'
+        if(question.answered == 'half') {
+            pointsEarned = question.pointValue/2;
+            color = '#FFC42E'
+        }
+        else if(question.answered == 'yes') {
+            pointsEarned = question.pointValue;
+            color = '#71E754'
+        }
+        else {
+            pointsEarned = 0;
+            color = 'white'
+        }
+        $("#describeDisplayNumber").html('<span style="color: ' + color + '">'+ pointsEarned + '</span>/' + question.pointValue);
+        $("#describeDisplayText").html(question.name);
+        $('#describeBackgroundBox').css('background', 'url("' + question.url + '")');
+
+        $("#describeInputBox").css('display', 'none');
+        $("#guessInputBox").css('display', 'none');
+        $("#startInputBox").css('display', 'none');
+        $("#timeBarContainer").css('visibility', 'hidden');
+        $("#roundEndBox").css('display', 'inline-block');
+        if(game.extraTime > 0){
+            //$("#roundEndBox").css('display', 'inline-block');
+            //$("#roundEndBox").html('Extra <span>' + game.extraTime + ' seconds </span> earned!');
+            if(game.turnData.currentRound == 4){
+                $("#roundEndBox").css('display', 'inline-block');
+                $("#roundEndBox").html('Bonus round! <br> You will have <span>' + (game.extraTime + 5) + ' seconds</span>.');
+            }
+        }
+        /*else if(question.answered == "yes" || question.answered == "half"){
+            $("#roundEndBox").css('display', 'inline-block');
+            $("#roundEndBox").html('Good round!');
+        }
+        else if(question.answered == "no"){
+            $("#roundEndBox").css('display', 'inline-block');
+            $("#roundEndBox").html('Nice try...');
+        }*/
+        else {
+            $("#roundEndBox").css('display', 'none');
+        }
+    }
+    else {
+        $("#roundEndBox").css('display', 'none');
+    }
     if(game.state == 'Turn Start'){
         $("#startInputBox").css('display', 'inline-block');
         $("#guessStripeBox").css('display', 'inline-flex');
@@ -381,10 +446,11 @@ function redrawGameScreen(game){
     else {
         $("#turnTitle").css('background', '#FF826E')
     }
-    $('#team1Title').html(game.teamData.A.name)
-    $('#team1Points').html(game.teamData.A.points)
-    $('#team2Title').html(game.teamData.B.name) 
-    $('#team2Points').html(game.teamData.B.points) 
+    $('#team1Title').html(game.teamData.A.name);
+    $('#team1Points').html(game.teamData.A.points);
+    $('#team2Title').html(game.teamData.B.name);
+    $('#team2Points').html(game.teamData.B.points);
+    $("#lobbyCodeInGame").html('<div>' + game.lobbyId + '</div>');
 }
 
 function redrawEndScreen(game){
@@ -397,6 +463,7 @@ function redrawEndScreen(game){
     $("#statTableA").html('<tbody></tbody>');
     $("#statTableB").html('<tbody></tbody>');
 
+    $("#topContainer").css("display", "none");
     let pointScorersA = game.teamData.A.pointScorers;
     let pointScorersB = game.teamData.B.pointScorers;
     for (let key in pointScorersA) {

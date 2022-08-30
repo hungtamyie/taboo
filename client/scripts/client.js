@@ -1,4 +1,9 @@
 var socket = io();
+var lobbyCache = {
+    lobby: false,
+    team: false,
+    username: false,
+}
 
 //RECIEVING
 socket.on('serverMessage', function(data){
@@ -15,10 +20,16 @@ socket.on('lobby_update', function(data){
         switchToPage("lobby");
     }
     if(data.updateType == "lobby_left"){
+        clearLobbyAndTeam();
+        window.clearInterval(roundTimer);
+        roundTimer = "none";
+        $("#timeBar").removeClass('flash');
+        unpauseMusic();
         switchToPage("logIn");
     }
 })
 socket.on("game_update", function(data){
+    updateLobbyAndTeam(data.currentState);
     redrawScreen(data.currentState);
 });
 socket.on("preload_request", function(data){
@@ -31,6 +42,38 @@ socket.on("game_event", function(data){
 
 socket.on("chat_message", function(data){
     newChatMessage(data);
+});
+
+socket.on("disconnect", (reason) => {
+    if (reason === "io server disconnect") {
+        // the disconnection was initiated by the server, you need to reconnect manually
+        socket.connect();
+    }
+    //show reconnecting thing
+    $("#reconnectWindow").css("display", "inline-flex");
+});
+
+socket.on("connect", () => {
+    $("#reconnectWindow").css("display", "none");
+    rejoinCachedLobby()
+});
+
+socket.io.on("reconnect_attempt", () => {
+    $("#reconnectWindow").css("display", "inline-flex");
+});
+
+socket.on("rejoin_attempt_received", () => {
+    lobbyCache = {
+        lobby: false,
+        team: false,
+        username: false,
+    }
+    if (typeof(Storage) !== "undefined") {
+        sessionStorage.setItem("team", lobbyCache.team)
+        sessionStorage.setItem("lobby", lobbyCache.lobby)
+        sessionStorage.setItem("username", lobbyCache.username)
+    }
+    console.log('Rejoin attempt received')
 });
 
 
@@ -78,4 +121,33 @@ function updateTeamNames(a,b){
 
 function requestShuffle(){
     socket.emit("shuffle_request");
+}
+
+function updateLobbyAndTeam(game){
+    lobbyCache.team = game.teamData.A.players.includes(socket.id) ? 'A' : 'B';
+
+    lobbyCache.lobby = game.lobbyId;
+
+    lobbyCache.username = game.playerSockets[socket.id].name;
+
+    if (typeof(Storage) !== "undefined") {
+        sessionStorage.setItem("team", lobbyCache.team)
+        sessionStorage.setItem("lobby", lobbyCache.lobby)
+        sessionStorage.setItem("username", lobbyCache.username)
+    }
+}
+
+function clearLobbyAndTeam(){
+    lobbyCache.team = false;
+    lobbyCache.lobby = false;
+    if (typeof(Storage) !== "undefined") {
+        sessionStorage.setItem("team", false);
+        sessionStorage.setItem("lobby", false);
+    }
+}
+
+function rejoinCachedLobby(){
+    if(lobbyCache.team && lobbyCache.lobby){
+        socket.emit("lobby_rejoin_request", {username: lobbyCache.username, lobbyId: lobbyCache.lobby, team: lobbyCache.team});
+    }
 }

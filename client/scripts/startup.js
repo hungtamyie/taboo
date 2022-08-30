@@ -1,6 +1,7 @@
 window.onload = () => {
     resizeWindow();
     createCacheElement();
+    loadInCache();
     loadAllResources();
     activateEventHandlers();
     addAudioToButtons();
@@ -39,6 +40,17 @@ function createCacheElement(){
 
 function loadAllResources(){
 
+}
+
+function loadInCache(){
+    if (typeof(Storage) !== "undefined") {
+        lobbyCache.team = sessionStorage.getItem("team");
+        lobbyCache.lobby = sessionStorage.getItem("lobby");
+        lobbyCache.username = sessionStorage.getItem("username");
+    }
+    if(Storage){
+        $("#usernameInput").val(sessionStorage.username);
+    }
 }
 
 function startBouncingGirl(){
@@ -152,11 +164,14 @@ function bounceTick(){
         $('#curtainRight').animate({'width': '0rem'}, 1000, function(){
             $('#splashScreen').css('display', 'none');
             tabooJump();
-            console.log('page loaded')
+            console.log('page loaded');
         });
+        rejoinCachedLobby();
         $('#splashScreen').css('pointer-events', 'none');
     }
     else {
         window.requestAnimationFrame(bounceTick);
     }
 }
+
+var splashFinished = false;
