@@ -3,7 +3,7 @@ function addAudioToButtons(){
     $("#joinLobbyButton, #createNewLobbyButton").on('mousedown', ()=>{
         playSound('click');
     })
-    $("#playerButton, #lobbyIdDisplay, #selection1, #selection2, #describeGiveUpButton, #describeNextButton, #goButton, #creditsButton, #closeCreditsButton, #editNameButton1, #editNameButton2").on('mousedown', ()=>{
+    $("#playerButton, #leaveLobbyButton, #lobbyIdDisplay, #selection1, #selection2, #describeGiveUpButton, #describeNextButton, #goButton, #creditsButton, #closeCreditsButton, #editNameButton1, #editNameButton2").on('mousedown', ()=>{
         playSound('click');
     })
     $("#shuffleButton").on('mousedown', ()=>{
