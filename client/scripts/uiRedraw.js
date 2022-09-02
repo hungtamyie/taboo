@@ -96,7 +96,8 @@ function redrawLobbyScreen(game){
         }
     }
     if(myTeam == "none"){
-        $("#joinTeam2, #joinTeam1").css({"visibility": "visible"})
+        $("#joinTeam1").css({"background": "#09CC6E", "pointer-events": "auto"})
+        $("#joinTeam2").css({"background": "#09CC6E", "pointer-events": "auto"})
     }
     else if(myTeam == "A") {
         $("#joinTeam1").css({"background": "grey", "pointer-events": "none"})

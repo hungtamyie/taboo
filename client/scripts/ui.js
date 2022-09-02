@@ -25,6 +25,9 @@ function activateEventHandlers(){
     $("#playerButton").on("click", function() {
         togglePlayerBox();
     });
+    $("#playerButtonContainer").on("mouseleave", function() {
+        closePlayerBox();
+    });
     $("#editNameButton1").on("click", function() {
         allowEdit(1)
     });
@@ -350,6 +353,19 @@ function togglePlayerBox(){
             });
         });
     }
+}
+function closePlayerBox(){
+    if(!playerBoxOn) return;
+    $("#playerBox").stop();
+    $("#playerButton").stop();
+    playerBoxOn = false;
+    playerBoxToggleable = false;
+    $("#playerBox").animate({'height': '0rem'}, 200,()=>{
+        $("#playerBox").css({"display": "none", 'height': 'auto'});
+        $("#playerButton").animate({"margin-left": "36rem", "width": "50rem"}, 300, ()=>{
+            playerBoxToggleable = true;
+        });
+    });
 }
 
 var teamName = {
