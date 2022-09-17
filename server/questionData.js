@@ -144,11 +144,11 @@ module.exports = {
         {category: "currency", name: "Euro", url: "https://i.postimg.cc/54mJB3sQ/0701446483918-web-tete.jpg", alias: ["EUR"]},
         {category: "currency", name: "Dollar", url: "https://i.postimg.cc/0vtK10ky/800px-USDnotes-New.png", alias: ["USD"]},
         {category: "currency", name: "Rupee", url: "https://i.postimg.cc/W2YNCSGR/old-one-hundred-rupee-notes-combined-on-the-table-india-money-on-the-rotating-table-old-indian-curre.jpg",alias: ["Indian Rupee", "INR"]},
-        {category: "currency", name: "Sterling", url: "https://i.postimg.cc/q4w91qcS/0601278675852-web-tete.jpg",alias: ["Pounds", "Pound","GBP"]},
-        {category: "math", name: "addition", url: "https://i.postimg.cc/wHHfnHBp/48543060-cartoon-addition-symbol.jpg", alias: ["Plus"]},
+        {category: "currency", name: "Sterling", url: "https://i.postimg.cc/q4w91qcS/0601278675852-web-tete.jpg", alias: ["Pounds", "Pound","GBP"]},
+        {category: "math", name: "Addition", url: "https://i.postimg.cc/wHHfnHBp/48543060-cartoon-addition-symbol.jpg", alias: ["Plus"]},
         {category: "math", name: "Subtraction", url: "https://i.postimg.cc/8DKRwVJw/fc-diff-41705-lg.gif", alias: ["Minus"]},
         {category: "math", name: "Multiplication", url: "https://i.postimg.cc/sykPGCML/pngtree-wrong-false-icon-design-template-vector-isolated-png-image-711428.jpg"},
-        {category: "math", name: "division", url: "https://i.postimg.cc/tpz1qKWW/fc-dev-41704-md.gif"},
+        {category: "math", name: "Division", url: "https://i.postimg.cc/tpz1qKWW/fc-dev-41704-md.gif"},
 
     ],
     medium: [
@@ -327,14 +327,12 @@ module.exports = {
         {category: "person", name: "Max Verstappen", url: "https://i.postimg.cc/8ctx9hJW/XPB-1126234-Hi-Res.jpg"},
         {category: "person", name: "Sandra Bullock", url: "https://i.postimg.cc/m21S0YHs/image.jpg"},
         {category: "anime", name: "Violet Evergarden", url: "https://i.postimg.cc/qkKjhBxj/MV5-BYTJm-Nzc5-YTEt-NTBm-Ny00-Ym-Ux-LWFl-Nzkt-Yj-Zj-MTg3-OGY3-ZDhk-Xk-Ey-Xk-Fqc-Gde-QXVy-Mz-Uz-Mzgx-NA-V1.jpg"},
-        {category: "anime", name: "Jujutsu Kaisen", url: "https://i.postimg.cc/WTJnfbQj/NEOBK-2655364.jpg"},
         {category: "anime", name: "Fullmetal Achemist", url: "https://i.postimg.cc/HdxGJ5cz/e4aec5405948deb11aac1373e81dd72e.jpg"}, //fullmetal(-)//
         {category: "cartoon", name: "Asterix", url: "https://i.postimg.cc/csQ1DYcY/l064-7.png"},
         {category: "cartoon", name: "Sonic X", url: "https://i.postimg.cc/zz8z4BdQ/image-w1280.jpg"}, 
         {category: "cartoon", name: "Winx Club", url: "https://i.postimg.cc/mBJbBVXC/p186546-ce-h9-aa.jpg"},
         {category: "cartoon", name: "Teen Titans", url: "https://i.postimg.cc/V1NrNGRV/p19815096-i-v13-ab.jpg"},
         {category: "TV Show", name: "Parks and Recreation", url: "https://i.postimg.cc/NgYLvpFb/rs-600x600-200429084749-600-parks-and-rec-ch-042920.webp"},
-        {category: "TV Show", name: "All of us are dead", url: "https://i.postimg.cc/2kGZKgx4/All-Of-Us-Are-Dead.jpg"},
         {category: "TV Show", name: "Ozark", url: "https://i.postimg.cc/8DT3fWJ3/ozark-season-4-review.jpg"},
         {category: "TV Show", name: "The Irishman", url: "https://i.postimg.cc/KZzWsyF2/MV5-BMGUy-M2-Zi-Zm-Ut-MWY0-OC00-NTQ4-LThk-OGUt-Nj-Y2-Njkz-MDJi-MWMw-Xk-Ey-Xk-Fqc-Gde-QXVy-Mz-Y0-MTE3-Nz-U-V1.jpg"},
         {category: "animal", name: "Hornet", url: "https://i.postimg.cc/hc2ynL7L/5c5ab2c4-6b7c-48de-8237-0e3397938352-large1x1-vlcsnap2020050610h16m25s768.png"},
@@ -408,13 +406,13 @@ module.exports = {
         {category: "movie", name: "Slumdog Millionaire", url: "https://i.postimg.cc/HmPk0W32/MV5-BMTMx-NTIy-Nz-Y4-OF5-BMl5-Ban-Bn-Xk-Ft-ZTcw-NTg0-ODEz-Mg-V1.jpg", alias: []},
         {category: "mechanism", name: "Parking brake", url: "https://i.postimg.cc/bzZ5228X/Driver-Pulling-Emergency-Brake-1636649343318.jpg", alias: ["Handbrake", "Emergency Brake"]},
         {category: "painting", name: "Guernica", url: "https://i.postimg.cc/yBJcKmhB/ok-dora-guernica.jpg"},
-        {category: "painting", name: "Girl with a pearl earring", url: "https://i.postimg.cc/099zzDSz/800px-1665-Girl-with-a-Pearl-Earring.jpg"},
-        {category: "painting", name: "The birth of venus", url: "https://i.postimg.cc/8GxshqWQ/640px-Sandro-Botticelli-La-nascita-di-Venere-Google-Art-Project-edited.jpg"},
+        {category: "painting", name: "Girl With a Pearl Earring", url: "https://i.postimg.cc/099zzDSz/800px-1665-Girl-with-a-Pearl-Earring.jpg", alias: ["Girl with a Pearl"]},
+        {category: "painting", name: "The Birth of Venus", url: "https://i.postimg.cc/8GxshqWQ/640px-Sandro-Botticelli-La-nascita-di-Venere-Google-Art-Project-edited.jpg"},
         {category: "instrument", name: "Harp", url: "https://i.postimg.cc/Pd65Nch7/Louis-XV-Special-768x1262.jpg"},
         {category: "currency", name: "Sweden Krona", url: "https://i.postimg.cc/6BCFm4bf/1x-1.jpg", alias: ["Krona","SEK"]},
         {category: "currency", name: "Swiss Franc", url: "https://i.postimg.cc/gzxD1fkb/Swiss-francs-Cameracraft8-Dreamstime-com.jpg", alias: ["Franc","CHF"]},
         {category: "currency", name: "Thai Baht", url: "https://i.postimg.cc/qpndH5qn/5834124249-79e999ba21-b.jpg", alias: ["Baht","THB"]},
-        {category: "Math", name: "Phytagorean Theorem", url: "https://i.postimg.cc/q0F18cXZ/81933714.jpg"},
+        {category: "Math", name: "Pythagorean Theorem", url: "https://i.postimg.cc/q0F18cXZ/81933714.jpg"},
 
 
 
