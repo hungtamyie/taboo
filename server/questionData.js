@@ -345,7 +345,7 @@ module.exports = {
         {category: "person", name: "Elizabeth 1", url: "https://i.postimg.cc/6wbVn9rr/queen-elizabeth-i-photo-by-ann-ronan-picturesprint-collectorgetty-images.jpg", alias: ["Elizabeth", "Elizabeth Tudor"]}, // Elizabeth (-), same points if Elizabeth Tudor (=)//
         {category: "person", name: "Napoleon Bonaparte", url: "https://i.postimg.cc/JrYLRy9Y/image.png", alias: ["Napoleon"]}, //Napoleon (-)//
         {category: "person", name: "Stormzy", url: "https://i.postimg.cc/HHc7ybB2/image.jpg"},
-        {category: "person", name: "Andrew Tate", url: "https://i.postimg.cc/2rdMFcwF/image.png",
+        {category: "person", name: "Andrew Tate", url: "https://i.postimg.cc/2rdMFcwF/image.png"},
         {category: "person", name: "Shaquille O'neal", url: "https://i.postimg.cc/vb9gP9gv/6bb16-15398694878129-800.jpg"},
         {category: "person", name: "Steven Spielberg", url: "https://i.postimg.cc/Sy5mFTHY/t-Zxcg19-YQ3e8f-J0p-Os7hjlnmmr6.jpg"},
         {category: "person", name: "Floyd Mayweather Jr.", url: "https://i.postimg.cc/0P63h5Pn/21-BOXING1-1424480903046-article-Large.jpg",alias: ["Floyd Mayweather Jr"]},
