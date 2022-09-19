@@ -4,7 +4,7 @@ module.exports = (io, socket, gameLobbies) => {
     function joinTeam(data){
         if(socket.data.currentLobby != "nolobby"){  
             let lobby = gameLobbies[socket.data.currentLobby];
-            if(data.team == "A" || data.team == "B"){
+            if(data.team == "A" || data.team == "B" || data.team == "none"){
                 lobby.setPlayerTeam(socket, data.team);
                 io.to(socket.data.currentLobby).emit("game_update", {currentState: lobby.toJSON()});
             }

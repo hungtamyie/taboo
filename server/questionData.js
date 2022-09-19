@@ -147,8 +147,8 @@ module.exports = {
         {category: "currency", name: "Sterling", url: "https://i.postimg.cc/q4w91qcS/0601278675852-web-tete.jpg", alias: ["Pounds", "Pound","GBP"]},
         {category: "math", name: "Addition", url: "https://i.postimg.cc/wHHfnHBp/48543060-cartoon-addition-symbol.jpg", alias: ["Plus"]},
         {category: "math", name: "Subtraction", url: "https://i.postimg.cc/8DKRwVJw/fc-diff-41705-lg.gif", alias: ["Minus"]},
-        {category: "math", name: "Multiplication", url: "https://i.postimg.cc/sykPGCML/pngtree-wrong-false-icon-design-template-vector-isolated-png-image-711428.jpg"},
-        {category: "math", name: "Division", url: "https://i.postimg.cc/tpz1qKWW/fc-dev-41704-md.gif"},
+        {category: "math", name: "Multiplication", url: "https://i.postimg.cc/sykPGCML/pngtree-wrong-false-icon-design-template-vector-isolated-png-image-711428.jpg", alias: ["Times"]},
+        {category: "math", name: "Division", url: "https://i.postimg.cc/tpz1qKWW/fc-dev-41704-md.gif", alias: ["Divided by"]},
 
     ],
     medium: [
@@ -409,7 +409,7 @@ module.exports = {
         {category: "painting", name: "Girl With a Pearl Earring", url: "https://i.postimg.cc/099zzDSz/800px-1665-Girl-with-a-Pearl-Earring.jpg", alias: ["Girl with a Pearl"]},
         {category: "painting", name: "The Birth of Venus", url: "https://i.postimg.cc/8GxshqWQ/640px-Sandro-Botticelli-La-nascita-di-Venere-Google-Art-Project-edited.jpg"},
         {category: "instrument", name: "Harp", url: "https://i.postimg.cc/Pd65Nch7/Louis-XV-Special-768x1262.jpg"},
-        {category: "currency", name: "Sweden Krona", url: "https://i.postimg.cc/6BCFm4bf/1x-1.jpg", alias: ["Krona","SEK"]},
+        {category: "currency", name: "Swedish Krona", url: "https://i.postimg.cc/6BCFm4bf/1x-1.jpg", alias: ["Krona","SEK"]},
         {category: "currency", name: "Swiss Franc", url: "https://i.postimg.cc/gzxD1fkb/Swiss-francs-Cameracraft8-Dreamstime-com.jpg", alias: ["Franc","CHF"]},
         {category: "currency", name: "Thai Baht", url: "https://i.postimg.cc/qpndH5qn/5834124249-79e999ba21-b.jpg", alias: ["Baht","THB"]},
         {category: "Math", name: "Pythagorean Theorem", url: "https://i.postimg.cc/q0F18cXZ/81933714.jpg"},

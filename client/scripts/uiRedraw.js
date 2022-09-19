@@ -30,6 +30,15 @@ function redrawPlayerBox(game){
     for (const key in game.playerSockets) {
         if (game.playerSockets.hasOwnProperty(key)) {
             playerSocket = game.playerSockets[key];
+            let playerTeam = 'none'
+            if(game.teamData.B.players.includes(playerSocket.id)){playerTeam = 'B'}
+            if(game.teamData.A.players.includes(playerSocket.id)){playerTeam = 'A'}
+            let colorElem = $("<div>", {class: "player_list_color"});
+            if(playerTeam == 'A') colorElem.css("background", "#FFC42E")
+            else if(playerTeam == 'B') colorElem.css("background", "#FF826E")
+            else colorElem.css("background", "rgb(121 122 155)");
+            $("#playerBox").append(colorElem);
+
             let playerElem = $("<div>", {class: "player_list_item", text: playerSocket.name});
             /*if(playerSocket.id == socket.id){
                 playerElem.css("color", "#19B8EA")
@@ -96,16 +105,22 @@ function redrawLobbyScreen(game){
         }
     }
     if(myTeam == "none"){
-        $("#joinTeam1").css({"background": "#09CC6E", "pointer-events": "auto"})
-        $("#joinTeam2").css({"background": "#09CC6E", "pointer-events": "auto"})
+        $("#joinTeam1").css({"background": "#09CC6E"})
+        $("#joinTeam1").html("<div>join</div>")
+        $("#joinTeam2").css({"background": "#09CC6E"})
+        $("#joinTeam2").html("<div>join</div>")
     }
     else if(myTeam == "A") {
-        $("#joinTeam1").css({"background": "grey", "pointer-events": "none"})
-        $("#joinTeam2").css({"background": "#09CC6E", "pointer-events": "auto"})
+        $("#joinTeam1").css({"background": "#C93C3C"})
+        $("#joinTeam1").html("<div>leave</div>")
+        $("#joinTeam2").css({"background": "#09CC6E"})
+        $("#joinTeam2").html("<div>join</div>")
     }
     else if(myTeam == "B") {
-        $("#joinTeam2").css({"background": "grey", "pointer-events": "none"})
-        $("#joinTeam1").css({"background": "#09CC6E", "pointer-events": "auto"})
+        $("#joinTeam2").css({"background": "#C93C3C"})
+        $("#joinTeam2").html("<div>leave</div>")
+        $("#joinTeam1").css({"background": "#09CC6E"})
+        $("#joinTeam1").html("<div>join</div>")
     }
     
     $("#joinTeam2")
@@ -133,8 +148,9 @@ function redrawGameScreen(game){
     }
     let amDescriber = currentDescriberId == socket.id;
     let players = currentTeam.players;
-    let myTeam = 'A'
+    let myTeam = 'none'
     if(game.teamData.B.players.includes(socket.id)){myTeam = 'B'}
+    if(game.teamData.A.players.includes(socket.id)){myTeam = 'A'}
 
     if(game.state == 'Turn Start' || game.state == 'Choosing Image'){
         $("#guessMainDisplayText").html('<span>Waiting<br>for<br>describer</span>');

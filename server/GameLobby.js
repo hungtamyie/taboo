@@ -51,7 +51,7 @@ class GameLobby {
         if(this.teamData.A.players.length < 2){
             this.turnData.currentTeam = 'B';
         }
-        this.sendEventToAllSockets('game_started')
+        this.sendEventToAllSockets('game_started');
         this.state = "Turn Start";
     }
     updateStateStartTimestamp(){
@@ -508,6 +508,16 @@ class GameLobby {
     }
     setPlayerTeam(socket, team){
         if(this.teamData[team].players.includes(socket.id)){
+            for(let i = 0; i < this.teamData.A.players.length; i++){
+                if(this.teamData.A.players[i]== socket.id){
+                    this.teamData.A.players.splice(i,1);
+                }
+            }
+            for(let i = 0; i < this.teamData.B.players.length; i++){
+                if(this.teamData.B.players[i]== socket.id){
+                    this.teamData.B.players.splice(i,1);
+                }
+            }
             return false;
         };
         this.teamData[team].players.unshift(socket.id);
